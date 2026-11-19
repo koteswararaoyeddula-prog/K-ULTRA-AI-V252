@@ -281,4 +281,43 @@ h1 span, .hero-content h2 span { color: var(--primary); }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
                                            }
+
+/* K-ULTRA AI - SEARCH INPUT FIX */
+.topbar {
+  position: sticky;
+  z-index: 50;
+}
+
+.topbar-actions {
+  position: relative;
+  z-index: 51;
+}
+
+.search-box {
+  position: relative;
+  z-index: 52;
+  pointer-events: auto;
+  cursor: text;
+}
+
+.search-box input {
+  position: relative;
+  z-index: 53;
+  pointer-events: auto !important;
+  user-select: text !important;
+  -webkit-user-select: text !important;
+  touch-action: manipulation;
+  cursor: text;
+}
+
+.search-box span,
+.search-box kbd {
+  pointer-events: none;
+}
+
+.profile-wrap {
+  position: relative;
+  z-index: 54;
+}
+
   
