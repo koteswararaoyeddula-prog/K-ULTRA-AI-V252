@@ -235,28 +235,82 @@
     }).format(new Date());
   }
 
-  function setupSearch() {
-    const search = document.getElementById("globalSearch");
-    if (!search) return;
-
-    search.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter") return;
-
-      const query = search.value.trim().toLowerCase();
-      if (!query) return;
-
-      const match = Object.entries(modules).find(([key, module]) => {
-        return key.includes(query) || module.title.toLowerCase().includes(query);
-      });
-
-      if (match) {
-        openPage(match[0]);
-        search.value = "";
-      } else {
-        showToast("No matching workspace found.");
-      }
-    });
+  
+function setupSearch() {
+  const search = document.getElementById("globalSearch");
+  if (!search) {
+    console.error("Search input not found");
+    return;
   }
+
+  function performSearch() {
+    const query = search.value.trim().toLowerCase();
+
+    if (!query) {
+      showToast("Please enter a workspace name.");
+      return;
+    }
+
+    const aliases = {
+      "ai": "chat",
+      "chat": "chat",
+      "coding": "coding",
+      "ide": "coding",
+      "leetcode": "challenges",
+      "hackerrank": "challenges",
+      "hackerearth": "challenges",
+      "website": "builder",
+      "web": "builder",
+      "app": "appbuilder",
+      "image": "image",
+      "video": "video",
+      "music": "audio",
+      "audio": "audio",
+      "design": "design",
+      "research": "research",
+      "agent": "agents",
+      "ecommerce": "ecommerce",
+      "shop": "ecommerce",
+      "document": "documents",
+      "marketplace": "marketplace",
+      "project": "projects",
+      "profile": "profile",
+      "setting": "settings",
+      "help": "help",
+      "dashboard": "dashboard"
+    };
+
+    const aliasMatch = Object.keys(aliases).find(key =>
+      key.includes(query) || query.includes(key)
+    );
+
+    const match = aliasMatch
+      ? aliases[aliasMatch]
+      : Object.keys(modules).find(key =>
+          key.includes(query) ||
+          modules[key].title.toLowerCase().includes(query)
+        );
+
+    if (match && modules[match]) {
+      openPage(match);
+      search.value = "";
+    } else {
+      showToast("No matching workspace found.");
+    }
+  }
+
+  search.addEventListener("input", () => {
+    // Search is triggered when Enter is pressed or search is submitted.
+  });
+
+  search.addEventListener("keydown", event => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      performSearch();
+    }
+  });
+}
+  
 
   function setupEvents() {
     document.addEventListener("click", (event) => {
