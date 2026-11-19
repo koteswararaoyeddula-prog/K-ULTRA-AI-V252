@@ -373,4 +373,79 @@ h1 span, .hero-content h2 span { color: var(--primary); }
   }
 }
 
+/* V252 - FINAL ANDROID SEARCH VISIBILITY FIX */
+@media screen and (max-width: 580px) {
+
+  .topbar {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    gap: 5px !important;
+  }
+
+  .topbar-left {
+    flex: 0 0 auto !important;
+    min-width: 0 !important;
+    gap: 6px !important;
+  }
+
+  .breadcrumb {
+    gap: 4px !important;
+    white-space: nowrap;
+  }
+
+  .breadcrumb > span,
+  .breadcrumb > b {
+    display: none !important;
+  }
+
+  .topbar-actions {
+    display: flex !important;
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    justify-content: flex-end !important;
+    gap: 5px !important;
+  }
+
+  body .topbar .topbar-actions label.search-box {
+    display: flex !important;
+    position: relative !important;
+    flex: 1 1 115px !important;
+    width: 115px !important;
+    min-width: 100px !important;
+    max-width: 135px !important;
+    height: 36px !important;
+    padding: 0 7px !important;
+    overflow: visible !important;
+    pointer-events: auto !important;
+  }
+
+  body .topbar .topbar-actions label.search-box input {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 30px !important;
+    padding: 0 !important;
+    font-size: 11px !important;
+    pointer-events: auto !important;
+    color: var(--text) !important;
+    background: transparent !important;
+  }
+
+  body .topbar .topbar-actions label.search-box input::placeholder {
+    color: var(--muted) !important;
+    opacity: 1 !important;
+  }
+
+  body .topbar .topbar-actions label.search-box kbd {
+    display: none !important;
+  }
+
+  .profile-label,
+  .profile-button > span:last-child {
+    display: none !important;
+  }
+}
+
   
