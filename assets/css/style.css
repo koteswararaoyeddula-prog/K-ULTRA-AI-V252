@@ -320,4 +320,57 @@ h1 span, .hero-content h2 span { color: var(--primary); }
   z-index: 54;
 }
 
+/* K-ULTRA AI V252 - ANDROID MOBILE SEARCH FIX */
+@media (max-width: 580px) {
+  .topbar {
+    gap: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .topbar-left {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .topbar-actions {
+    flex: 1 1 auto;
+    min-width: 0;
+    justify-content: flex-end;
+    gap: 5px;
+  }
+
+  .search-box {
+    display: flex !important;
+    flex: 1 1 125px;
+    width: auto !important;
+    min-width: 95px;
+    max-width: 160px;
+    height: 36px;
+    padding: 0 7px;
+    cursor: text;
+  }
+
+  .search-box input {
+    display: block !important;
+    width: 100%;
+    min-width: 0;
+    font-size: 11px;
+    pointer-events: auto !important;
+  }
+
+  .search-box kbd {
+    display: none !important;
+  }
+
+  .search-box span {
+    flex-shrink: 0;
+  }
+
+  .profile-label,
+  .profile-button > span:last-child {
+    display: none;
+  }
+}
+
   
