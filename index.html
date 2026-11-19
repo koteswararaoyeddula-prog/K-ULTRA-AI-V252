@@ -8,8 +8,9 @@
   <meta name="description" content="K-ULTRA AI Version 252 - Ultimate AI Ecosystem">
   <title>K-ULTRA AI — Version 252</title>
   <link rel="manifest" href="./manifest.json">
-  <link rel="stylesheet" href="./assets/css/style.css?v=25203">
+  <link rel="stylesheet" href="./assets/css/style.css?v=25204">
 </head>
+
 <body>
   <div class="app-shell">
     <div class="mobile-overlay" id="mobileOverlay"></div>
@@ -70,6 +71,7 @@
           <div class="plan-progress"><span></span></div>
           <small>Foundation setup</small>
         </div>
+
         <div class="sidebar-user">
           <div class="user-avatar">U</div>
           <div class="user-details">
@@ -86,16 +88,20 @@
         <div class="topbar-left">
           <button class="icon-btn mobile-menu-btn" id="menuToggle" aria-label="Open menu">☰</button>
           <div class="breadcrumb">
-            <span>K-ULTRA AI</span><b>/</b><strong id="breadcrumbPage">Dashboard</strong>
+            <span>K-ULTRA AI</span><b>/</b>
+            <strong id="breadcrumbPage">Dashboard</strong>
           </div>
         </div>
+
         <div class="topbar-actions">
           <label class="search-box">
             <span>⌕</span>
             <input id="globalSearch" type="search" placeholder="Search workspace...">
             <kbd>⌘ K</kbd>
           </label>
+
           <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">☼</button>
+
           <div class="profile-wrap">
             <button class="icon-btn notification-btn" id="notificationToggle" aria-label="Notifications">♧<i></i></button>
             <div class="dropdown" id="notificationMenu">
@@ -103,16 +109,24 @@
               <p class="dropdown-muted">You're all caught up.</p>
             </div>
           </div>
+
+          <!-- PROFILE MENU -->
           <div class="profile-wrap">
             <button class="profile-button" id="profileToggle">
               <span class="user-avatar">U</span>
               <span class="profile-label">My Account</span>
               <span>⌄</span>
             </button>
+
             <div class="dropdown" id="profileMenu">
               <button data-page="profile">◎ My Profile</button>
               <button data-page="settings">⚙ Settings</button>
               <button data-page="help">? Help Center</button>
+
+              <!-- FIREBASE AUTHENTICATION BUTTON -->
+              <button data-auth-open="true">
+                ⇥ Sign In / Create Account
+              </button>
             </div>
           </div>
         </div>
@@ -120,6 +134,7 @@
 
       <section class="page-content">
         <div id="pageRoot">
+
           <section class="welcome-row">
             <div>
               <div class="eyebrow"><span class="live-dot"></span> YOUR AI WORKSPACE</div>
@@ -139,6 +154,7 @@
                 <button class="btn btn-glass" data-page="projects">Explore Projects</button>
               </div>
             </div>
+
             <div class="hero-art" aria-hidden="true">
               <div class="orbit orbit-one"></div>
               <div class="orbit orbit-two"></div>
@@ -151,41 +167,66 @@
 
           <section class="section-block">
             <div class="section-heading">
-              <div><h2>Your Workspace</h2><p>Jump into a tool and start creating.</p></div>
+              <div>
+                <h2>Your Workspace</h2>
+                <p>Jump into a tool and start creating.</p>
+              </div>
               <button class="text-button" data-page="projects">View all tools →</button>
             </div>
+
             <div class="feature-grid">
               <button class="feature-card accent-purple" data-page="chat">
                 <span class="feature-icon">✧</span><span class="feature-arrow">↗</span>
-                <strong>AI Chat</strong><p>Ask questions, brainstorm and work with AI.</p><small>OPEN WORKSPACE →</small>
+                <strong>AI Chat</strong>
+                <p>Ask questions, brainstorm and work with AI.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
+
               <button class="feature-card accent-blue" data-page="coding">
                 <span class="feature-icon">⌘</span><span class="feature-arrow">↗</span>
-                <strong>Coding IDE</strong><p>Write, edit and organize your code projects.</p><small>OPEN WORKSPACE →</small>
+                <strong>Coding IDE</strong>
+                <p>Write, edit and organize your code projects.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
+
               <button class="feature-card accent-cyan" data-page="builder">
                 <span class="feature-icon">▧</span><span class="feature-arrow">↗</span>
-                <strong>Website Builder</strong><p>Plan and create your next website.</p><small>OPEN WORKSPACE →</small>
+                <strong>Website Builder</strong>
+                <p>Plan and create your next website.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
+
               <button class="feature-card accent-pink" data-page="image">
                 <span class="feature-icon">▨</span><span class="feature-arrow">↗</span>
-                <strong>Image Studio</strong><p>Explore image creation and visual ideas.</p><small>OPEN WORKSPACE →</small>
+                <strong>Image Studio</strong>
+                <p>Explore image creation and visual ideas.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
+
               <button class="feature-card accent-orange" data-page="research">
                 <span class="feature-icon">⌕</span><span class="feature-arrow">↗</span>
-                <strong>AI Research</strong><p>Organize research and knowledge workflows.</p><small>OPEN WORKSPACE →</small>
+                <strong>AI Research</strong>
+                <p>Organize research and knowledge workflows.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
+
               <button class="feature-card accent-green" data-page="agents">
                 <span class="feature-icon">◇</span><span class="feature-arrow">↗</span>
-                <strong>AI Agents</strong><p>Plan intelligent workflows and automation.</p><small>OPEN WORKSPACE →</small>
+                <strong>AI Agents</strong>
+                <p>Plan intelligent workflows and automation.</p>
+                <small>OPEN WORKSPACE →</small>
               </button>
             </div>
           </section>
 
           <section class="section-block">
             <div class="section-heading">
-              <div><h2>Explore More</h2><p>Your tools, all in one place.</p></div>
+              <div>
+                <h2>Explore More</h2>
+                <p>Your tools, all in one place.</p>
+              </div>
             </div>
+
             <div class="quick-grid">
               <button data-page="challenges"><span>⌁</span><strong>Coding Challenges</strong><small>Practice programming</small><b>→</b></button>
               <button data-page="appbuilder"><span>▣</span><strong>App Builder</strong><small>Plan app experiences</small><b>→</b></button>
@@ -198,28 +239,36 @@
 
           <section class="status-banner">
             <div class="status-symbol">✓</div>
-            <div><strong>Frontend foundation is loaded</strong><p>This is a UI preview. Backend, login and AI connections will be added in later tasks.</p></div>
+            <div>
+              <strong>Frontend foundation is loaded</strong>
+              <p>This is a UI preview. Backend, login and AI connections will be added in later tasks.</p>
+            </div>
             <span class="status-label">UI READY</span>
           </section>
+
         </div>
       </section>
-      <footer class="footer"><span>© 2026 K-ULTRA AI</span><span>Version 252.0 · Ultimate Complete Edition</span></footer>
+
+      <footer class="footer">
+        <span>© 2026 K-ULTRA AI</span>
+        <span>Version 252.0 · Ultimate Complete Edition</span>
+      </footer>
     </main>
   </div>
 
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
-  
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 
-<!-- K-ULTRA AI configuration -->
-<script src="./assets/js/config.js"></script>
-<script src="./assets/js/firebase-config.js"></script>
+  <!-- FIREBASE SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 
-<!-- Authentication and application -->
-<script src="./assets/js/auth.js"></script>
-<script src="./assets/js/app.js"></script>
-  
+  <!-- K-ULTRA AI CONFIGURATION -->
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/firebase-config.js"></script>
+
+  <!-- AUTHENTICATION AND APPLICATION -->
+  <script src="./assets/js/auth.js"></script>
+  <script src="./assets/js/app.js"></script>
+
 </body>
 </html>
