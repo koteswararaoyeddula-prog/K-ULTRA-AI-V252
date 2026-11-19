@@ -5,196 +5,210 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080d1c">
-  <meta name="description" content="K-ULTRA AI Version 252 - Your own AI ecosystem">
-  <title>K-ULTRA AI | Version 252</title>
-
+  <meta name="description" content="K-ULTRA AI Version 252 - Ultimate AI Ecosystem">
+  <title>K-ULTRA AI — Version 252</title>
   <link rel="manifest" href="./manifest.json">
   <link rel="stylesheet" href="./assets/css/style.css">
-
-  <script src="./assets/js/config.js" defer></script>
-  <script src="./assets/js/app.js" defer></script>
 </head>
 <body>
+  <div class="app-shell">
+    <div class="mobile-overlay" id="mobileOverlay"></div>
 
-<div class="app-shell">
-
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="brand-icon">K</div>
-      <div>
-        <h2>K-ULTRA AI</h2>
-        <span>VERSION 252.0</span>
-      </div>
-    </div>
-
-    <div class="nav-label">WORKSPACE</div>
-
-    <nav class="navigation">
-      <button class="nav-item active" data-page="dashboard">
-        <span>⌂</span> Dashboard
-      </button>
-      <button class="nav-item" data-page="chat">
-        <span>✧</span> AI Chat
-      </button>
-      <button class="nav-item" data-page="coding">
-        <span>⌘</span> Coding IDE
-      </button>
-      <button class="nav-item" data-page="builder">
-        <span>▣</span> Website Builder
-      </button>
-      <button class="nav-item" data-page="image">
-        <span>▧</span> Image Studio
-      </button>
-      <button class="nav-item" data-page="video">
-        <span>▷</span> Video Studio
-      </button>
-      <button class="nav-item" data-page="research">
-        <span>⌕</span> AI Research
-      </button>
-      <button class="nav-item" data-page="agents">
-        <span>◈</span> AI Agents
-      </button>
-    </nav>
-
-    <div class="nav-label">DEVELOPMENT</div>
-
-    <nav class="navigation">
-      <button class="nav-item" data-page="problems">
-        <span>⌨</span> Coding Challenges
-      </button>
-      <button class="nav-item" data-page="ecommerce">
-        <span>🛒</span> E-Commerce
-      </button>
-      <button class="nav-item" data-page="documents">
-        <span>▤</span> Documents
-      </button>
-      <button class="nav-item" data-page="marketplace">
-        <span>◇</span> Marketplace
-      </button>
-      <button class="nav-item" data-page="projects">
-        <span>▦</span> My Projects
-      </button>
-    </nav>
-
-    <div class="sidebar-bottom">
-      <button class="nav-item" data-page="settings">
-        <span>⚙</span> Settings
-      </button>
-      <div class="version-label">ULTIMATE EDITION</div>
-    </div>
-  </aside>
-
-  <main class="main-content">
-
-    <header class="topbar">
-      <button class="menu-button" id="menuButton">☰</button>
-      <div class="breadcrumb">K-ULTRA AI / <span id="pageName">Dashboard</span></div>
-      <div class="top-actions">
-        <span class="status-dot"></span>
-        <span class="status-text">Frontend Ready</span>
-        <button id="themeButton" class="icon-button" aria-label="Toggle theme">☀</button>
-      </div>
-    </header>
-
-    <section class="page-content">
-
-      <div class="welcome-section">
-        <div>
-          <div class="eyebrow">YOUR PERSONAL AI ECOSYSTEM</div>
-          <h1>Welcome to <span>K-ULTRA AI</span></h1>
-          <p>Your ideas. Your technology. Your own AI universe.</p>
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo">K</div>
+        <div class="brand-copy">
+          <strong>K-ULTRA <span>AI</span></strong>
+          <small>VERSION 252.0</small>
         </div>
-        <div class="version-pill">V252.0</div>
+        <button class="icon-btn sidebar-close" id="closeSidebar" aria-label="Close menu">✕</button>
       </div>
 
-      <section class="hero-card">
-        <div class="hero-content">
-          <div class="eyebrow">ULTIMATE COMPLETE EDITION</div>
-          <h2>One Platform.<br>Unlimited Possibilities.</h2>
-          <p>
-            Create, code, design, research and build
-            your own digital world with AI.
-          </p>
-          <button class="primary-button" data-open="chat">
-            Explore AI Workspace →
-          </button>
+      <div class="workspace-switcher">
+        <div class="workspace-avatar">KU</div>
+        <div class="workspace-info">
+          <strong>My Workspace</strong>
+          <small>Personal account</small>
         </div>
-        <div class="hero-symbol">✧</div>
+        <span class="switch-arrow">⌄</span>
+      </div>
+
+      <nav class="side-nav" aria-label="Main navigation">
+        <p class="nav-heading">WORKSPACE</p>
+        <button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button>
+        <button class="nav-item" data-page="chat"><span>✧</span> AI Chat <i class="nav-dot"></i></button>
+        <button class="nav-item" data-page="coding"><span>⌘</span> Coding IDE</button>
+        <button class="nav-item" data-page="challenges"><span>⌁</span> Coding Challenges</button>
+        <button class="nav-item" data-page="builder"><span>▧</span> Website Builder</button>
+        <button class="nav-item" data-page="appbuilder"><span>▣</span> App Builder</button>
+
+        <p class="nav-heading">AI STUDIOS</p>
+        <button class="nav-item" data-page="image"><span>▧</span> Image Studio</button>
+        <button class="nav-item" data-page="video"><span>▶</span> Video Studio</button>
+        <button class="nav-item" data-page="audio"><span>♫</span> Audio & Music</button>
+        <button class="nav-item" data-page="design"><span>✎</span> Design Studio</button>
+        <button class="nav-item" data-page="research"><span>⌕</span> AI Research</button>
+        <button class="nav-item" data-page="agents"><span>◇</span> AI Agents</button>
+
+        <p class="nav-heading">BUSINESS & TOOLS</p>
+        <button class="nav-item" data-page="ecommerce"><span>▤</span> E-Commerce</button>
+        <button class="nav-item" data-page="documents"><span>▱</span> Documents</button>
+        <button class="nav-item" data-page="marketplace"><span>▦</span> Marketplace</button>
+        <button class="nav-item" data-page="projects"><span>▧</span> My Projects</button>
+
+        <p class="nav-heading">ACCOUNT</p>
+        <button class="nav-item" data-page="profile"><span>◎</span> My Profile</button>
+        <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
+        <button class="nav-item" data-page="help"><span>?</span> Help Center</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="plan-card">
+          <div class="plan-icon">✦</div>
+          <strong>Version 252</strong>
+          <p>Your AI workspace is ready to grow.</p>
+          <div class="plan-progress"><span></span></div>
+          <small>Foundation setup</small>
+        </div>
+        <div class="sidebar-user">
+          <div class="user-avatar">U</div>
+          <div class="user-details">
+            <strong>My Account</strong>
+            <small>Local preview</small>
+          </div>
+          <button class="icon-btn" id="sidebarProfile" aria-label="Profile menu">⋯</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="icon-btn mobile-menu-btn" id="menuToggle" aria-label="Open menu">☰</button>
+          <div class="breadcrumb">
+            <span>K-ULTRA AI</span><b>/</b><strong id="breadcrumbPage">Dashboard</strong>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="globalSearch" type="search" placeholder="Search workspace...">
+            <kbd>⌘ K</kbd>
+          </label>
+          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">☼</button>
+          <div class="profile-wrap">
+            <button class="icon-btn notification-btn" id="notificationToggle" aria-label="Notifications">♧<i></i></button>
+            <div class="dropdown" id="notificationMenu">
+              <strong>Notifications</strong>
+              <p class="dropdown-muted">You're all caught up.</p>
+            </div>
+          </div>
+          <div class="profile-wrap">
+            <button class="profile-button" id="profileToggle">
+              <span class="user-avatar">U</span>
+              <span class="profile-label">My Account</span>
+              <span>⌄</span>
+            </button>
+            <div class="dropdown" id="profileMenu">
+              <button data-page="profile">◎ My Profile</button>
+              <button data-page="settings">⚙ Settings</button>
+              <button data-page="help">? Help Center</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <section class="page-content">
+        <div id="pageRoot">
+          <section class="welcome-row">
+            <div>
+              <div class="eyebrow"><span class="live-dot"></span> YOUR AI WORKSPACE</div>
+              <h1>Welcome to <span>K-ULTRA AI</span></h1>
+              <p class="muted">One workspace. Endless possibilities. What will you create today?</p>
+            </div>
+            <div class="date-chip" id="todayDate">Version 252.0</div>
+          </section>
+
+          <section class="hero-banner">
+            <div class="hero-content">
+              <div class="hero-tag">✦ ULTIMATE AI ECOSYSTEM</div>
+              <h2>Your ideas.<br><span>Powered by AI.</span></h2>
+              <p>Explore your creative workspace, build projects, write code and bring ideas to life.</p>
+              <div class="hero-actions">
+                <button class="btn btn-primary" data-page="chat">Start AI Chat <span>→</span></button>
+                <button class="btn btn-glass" data-page="projects">Explore Projects</button>
+              </div>
+            </div>
+            <div class="hero-art" aria-hidden="true">
+              <div class="orbit orbit-one"></div>
+              <div class="orbit orbit-two"></div>
+              <div class="orb-core">K<span>✦</span></div>
+              <div class="floating-chip chip-one">✧ AI POWER</div>
+              <div class="floating-chip chip-two">⌘ CREATE</div>
+              <div class="floating-chip chip-three">∞ IDEAS</div>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div><h2>Your Workspace</h2><p>Jump into a tool and start creating.</p></div>
+              <button class="text-button" data-page="projects">View all tools →</button>
+            </div>
+            <div class="feature-grid">
+              <button class="feature-card accent-purple" data-page="chat">
+                <span class="feature-icon">✧</span><span class="feature-arrow">↗</span>
+                <strong>AI Chat</strong><p>Ask questions, brainstorm and work with AI.</p><small>OPEN WORKSPACE →</small>
+              </button>
+              <button class="feature-card accent-blue" data-page="coding">
+                <span class="feature-icon">⌘</span><span class="feature-arrow">↗</span>
+                <strong>Coding IDE</strong><p>Write, edit and organize your code projects.</p><small>OPEN WORKSPACE →</small>
+              </button>
+              <button class="feature-card accent-cyan" data-page="builder">
+                <span class="feature-icon">▧</span><span class="feature-arrow">↗</span>
+                <strong>Website Builder</strong><p>Plan and create your next website.</p><small>OPEN WORKSPACE →</small>
+              </button>
+              <button class="feature-card accent-pink" data-page="image">
+                <span class="feature-icon">▨</span><span class="feature-arrow">↗</span>
+                <strong>Image Studio</strong><p>Explore image creation and visual ideas.</p><small>OPEN WORKSPACE →</small>
+              </button>
+              <button class="feature-card accent-orange" data-page="research">
+                <span class="feature-icon">⌕</span><span class="feature-arrow">↗</span>
+                <strong>AI Research</strong><p>Organize research and knowledge workflows.</p><small>OPEN WORKSPACE →</small>
+              </button>
+              <button class="feature-card accent-green" data-page="agents">
+                <span class="feature-icon">◇</span><span class="feature-arrow">↗</span>
+                <strong>AI Agents</strong><p>Plan intelligent workflows and automation.</p><small>OPEN WORKSPACE →</small>
+              </button>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <div><h2>Explore More</h2><p>Your tools, all in one place.</p></div>
+            </div>
+            <div class="quick-grid">
+              <button data-page="challenges"><span>⌁</span><strong>Coding Challenges</strong><small>Practice programming</small><b>→</b></button>
+              <button data-page="appbuilder"><span>▣</span><strong>App Builder</strong><small>Plan app experiences</small><b>→</b></button>
+              <button data-page="video"><span>▶</span><strong>Video Studio</strong><small>Video creation workspace</small><b>→</b></button>
+              <button data-page="audio"><span>♫</span><strong>Audio & Music</strong><small>Audio production workspace</small><b>→</b></button>
+              <button data-page="ecommerce"><span>▤</span><strong>E-Commerce</strong><small>Store management workspace</small><b>→</b></button>
+              <button data-page="documents"><span>▱</span><strong>Documents</strong><small>Document workspace</small><b>→</b></button>
+            </div>
+          </section>
+
+          <section class="status-banner">
+            <div class="status-symbol">✓</div>
+            <div><strong>Frontend foundation is loaded</strong><p>This is a UI preview. Backend, login and AI connections will be added in later tasks.</p></div>
+            <span class="status-label">UI READY</span>
+          </section>
+        </div>
       </section>
+      <footer class="footer"><span>© 2026 K-ULTRA AI</span><span>Version 252.0 · Ultimate Complete Edition</span></footer>
+    </main>
+  </div>
 
-      <div class="section-heading">
-        <div>
-          <h2>AI Workspace</h2>
-          <p>Explore your development tools</p>
-        </div>
-      </div>
-
-      <div class="feature-grid" id="featureGrid">
-
-        <button class="feature-card" data-open="chat">
-          <span class="feature-icon purple">✧</span>
-          <h3>AI Chat</h3>
-          <p>Intelligent conversations and AI models.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-        <button class="feature-card" data-open="coding">
-          <span class="feature-icon blue">⌘</span>
-          <h3>AI Coding IDE</h3>
-          <p>Write, debug and build software.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-        <button class="feature-card" data-open="builder">
-          <span class="feature-icon cyan">▣</span>
-          <h3>Website Builder</h3>
-          <p>Create modern websites and applications.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-        <button class="feature-card" data-open="image">
-          <span class="feature-icon pink">▧</span>
-          <h3>Image Studio</h3>
-          <p>Create and edit images using AI.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-        <button class="feature-card" data-open="research">
-          <span class="feature-icon green">⌕</span>
-          <h3>AI Research</h3>
-          <p>Explore information and create reports.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-        <button class="feature-card" data-open="agents">
-          <span class="feature-icon orange">◈</span>
-          <h3>AI Agents</h3>
-          <p>Automate intelligent workflows.</p>
-          <span class="card-link">Open workspace →</span>
-        </button>
-
-      </div>
-
-      <section class="module-area" id="moduleArea" hidden>
-        <button class="back-button" id="backButton">← Back to Dashboard</button>
-        <div class="module-placeholder">
-          <div class="module-symbol">✧</div>
-          <h2 id="moduleTitle">Workspace</h2>
-          <p id="moduleDescription"></p>
-          <span class="development-badge">MODULE DEVELOPMENT IN PROGRESS</span>
-        </div>
-      </section>
-
-      <footer class="footer">
-        <span>© 2026 K-ULTRA AI</span>
-        <span>Version 252.0 · Built with ambition.</span>
-      </footer>
-
-    </section>
-  </main>
-</div>
-
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
-
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <script src="./assets/js/config.js"></script>
+  <script src="./assets/js/app.js"></script>
 </body>
 </html>
