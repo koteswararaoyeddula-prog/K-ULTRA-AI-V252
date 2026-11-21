@@ -6,6 +6,8 @@
  */
 
 import "./config.js";
+import "./auth.js";
+import "./workers.js";
 
 (() => {
   "use strict";
