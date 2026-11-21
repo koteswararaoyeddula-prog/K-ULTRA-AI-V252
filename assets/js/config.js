@@ -11,10 +11,10 @@ window.KULTRA_CONFIG = Object.freeze({
   VERSION: "252.0",
   EDITION: "ULTIMATE COMPLETE EDITION",
 
-  // We will add the actual Cloudflare Worker URL in Task 04.
-  API_BASE_URL: "",
+  API_BASE_URL:
+    "https://k-ultra-ai-backend.yeddulakoteswararao.workers.dev",
 
-  ENVIRONMENT: "development",
+  ENVIRONMENT: "production",
 
   FEATURES: Object.freeze({
     CHAT: true,
