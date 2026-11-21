@@ -1,274 +1,479 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="midnight">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080d1c">
-  <meta name="description" content="K-ULTRA AI Version 252 - Ultimate AI Ecosystem">
-  <title>K-ULTRA AI — Version 252</title>
-  <link rel="manifest" href="./manifest.json">
-  <link rel="stylesheet" href="./assets/css/style.css?v=25204">
+  <meta name="description" content="K-ULTRA AI - All in One AI, IT, Coding, E-Commerce and Productivity Platform">
+  <meta name="application-name" content="K-ULTRA AI">
+  <meta name="author" content="K-ULTRA AI">
+  <title>K-ULTRA AI | Version 252</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/logo/logo.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/themes.css">
+  <link rel="stylesheet" href="css/responsive.css">
 </head>
 
 <body>
-  <div class="app-shell">
-    <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div id="app">
 
+    <!-- MOBILE OVERLAY -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
       <div class="brand">
         <div class="brand-logo">K</div>
-        <div class="brand-copy">
-          <strong>K-ULTRA <span>AI</span></strong>
-          <small>VERSION 252.0</small>
+        <div class="brand-info">
+          <h2>K-ULTRA AI</h2>
+          <span>VERSION 252</span>
+          <small>ULTIMATE EDITION</small>
         </div>
-        <button class="icon-btn sidebar-close" id="closeSidebar" aria-label="Close menu">✕</button>
+        <button class="icon-button mobile-close" id="closeSidebar"
+          aria-label="Close menu">✕</button>
       </div>
 
-      <div class="workspace-switcher">
-        <div class="workspace-avatar">KU</div>
-        <div class="workspace-info">
-          <strong>My Workspace</strong>
-          <small>Personal account</small>
-        </div>
-        <span class="switch-arrow">⌄</span>
+      <div class="sidebar-search">
+        <input type="search" id="menuSearch"
+          placeholder="Search features..." aria-label="Search features">
       </div>
 
-      <nav class="side-nav" aria-label="Main navigation">
-        <p class="nav-heading">WORKSPACE</p>
-        <button class="nav-item active" data-page="dashboard"><span>⌂</span> Dashboard</button>
-        <button class="nav-item" data-page="chat"><span>✧</span> AI Chat <i class="nav-dot"></i></button>
-        <button class="nav-item" data-page="coding"><span>⌘</span> Coding IDE</button>
-        <button class="nav-item" data-page="challenges"><span>⌁</span> Coding Challenges</button>
-        <button class="nav-item" data-page="builder"><span>▧</span> Website Builder</button>
-        <button class="nav-item" data-page="appbuilder"><span>▣</span> App Builder</button>
+      <nav class="navigation" aria-label="Main navigation">
 
-        <p class="nav-heading">AI STUDIOS</p>
-        <button class="nav-item" data-page="image"><span>▧</span> Image Studio</button>
-        <button class="nav-item" data-page="video"><span>▶</span> Video Studio</button>
-        <button class="nav-item" data-page="audio"><span>♫</span> Audio & Music</button>
-        <button class="nav-item" data-page="design"><span>✎</span> Design Studio</button>
-        <button class="nav-item" data-page="research"><span>⌕</span> AI Research</button>
-        <button class="nav-item" data-page="agents"><span>◇</span> AI Agents</button>
+        <div class="nav-section">
+          <span class="nav-heading">WORKSPACE</span>
+          <button class="nav-link active" data-route="home">
+            <span>⌂</span> Home
+          </button>
+          <button class="nav-link" data-route="dashboard">
+            <span>▦</span> Dashboard
+          </button>
+          <button class="nav-link" data-route="discover">
+            <span>✦</span> Discover Apps
+          </button>
+        </div>
 
-        <p class="nav-heading">BUSINESS & TOOLS</p>
-        <button class="nav-item" data-page="ecommerce"><span>▤</span> E-Commerce</button>
-        <button class="nav-item" data-page="documents"><span>▱</span> Documents</button>
-        <button class="nav-item" data-page="marketplace"><span>▦</span> Marketplace</button>
-        <button class="nav-item" data-page="projects"><span>▧</span> My Projects</button>
+        <div class="nav-section">
+          <span class="nav-heading">ARTIFICIAL INTELLIGENCE</span>
+          <button class="nav-link" data-route="ai-chat">
+            <span>◈</span> AI Assistant
+          </button>
+          <button class="nav-link" data-route="model-hub">
+            <span>✧</span> AI Model Hub
+          </button>
+          <button class="nav-link" data-route="image-ai">
+            <span>▧</span> Image Generation
+          </button>
+          <button class="nav-link" data-route="voice-ai">
+            <span>♫</span> Voice Studio
+          </button>
+          <button class="nav-link" data-route="research">
+            <span>⌕</span> AI Research
+          </button>
+          <button class="nav-link" data-route="ai-agents">
+            <span>♧</span> AI Agents
+          </button>
+          <button class="nav-link" data-route="documents">
+            <span>▤</span> Document AI
+          </button>
+        </div>
 
-        <p class="nav-heading">ACCOUNT</p>
-        <button class="nav-item" data-page="profile"><span>◎</span> My Profile</button>
-        <button class="nav-item" data-page="settings"><span>⚙</span> Settings</button>
-        <button class="nav-item" data-page="help"><span>?</span> Help Center</button>
+        <div class="nav-section">
+          <span class="nav-heading">DEVELOPMENT & IT</span>
+          <button class="nav-link" data-route="code-studio">
+            <span>⌘</span> Code Studio
+          </button>
+          <button class="nav-link" data-route="playground">
+            <span>⌨</span> Code Playground
+          </button>
+          <button class="nav-link" data-route="website-builder">
+            <span>▣</span> Website Builder
+          </button>
+          <button class="nav-link" data-route="api-lab">
+            <span>⇄</span> API Testing Lab
+          </button>
+          <button class="nav-link" data-route="github">
+            <span>⑂</span> GitHub Workspace
+          </button>
+          <button class="nav-link" data-route="dev-tools">
+            <span>⚙</span> Developer Tools
+          </button>
+          <button class="nav-link" data-route="database">
+            <span>▥</span> Database Studio
+          </button>
+          <button class="nav-link" data-route="security">
+            <span>♢</span> Security Center
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-heading">COMMERCE</span>
+          <button class="nav-link" data-route="store">
+            <span>🛍</span> E-Commerce
+          </button>
+          <button class="nav-link" data-route="marketplace">
+            <span>▣</span> Marketplace
+          </button>
+          <button class="nav-link" data-route="seller">
+            <span>♙</span> Seller Center
+          </button>
+          <button class="nav-link" data-route="orders">
+            <span>▤</span> My Orders
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-heading">LEARNING</span>
+          <button class="nav-link" data-route="learning">
+            <span>▱</span> Learning Hub
+          </button>
+          <button class="nav-link" data-route="courses">
+            <span>▤</span> Courses
+          </button>
+          <button class="nav-link" data-route="projects">
+            <span>⚒</span> Student Projects
+          </button>
+          <button class="nav-link" data-route="career">
+            <span>♙</span> Career & Placement
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-heading">PRODUCTIVITY</span>
+          <button class="nav-link" data-route="cloud">
+            <span>☁</span> Cloud Workspace
+          </button>
+          <button class="nav-link" data-route="files">
+            <span>▰</span> File Manager
+          </button>
+          <button class="nav-link" data-route="documents-editor">
+            <span>▤</span> Document Editor
+          </button>
+          <button class="nav-link" data-route="tasks">
+            <span>☑</span> Tasks & Projects
+          </button>
+          <button class="nav-link" data-route="calendar">
+            <span>▦</span> Calendar
+          </button>
+          <button class="nav-link" data-route="team">
+            <span>♧</span> Team Workspace
+          </button>
+        </div>
+
+        <div class="nav-section">
+          <span class="nav-heading">MORE SERVICES</span>
+          <button class="nav-link" data-route="community">
+            <span>◎</span> Community
+          </button>
+          <button class="nav-link" data-route="utilities">
+            <span>⚒</span> Smart Utilities
+          </button>
+          <button class="nav-link" data-route="analytics">
+            <span>▥</span> Analytics
+          </button>
+          <button class="nav-link" data-route="settings">
+            <span>⚙</span> Settings
+          </button>
+          <button class="nav-link" data-route="help">
+            <span>?</span> Help & Support
+          </button>
+        </div>
       </nav>
 
-      <div class="sidebar-bottom">
+      <div class="sidebar-footer">
         <div class="plan-card">
-          <div class="plan-icon">✦</div>
-          <strong>Version 252</strong>
-          <p>Your AI workspace is ready to grow.</p>
-          <div class="plan-progress"><span></span></div>
-          <small>Foundation setup</small>
+          <span>✦ K-ULTRA PREMIUM</span>
+          <p>Explore powerful AI and productivity tools.</p>
+          <button data-route="plans">Explore Plans →</button>
         </div>
-
-        <div class="sidebar-user">
-          <div class="user-avatar">U</div>
-          <div class="user-details">
-            <strong>My Account</strong>
-            <small>Local preview</small>
-          </div>
-          <button class="icon-btn" id="sidebarProfile" aria-label="Profile menu">⋯</button>
-        </div>
+        <div class="sidebar-version">K-ULTRA AI v252.0</div>
       </div>
     </aside>
 
-    <main class="main-area">
+    <!-- MAIN WORKSPACE -->
+    <main class="main-workspace">
+
+      <!-- TOPBAR -->
       <header class="topbar">
         <div class="topbar-left">
-          <button class="icon-btn mobile-menu-btn" id="menuToggle" aria-label="Open menu">☰</button>
+          <button class="icon-button" id="menuToggle"
+            aria-label="Open navigation">☰</button>
           <div class="breadcrumb">
-            <span>K-ULTRA AI</span><b>/</b>
-            <strong id="breadcrumbPage">Dashboard</strong>
+            <span>K-ULTRA AI</span>
+            <span>/</span>
+            <strong id="pageTitle">Home</strong>
           </div>
+        </div>
+
+        <div class="topbar-search">
+          <span>⌕</span>
+          <input type="search" id="globalSearch"
+            placeholder="Search AI, apps, tools, products...">
+          <kbd>Ctrl K</kbd>
         </div>
 
         <div class="topbar-actions">
-          <label class="search-box">
-            <span>⌕</span>
-            <input id="globalSearch" type="search" placeholder="Search workspace...">
-            <kbd>⌘ K</kbd>
-          </label>
-
-          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">☼</button>
-
-          <div class="profile-wrap">
-            <button class="icon-btn notification-btn" id="notificationToggle" aria-label="Notifications">♧<i></i></button>
-            <div class="dropdown" id="notificationMenu">
-              <strong>Notifications</strong>
-              <p class="dropdown-muted">You're all caught up.</p>
-            </div>
-          </div>
-
-          <!-- PROFILE MENU -->
-          <div class="profile-wrap">
-            <button class="profile-button" id="profileToggle">
-              <span class="user-avatar">U</span>
-              <span class="profile-label">My Account</span>
-              <span>⌄</span>
-            </button>
-
-            <div class="dropdown" id="profileMenu">
-              <button data-page="profile">◎ My Profile</button>
-              <button data-page="settings">⚙ Settings</button>
-              <button data-page="help">? Help Center</button>
-
-              <!-- FIREBASE AUTHENTICATION BUTTON -->
-              <button data-auth-open="true">
-                ⇥ Sign In / Create Account
-              </button>
-            </div>
-          </div>
+          <span class="connection-indicator" id="connectionStatus">
+            <i></i> <span>Checking...</span>
+          </span>
+          <button class="icon-button" id="notificationButton"
+            aria-label="Notifications">♧</button>
+          <button class="icon-button" id="themeQuickButton"
+            aria-label="Change theme">◐</button>
+          <button class="profile-button" data-route="profile">
+            <span class="avatar">KU</span>
+            <span class="profile-name">My Account</span>
+          </button>
         </div>
       </header>
 
-      <section class="page-content">
-        <div id="pageRoot">
+      <!-- PAGE CONTENT -->
+      <section class="page-container" id="pageContainer">
 
-          <section class="welcome-row">
-            <div>
-              <div class="eyebrow"><span class="live-dot"></span> YOUR AI WORKSPACE</div>
-              <h1>Welcome to <span>K-ULTRA AI</span></h1>
-              <p class="muted">One workspace. Endless possibilities. What will you create today?</p>
-            </div>
-            <div class="date-chip" id="todayDate">Version 252.0</div>
-          </section>
+        <!-- HOME PAGE -->
+        <section class="page active" id="page-home">
 
-          <section class="hero-banner">
+          <div class="hero-section">
             <div class="hero-content">
-              <div class="hero-tag">✦ ULTIMATE AI ECOSYSTEM</div>
-              <h2>Your ideas.<br><span>Powered by AI.</span></h2>
-              <p>Explore your creative workspace, build projects, write code and bring ideas to life.</p>
+              <span class="hero-label">✦ VERSION 252 • ULTIMATE EDITION</span>
+              <h1>One Platform.<br>
+                <span>Infinite Possibilities.</span>
+              </h1>
+              <p>
+                AI, Development, E-Commerce, Education,
+                Cloud and Productivity — all in one place.
+              </p>
               <div class="hero-actions">
-                <button class="btn btn-primary" data-page="chat">Start AI Chat <span>→</span></button>
-                <button class="btn btn-glass" data-page="projects">Explore Projects</button>
+                <button class="primary-button" data-route="discover">
+                  Explore Features →
+                </button>
+                <button class="secondary-button" data-route="ai-chat">
+                  Start AI Chat
+                </button>
               </div>
             </div>
-
             <div class="hero-art" aria-hidden="true">
-              <div class="orbit orbit-one"></div>
-              <div class="orbit orbit-two"></div>
-              <div class="orb-core">K<span>✦</span></div>
-              <div class="floating-chip chip-one">✧ AI POWER</div>
-              <div class="floating-chip chip-two">⌘ CREATE</div>
-              <div class="floating-chip chip-three">∞ IDEAS</div>
+              <div class="hero-orbit">✧</div>
+              <div class="hero-symbol">K</div>
             </div>
-          </section>
+          </div>
 
-          <section class="section-block">
-            <div class="section-heading">
-              <div>
-                <h2>Your Workspace</h2>
-                <p>Jump into a tool and start creating.</p>
-              </div>
-              <button class="text-button" data-page="projects">View all tools →</button>
-            </div>
-
-            <div class="feature-grid">
-              <button class="feature-card accent-purple" data-page="chat">
-                <span class="feature-icon">✧</span><span class="feature-arrow">↗</span>
-                <strong>AI Chat</strong>
-                <p>Ask questions, brainstorm and work with AI.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-
-              <button class="feature-card accent-blue" data-page="coding">
-                <span class="feature-icon">⌘</span><span class="feature-arrow">↗</span>
-                <strong>Coding IDE</strong>
-                <p>Write, edit and organize your code projects.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-
-              <button class="feature-card accent-cyan" data-page="builder">
-                <span class="feature-icon">▧</span><span class="feature-arrow">↗</span>
-                <strong>Website Builder</strong>
-                <p>Plan and create your next website.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-
-              <button class="feature-card accent-pink" data-page="image">
-                <span class="feature-icon">▨</span><span class="feature-arrow">↗</span>
-                <strong>Image Studio</strong>
-                <p>Explore image creation and visual ideas.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-
-              <button class="feature-card accent-orange" data-page="research">
-                <span class="feature-icon">⌕</span><span class="feature-arrow">↗</span>
-                <strong>AI Research</strong>
-                <p>Organize research and knowledge workflows.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-
-              <button class="feature-card accent-green" data-page="agents">
-                <span class="feature-icon">◇</span><span class="feature-arrow">↗</span>
-                <strong>AI Agents</strong>
-                <p>Plan intelligent workflows and automation.</p>
-                <small>OPEN WORKSPACE →</small>
-              </button>
-            </div>
-          </section>
-
-          <section class="section-block">
-            <div class="section-heading">
-              <div>
-                <h2>Explore More</h2>
-                <p>Your tools, all in one place.</p>
-              </div>
-            </div>
-
-            <div class="quick-grid">
-              <button data-page="challenges"><span>⌁</span><strong>Coding Challenges</strong><small>Practice programming</small><b>→</b></button>
-              <button data-page="appbuilder"><span>▣</span><strong>App Builder</strong><small>Plan app experiences</small><b>→</b></button>
-              <button data-page="video"><span>▶</span><strong>Video Studio</strong><small>Video creation workspace</small><b>→</b></button>
-              <button data-page="audio"><span>♫</span><strong>Audio & Music</strong><small>Audio production workspace</small><b>→</b></button>
-              <button data-page="ecommerce"><span>▤</span><strong>E-Commerce</strong><small>Store management workspace</small><b>→</b></button>
-              <button data-page="documents"><span>▱</span><strong>Documents</strong><small>Document workspace</small><b>→</b></button>
-            </div>
-          </section>
-
-          <section class="status-banner">
-            <div class="status-symbol">✓</div>
+          <!-- QUICK ACCESS -->
+          <div class="section-header">
             <div>
-              <strong>Frontend foundation is loaded</strong>
-              <p>This is a UI preview. Backend, login and AI connections will be added in later tasks.</p>
+              <h2>Quick Access</h2>
+              <p>Your favourite tools in one place.</p>
             </div>
-            <span class="status-label">UI READY</span>
-          </section>
+            <button class="text-button" data-route="discover">
+              View all →
+            </button>
+          </div>
 
-        </div>
+          <div class="quick-grid">
+            <button class="quick-card" data-route="ai-chat">
+              <span class="quick-icon purple">✦</span>
+              <strong>AI Chat</strong>
+              <small>Intelligent assistant</small>
+            </button>
+            <button class="quick-card" data-route="code-studio">
+              <span class="quick-icon blue">⌘</span>
+              <strong>Code Studio</strong>
+              <small>Build and develop</small>
+            </button>
+            <button class="quick-card" data-route="store">
+              <span class="quick-icon green">🛍</span>
+              <strong>Marketplace</strong>
+              <small>Explore products</small>
+            </button>
+            <button class="quick-card" data-route="learning">
+              <span class="quick-icon orange">▱</span>
+              <strong>Learning Hub</strong>
+              <small>Learn new skills</small>
+            </button>
+            <button class="quick-card" data-route="cloud">
+              <span class="quick-icon cyan">☁</span>
+              <strong>Cloud Tools</strong>
+              <small>Your workspace</small>
+            </button>
+            <button class="quick-card" data-route="utilities">
+              <span class="quick-icon pink">⚒</span>
+              <strong>Smart Tools</strong>
+              <small>Everyday utilities</small>
+            </button>
+          </div>
+
+          <!-- AI CENTER -->
+          <div class="section-header">
+            <div>
+              <h2>AI Intelligence Center</h2>
+              <p>Connect your preferred AI providers.</p>
+            </div>
+            <button class="text-button" data-route="model-hub">
+              Model Hub →
+            </button>
+          </div>
+
+          <div class="feature-panel ai-panel">
+            <div class="panel-heading">
+              <div>
+                <span class="panel-icon">✧</span>
+                <strong>AI Assistant</strong>
+              </div>
+              <span class="status-badge">Workspace</span>
+            </div>
+            <p>Ask questions, write code, analyse documents and research ideas.</p>
+            <div class="provider-chips">
+              <span>OpenAI</span>
+              <span>Gemini</span>
+              <span>Claude</span>
+              <span>Cloudflare AI</span>
+            </div>
+            <button class="primary-button" data-route="ai-chat">
+              Open AI Assistant →
+            </button>
+          </div>
+
+          <!-- DEVELOPER CENTER -->
+          <div class="section-header">
+            <div>
+              <h2>Developer Center</h2>
+              <p>Everything you need to build software.</p>
+            </div>
+            <button class="text-button" data-route="dev-tools">
+              Explore tools →
+            </button>
+          </div>
+
+          <div class="feature-grid">
+            <button class="feature-card" data-route="code-studio">
+              <span>⌘</span>
+              <strong>Online IDE</strong>
+              <small>Multi-language coding</small>
+            </button>
+            <button class="feature-card" data-route="playground">
+              <span>⌨</span>
+              <strong>Code Playground</strong>
+              <small>Run supported code</small>
+            </button>
+            <button class="feature-card" data-route="website-builder">
+              <span>▣</span>
+              <strong>Website Builder</strong>
+              <small>Create web projects</small>
+            </button>
+            <button class="feature-card" data-route="api-lab">
+              <span>⇄</span>
+              <strong>API Tester</strong>
+              <small>Test API endpoints</small>
+            </button>
+            <button class="feature-card" data-route="github">
+              <span>⑂</span>
+              <strong>GitHub Tools</strong>
+              <small>Repository workspace</small>
+            </button>
+            <button class="feature-card" data-route="database">
+              <span>▥</span>
+              <strong>Database Studio</strong>
+              <small>Manage data</small>
+            </button>
+          </div>
+
+          <!-- BUSINESS CENTER -->
+          <div class="section-header">
+            <div>
+              <h2>Business & Productivity</h2>
+              <p>Manage your digital work efficiently.</p>
+            </div>
+          </div>
+
+          <div class="feature-grid">
+            <button class="feature-card" data-route="store">
+              <span>🛍</span>
+              <strong>E-Commerce</strong>
+              <small>Online store</small>
+            </button>
+            <button class="feature-card" data-route="seller">
+              <span>♙</span>
+              <strong>Seller Center</strong>
+              <small>Manage products</small>
+            </button>
+            <button class="feature-card" data-route="documents">
+              <span>▤</span>
+              <strong>Document AI</strong>
+              <small>Read and analyse</small>
+            </button>
+            <button class="feature-card" data-route="cloud">
+              <span>☁</span>
+              <strong>Cloud Workspace</strong>
+              <small>Online files</small>
+            </button>
+            <button class="feature-card" data-route="tasks">
+              <span>☑</span>
+              <strong>Project Manager</strong>
+              <small>Organise your work</small>
+            </button>
+            <button class="feature-card" data-route="career">
+              <span>♙</span>
+              <strong>Career Center</strong>
+              <small>Prepare for jobs</small>
+            </button>
+          </div>
+
+          <!-- SYSTEM STATUS -->
+          <div class="section-header">
+            <div>
+              <h2>Platform Status</h2>
+              <p>Connection and service information.</p>
+            </div>
+          </div>
+
+          <div class="status-panel">
+            <div class="status-item">
+              <span>Frontend</span>
+              <strong id="frontendStatus">Loading</strong>
+            </div>
+            <div class="status-item">
+              <span>Backend</span>
+              <strong id="backendStatus">Not checked</strong>
+            </div>
+            <div class="status-item">
+              <span>Authentication</span>
+              <strong id="authStatus">Not configured</strong>
+            </div>
+            <div class="status-item">
+              <span>AI Provider</span>
+              <strong id="aiStatus">Not connected</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- DYNAMIC MODULE PAGES -->
+        <section class="page" id="page-module">
+          <div class="module-header">
+            <span class="module-icon" id="moduleIcon">✦</span>
+            <div>
+              <h1 id="moduleTitle">Workspace</h1>
+              <p id="moduleDescription">
+                Welcome to K-ULTRA AI.
+              </p>
+            </div>
+          </div>
+          <div class="module-content" id="moduleContent"></div>
+        </section>
+
       </section>
 
-      <footer class="footer">
+      <footer class="app-footer">
         <span>© 2026 K-ULTRA AI</span>
-        <span>Version 252.0 · Ultimate Complete Edition</span>
+        <span>Version 252.0 • Ultimate Complete Edition</span>
+        <span>Built for Everyone, Everywhere.</span>
       </footer>
+
     </main>
   </div>
 
-  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
-
-  <!-- FIREBASE SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-
-  <!-- K-ULTRA AI CONFIGURATION -->
-  <script src="./assets/js/config.js"></script>
-  <script src="./assets/js/firebase-config.js"></script>
-
-  <!-- AUTHENTICATION AND APPLICATION -->
-  <script src="./assets/js/auth.js"></script>
-  <script src="./assets/js/app.js"></script>
-
+  <!-- APPLICATION ENTRY -->
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>
