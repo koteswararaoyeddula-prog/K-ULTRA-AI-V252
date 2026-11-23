@@ -5,89 +5,1099 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#080d1c">
-  <meta name="description" content="K-ULTRA AI - Your intelligent AI workspace">
-  <title>K-ULTRA AI — Version 252</title>
+  <meta name="description" content="K-ULTRA AI — Next Generation AI, IT, Coding, Business, Commerce, Education and Travel Platform.">
+  <meta name="application-name" content="K-ULTRA AI">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="K-ULTRA AI">
+  <title>K-ULTRA AI — Version 252 Ultimate</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="style.css">
+
+  <!-- Firebase Authentication SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+
+  <!-- App configuration and application logic -->
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
+
 <body>
-  <div id="authScreen" class="auth-screen">
-    <div class="auth-card">
-      <div class="brand-mark">K</div>
-      <h1>K-ULTRA AI</h1>
-      <p class="muted">Your intelligent workspace</p>
-      <div class="auth-tabs">
-        <button id="loginTab" class="active">Login</button>
-        <button id="signupTab">Create account</button>
-      </div>
-      <form id="authForm">
-        <label>Email</label>
-        <input id="authEmail" type="email" placeholder="you@example.com" required autocomplete="email">
-        <label>Password</label>
-        <input id="authPassword" type="password" placeholder="Enter password" required minlength="6" autocomplete="current-password">
-        <button id="authSubmit" class="primary-btn" type="submit">Login</button>
-      </form>
-      <button id="googleLogin" class="google-btn" type="button">Continue with Google</button>
-      <p id="authError" class="error-text" role="alert"></p>
-      <p class="tiny muted">Secure authentication powered by Firebase.</p>
-    </div>
+  <div id="app-loader" class="app-loader" aria-live="polite">
+    <div class="loader-logo">K</div>
+    <h1>K-ULTRA AI</h1>
+    <p>Initializing your intelligent workspace...</p>
+    <div class="loader-bar"><span></span></div>
   </div>
 
-  <div id="app" class="app hidden">
+  <!-- ================= AUTHENTICATION ================= -->
+  <main id="auth-screen" class="auth-screen">
+    <section class="auth-brand">
+      <div class="brand-mark">K</div>
+      <p class="eyebrow">NEXT GENERATION TECHNOLOGY</p>
+      <h1>K-ULTRA AI</h1>
+      <p class="auth-tagline">
+        One intelligent platform for AI, IT, coding, business,
+        creativity, learning and the future.
+      </p>
+      <div class="auth-feature-list">
+        <span>✦ AI Intelligence</span>
+        <span>✦ Developer Studio</span>
+        <span>✦ 3D Creative Lab</span>
+        <span>✦ Business & Commerce</span>
+        <span>✦ Global Workspace</span>
+      </div>
+    </section>
+
+    <section class="auth-panel">
+      <div class="auth-tabs">
+        <button type="button" class="auth-tab active" data-auth-tab="login">
+          Sign In
+        </button>
+        <button type="button" class="auth-tab" data-auth-tab="signup">
+          Create Account
+        </button>
+      </div>
+
+      <form id="login-form" class="auth-form">
+        <h2>Welcome back</h2>
+        <p>Sign in to your K-ULTRA AI workspace.</p>
+        <label for="login-email">Email address</label>
+        <input id="login-email" type="email" autocomplete="email"
+               placeholder="you@example.com" required>
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password"
+               autocomplete="current-password" placeholder="Password" required>
+        <button class="primary-btn full-width" type="submit">
+          Sign In
+        </button>
+        <button class="text-btn" type="button" data-action="forgot-password">
+          Forgot password?
+        </button>
+        <button class="secondary-btn full-width" type="button"
+                data-action="google-login">
+          Continue with Google
+        </button>
+      </form>
+
+      <form id="signup-form" class="auth-form hidden">
+        <h2>Create your account</h2>
+        <p>Start building with K-ULTRA AI.</p>
+        <label for="signup-name">Full name</label>
+        <input id="signup-name" type="text" autocomplete="name"
+               placeholder="Your name" required>
+        <label for="signup-email">Email address</label>
+        <input id="signup-email" type="email" autocomplete="email"
+               placeholder="you@example.com" required>
+        <label for="signup-password">Password</label>
+        <input id="signup-password" type="password"
+               autocomplete="new-password" minlength="8"
+               placeholder="At least 8 characters" required>
+        <button class="primary-btn full-width" type="submit">
+          Create Account
+        </button>
+        <button class="secondary-btn full-width" type="button"
+                data-action="google-login">
+          Sign up with Google
+        </button>
+      </form>
+
+      <div class="auth-divider"><span>OR</span></div>
+      <button id="guest-mode-btn" class="guest-btn full-width" type="button"
+              data-action="guest-login">
+        Continue as Guest
+      </button>
+      <p class="guest-note">
+        Guest chats are saved locally on this device.
+        They are not automatically synced to your account.
+      </p>
+      <p id="auth-error" class="error-message" role="alert"></p>
+      <p class="auth-legal">
+        By continuing, you agree to the Terms of Service and Privacy Policy.
+      </p>
+    </section>
+  </main>
+
+  <!-- ================= MAIN APPLICATION ================= -->
+  <div id="app" class="app-shell hidden">
+
+    <!-- SIDEBAR -->
     <aside id="sidebar" class="sidebar">
-      <div class="sidebar-brand"><span class="brand-mark small">K</span><b>K-ULTRA AI</b></div>
-      <button id="newChat" class="new-chat">＋ New chat</button>
-      <div class="side-label">YOUR WORKSPACE</div>
-      <div id="historyList" class="history-list"></div>
+      <div class="sidebar-brand">
+        <div class="brand-mark small">K</div>
+        <div>
+          <strong>K-ULTRA AI</strong>
+          <small>VERSION 252 · ULTIMATE</small>
+        </div>
+        <button type="button" class="icon-btn sidebar-close"
+                data-action="close-sidebar" aria-label="Close sidebar">×</button>
+      </div>
+
+      <button type="button" id="new-chat-btn" class="new-chat-btn"
+              data-action="new-chat">
+        <span>＋</span> New Chat
+      </button>
+
+      <div class="workspace-label">YOUR WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-item active" data-view="home" type="button">
+          <span>⌂</span> Home
+        </button>
+        <button class="nav-item" data-view="chat" type="button">
+          <span>✦</span> AI Chat
+        </button>
+        <button class="nav-item" data-view="jarvis" type="button">
+          <span>◉</span> JARVIS Assistant
+        </button>
+        <button class="nav-item" data-view="research" type="button">
+          <span>⌕</span> AI Research
+        </button>
+        <button class="nav-item" data-view="creative" type="button">
+          <span>✧</span> AI Creative Studio
+        </button>
+        <button class="nav-item" data-view="documents" type="button">
+          <span>▤</span> Documents & Office
+        </button>
+      </nav>
+
+      <div class="workspace-label">DEVELOPER & IT</div>
+      <nav class="main-nav" aria-label="Developer tools">
+        <button class="nav-item" data-view="ide" type="button">
+          <span>⌘</span> Code Studio
+        </button>
+        <button class="nav-item" data-view="playground" type="button">
+          <span>▷</span> Code Playground
+        </button>
+        <button class="nav-item" data-view="challenges" type="button">
+          <span>♜</span> Coding Challenges
+        </button>
+        <button class="nav-item" data-view="devtools" type="button">
+          <span>⚒</span> Developer Utilities
+        </button>
+        <button class="nav-item" data-view="computer" type="button">
+          <span>▣</span> Computer & OS Help
+        </button>
+        <button class="nav-item" data-view="it-services" type="button">
+          <span>▦</span> IT Services
+        </button>
+      </nav>
+
+      <div class="workspace-label">CREATE & EXPLORE</div>
+      <nav class="main-nav" aria-label="Creative tools">
+        <button class="nav-item" data-view="3d-studio" type="button">
+          <span>◇</span> 3D Studio
+        </button>
+        <button class="nav-item" data-view="image-studio" type="button">
+          <span>▧</span> Image Studio
+        </button>
+        <button class="nav-item" data-view="video-studio" type="button">
+          <span>▶</span> Video Studio
+        </button>
+        <button class="nav-item" data-view="audio-studio" type="button">
+          <span>♫</span> Audio Studio
+        </button>
+        <button class="nav-item" data-view="website-builder" type="button">
+          <span>▤</span> Website & App Builder
+        </button>
+      </nav>
+
+      <div class="workspace-label">BUSINESS & SERVICES</div>
+      <nav class="main-nav" aria-label="Business tools">
+        <button class="nav-item" data-view="ecommerce" type="button">
+          <span>🛍</span> E-Commerce
+        </button>
+        <button class="nav-item" data-view="travel" type="button">
+          <span>✈</span> Travel & Bookings
+        </button>
+        <button class="nav-item" data-view="projects" type="button">
+          <span>▥</span> Projects & Tasks
+        </button>
+        <button class="nav-item" data-view="crm" type="button">
+          <span>♧</span> CRM & Customers
+        </button>
+        <button class="nav-item" data-view="company" type="button">
+          <span>▣</span> Company Workspace
+        </button>
+        <button class="nav-item" data-view="marketing" type="button">
+          <span>◈</span> Marketing & SEO
+        </button>
+      </nav>
+
+      <div class="workspace-label">LEARN & GROW</div>
+      <nav class="main-nav" aria-label="Learning">
+        <button class="nav-item" data-view="learning" type="button">
+          <span>▱</span> Learning Center
+        </button>
+        <button class="nav-item" data-view="courses" type="button">
+          <span>▤</span> Courses
+        </button>
+        <button class="nav-item" data-view="certificates" type="button">
+          <span>♧</span> Certificates
+        </button>
+        <button class="nav-item" data-view="careers" type="button">
+          <span>♙</span> Careers & Jobs
+        </button>
+      </nav>
+
+      <div class="workspace-label">ACCOUNT</div>
+      <nav class="main-nav">
+        <button class="nav-item" data-view="profile" type="button">
+          <span>♙</span> My Profile
+        </button>
+        <button class="nav-item" data-view="settings" type="button">
+          <span>⚙</span> Settings
+        </button>
+        <button class="nav-item admin-only hidden" data-view="admin"
+                type="button">
+          <span>♛</span> Admin Dashboard
+        </button>
+      </nav>
+
       <div class="sidebar-bottom">
-        <button id="themeToggle" class="side-action">◐ Change theme</button>
-        <button id="logoutBtn" class="side-action">↪ Sign out</button>
-        <div class="version">VERSION 252.0 · ULTIMATE</div>
+        <div id="account-mode" class="account-mode">
+          <span class="status-dot"></span>
+          <span id="account-mode-text">Guest Mode</span>
+        </div>
+        <div class="sidebar-user">
+          <div id="user-avatar" class="user-avatar">K</div>
+          <div class="user-info">
+            <strong id="user-display-name">Guest User</strong>
+            <small id="user-display-email">Local device account</small>
+          </div>
+          <button type="button" class="icon-btn" data-action="account-menu"
+                  aria-label="Account menu">⋯</button>
+        </div>
       </div>
     </aside>
 
-    <main class="main">
+    <!-- MAIN AREA -->
+    <main class="main-area">
       <header class="topbar">
-        <button id="menuToggle" class="icon-btn" aria-label="Open menu">☰</button>
-        <div><b>K-ULTRA AI</b><span class="top-subtitle"> · Intelligent Assistant</span></div>
-        <div class="top-right"><span id="connectionStatus" class="status">Checking...</span></div>
-      </header>
-
-      <section class="chat-area">
-        <div id="welcome" class="welcome">
-          <div class="welcome-logo">K</div>
-          <h1>Welcome to K-ULTRA AI</h1>
-          <p>What would you like to create today?</p>
-          <div class="suggestions">
-            <button class="suggestion" data-prompt="Explain artificial intelligence in simple words">✦ Learn something</button>
-            <button class="suggestion" data-prompt="Help me write a JavaScript program">⌘ Write code</button>
-            <button class="suggestion" data-prompt="Help me plan a new project">▦ Plan a project</button>
-            <button class="suggestion" data-prompt="Give me ideas for a technology business">◇ Explore ideas</button>
+        <div class="topbar-left">
+          <button type="button" class="icon-btn menu-toggle"
+                  data-action="toggle-sidebar" aria-label="Open menu">☰</button>
+          <div class="breadcrumb">
+            <span>K-ULTRA AI</span>
+            <span class="breadcrumb-separator">/</span>
+            <strong id="current-view-title">Home</strong>
           </div>
         </div>
-        <div id="messages" class="messages" aria-live="polite"></div>
+        <div class="topbar-right">
+          <div id="backend-status" class="connection-status">
+            <span class="status-dot"></span>
+            <span id="backend-status-text">Checking backend...</span>
+          </div>
+          <button type="button" class="icon-btn" data-action="notifications"
+                  aria-label="Notifications">♧</button>
+          <button type="button" class="icon-btn" data-action="toggle-theme"
+                  aria-label="Change theme">◐</button>
+          <button type="button" class="profile-chip" data-action="profile">
+            <span id="topbar-avatar">K</span>
+          </button>
+        </div>
+      </header>
+
+      <div id="toast-container" class="toast-container"
+           aria-live="polite"></div>
+
+      <!-- ================ HOME ================ -->
+      <section id="view-home" class="view active">
+        <div class="welcome-section">
+          <p class="eyebrow">YOUR INTELLIGENT DIGITAL WORLD</p>
+          <h1>Welcome to <span>K-ULTRA AI</span></h1>
+          <p>One workspace. Limitless possibilities.</p>
+          <div class="welcome-actions">
+            <button type="button" class="primary-btn" data-view-link="chat">
+              Start AI Chat
+            </button>
+            <button type="button" class="secondary-btn"
+                    data-view-link="ide">Open Code Studio</button>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <article class="stat-card"><span>AI Workspace</span><strong>Ready</strong></article>
+          <article class="stat-card"><span>Account</span><strong id="home-account-type">Guest</strong></article>
+          <article class="stat-card"><span>Backend</span><strong id="home-backend-status">Checking</strong></article>
+          <article class="stat-card"><span>Platform</span><strong>Version 252</strong></article>
+        </div>
+
+        <div class="section-heading">
+          <div><h2>Explore your workspace</h2><p>Open a tool and start creating.</p></div>
+        </div>
+        <div class="feature-grid">
+          <button class="feature-card" data-view-link="chat" type="button">
+            <span class="feature-icon">✦</span><strong>AI Assistant</strong>
+            <small>Chat, ask, write and learn.</small>
+          </button>
+          <button class="feature-card" data-view-link="jarvis" type="button">
+            <span class="feature-icon">◉</span><strong>JARVIS Voice</strong>
+            <small>Talk to your AI assistant.</small>
+          </button>
+          <button class="feature-card" data-view-link="ide" type="button">
+            <span class="feature-icon">⌘</span><strong>Code Studio</strong>
+            <small>Build and understand software.</small>
+          </button>
+          <button class="feature-card" data-view-link="3d-studio" type="button">
+            <span class="feature-icon">◇</span><strong>3D Studio</strong>
+            <small>Create, view and export 3D scenes.</small>
+          </button>
+          <button class="feature-card" data-view-link="ecommerce" type="button">
+            <span class="feature-icon">🛍</span><strong>Marketplace</strong>
+            <small>Products, carts and seller tools.</small>
+          </button>
+          <button class="feature-card" data-view-link="travel" type="button">
+            <span class="feature-icon">✈</span><strong>Travel Planner</strong>
+            <small>Plan trips and find bookings.</small>
+          </button>
+          <button class="feature-card" data-view-link="documents" type="button">
+            <span class="feature-icon">▤</span><strong>Office Workspace</strong>
+            <small>Documents, sheets and slides.</small>
+          </button>
+          <button class="feature-card" data-view-link="learning" type="button">
+            <span class="feature-icon">▱</span><strong>Learning Center</strong>
+            <small>Learn technology and programming.</small>
+          </button>
+        </div>
+
+        <div class="section-heading"><h2>Recent conversations</h2>
+          <button class="text-btn" data-view-link="chat" type="button">Open Chat</button>
+        </div>
+        <div id="recent-chats" class="recent-chats">
+          <p class="empty-state">Your recent conversations will appear here.</p>
+        </div>
       </section>
 
-      <footer class="composer-wrap">
-        <form id="chatForm" class="composer">
-          <textarea id="messageInput" rows="1" maxlength="12000" placeholder="Message K-ULTRA AI..." aria-label="Your message"></textarea>
-          <div class="composer-bottom">
-            <div class="composer-tools">
-              <button id="voiceBtn" type="button" class="tool-btn" title="Voice input">🎙 Voice</button>
-              <span class="composer-hint">AI can make mistakes. Verify important information.</span>
+      <!-- ================ AI CHAT ================ -->
+      <section id="view-chat" class="view chat-view">
+        <div class="chat-layout">
+          <aside class="chat-history-panel">
+            <div class="panel-heading">
+              <strong>Conversations</strong>
+              <button type="button" class="icon-btn" data-action="new-chat">＋</button>
             </div>
-            <button id="sendBtn" type="submit" class="send-btn" aria-label="Send message">➤</button>
+            <input id="chat-search" type="search"
+                   placeholder="Search conversations..." aria-label="Search chats">
+            <div id="chat-history-list" class="chat-history-list"></div>
+            <div class="history-actions">
+              <button type="button" data-action="export-chats">Export chats</button>
+              <button type="button" data-action="clear-chats">Clear history</button>
+            </div>
+          </aside>
+
+          <div class="chat-main">
+            <div class="chat-heading">
+              <div>
+                <h2>K-ULTRA AI</h2>
+                <span id="chat-model-status">AI Assistant · Auto language</span>
+              </div>
+              <div class="chat-toolbar">
+                <select id="ai-model-select" aria-label="AI model">
+                  <option value="auto">Automatic Model</option>
+                  <option value="fast">Fast</option>
+                  <option value="reasoning">Reasoning</option>
+                  <option value="coding">Coding</option>
+                </select>
+                <select id="response-language" aria-label="Response language">
+                  <option value="auto">Auto detect my language</option>
+                  <option value="en">English</option>
+                  <option value="te">తెలుగు</option>
+                  <option value="hi">हिन्दी</option>
+                  <option value="ta">தமிழ்</option>
+                  <option value="kn">ಕನ್ನಡ</option>
+                  <option value="ml">മലയാളം</option>
+                  <option value="ur">اردو</option>
+                  <option value="es">Español</option>
+                  <option value="fr">Français</option>
+                  <option value="de">Deutsch</option>
+                  <option value="ja">日本語</option>
+                  <option value="zh">中文</option>
+                  <option value="ar">العربية</option>
+                </select>
+                <button class="icon-btn" data-action="chat-options"
+                        type="button" aria-label="Chat options">⋯</button>
+              </div>
+            </div>
+
+            <div id="chat-messages" class="chat-messages" role="log"
+                 aria-live="polite">
+              <div class="chat-welcome">
+                <div class="assistant-avatar">K</div>
+                <h2>How can I help you today?</h2>
+                <p>Ask in your preferred language. K-ULTRA AI will respond in that language.</p>
+                <div class="prompt-suggestions">
+                  <button type="button" data-prompt="Explain artificial intelligence in simple words.">
+                    Explain AI
+                  </button>
+                  <button type="button" data-prompt="Write a Python program and explain it.">
+                    Write code
+                  </button>
+                  <button type="button" data-prompt="Help me plan a new IT company.">
+                    Build a business
+                  </button>
+                  <button type="button" data-prompt="Create a learning roadmap for computer science.">
+                    Learn technology
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div id="attachment-preview" class="attachment-preview"></div>
+            <form id="chat-form" class="chat-composer">
+              <input id="chat-file-input" type="file" multiple hidden
+                     accept="image/*,.pdf,.txt,.csv,.json,.doc,.docx,.xls,.xlsx,.ppt,.pptx">
+              <button type="button" class="icon-btn"
+                      data-action="attach-file" aria-label="Attach files">＋</button>
+              <textarea id="message-input" rows="1"
+                        placeholder="Message K-ULTRA AI..."
+                        aria-label="Message K-ULTRA AI"></textarea>
+              <button type="button" id="chat-mic-btn" class="icon-btn"
+                      data-action="voice-input" aria-label="Voice input">🎙</button>
+              <button type="submit" id="send-message-btn"
+                      class="send-btn" aria-label="Send message">➤</button>
+            </form>
+            <div class="chat-footer">
+              <span>AI can make mistakes. Verify important information.</span>
+              <span id="chat-usage-label">Guest usage is limited.</span>
+            </div>
           </div>
+        </div>
+      </section>
+
+      <!-- ================ JARVIS ================ -->
+      <section id="view-jarvis" class="view">
+        <div class="page-header">
+          <p class="eyebrow">PERSONAL AI ASSISTANT</p>
+          <h1>JARVIS Voice Command Center</h1>
+          <p>Talk, listen and control supported workspace features.</p>
+        </div>
+        <div class="jarvis-panel">
+          <div id="jarvis-orb" class="jarvis-orb"><span>K</span></div>
+          <h2 id="jarvis-status">JARVIS is ready</h2>
+          <p id="jarvis-transcript">Press the microphone to start speaking.</p>
+          <div class="jarvis-controls">
+            <button type="button" id="jarvis-mic-btn" class="primary-btn"
+                    data-action="jarvis-listen">🎙 Start Listening</button>
+            <button type="button" class="secondary-btn"
+                    data-action="jarvis-stop">Stop</button>
+            <button type="button" class="secondary-btn"
+                    data-action="jarvis-wake-toggle">Hey K-ULTRA Mode</button>
+          </div>
+          <div class="jarvis-settings">
+            <label>Speech language
+              <select id="speech-language">
+                <option value="auto">Automatic</option>
+                <option value="en-IN">English (India)</option>
+                <option value="te-IN">Telugu</option>
+                <option value="hi-IN">Hindi</option>
+                <option value="ta-IN">Tamil</option>
+                <option value="kn-IN">Kannada</option>
+              </select>
+            </label>
+            <label><input type="checkbox" id="voice-replies" checked> Read replies aloud</label>
+          </div>
+        </div>
+        <div class="content-grid">
+          <article class="content-card"><h3>Voice Commands</h3>
+            <p>Open Chat, open Code Studio, change theme, read answer, stop speaking.</p></article>
+          <article class="content-card"><h3>Privacy</h3>
+            <p>Microphone access requires browser permission. Wake-word listening may stop when the page is inactive.</p></article>
+        </div>
+      </section>
+
+      <!-- ================ RESEARCH ================ -->
+      <section id="view-research" class="view">
+        <div class="page-header"><h1>AI Research Center</h1>
+          <p>Research, compare, summarize and organize information.</p></div>
+        <form id="research-form" class="tool-form">
+          <textarea id="research-query" placeholder="What would you like to research?"></textarea>
+          <select id="research-depth">
+            <option value="quick">Quick overview</option>
+            <option value="standard">Detailed research</option>
+            <option value="deep">Deep research plan</option>
+          </select>
+          <button class="primary-btn" type="submit">Start Research</button>
         </form>
+        <div id="research-results" class="results-panel"></div>
+      </section>
+
+      <!-- ================ CREATIVE AI ================ -->
+      <section id="view-creative" class="view">
+        <div class="page-header"><h1>AI Creative Studio</h1>
+          <p>Generate ideas, designs, stories, presentations and media.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-view-link="image-studio">Image Generation</button>
+          <button class="tool-card" data-view-link="3d-studio">3D Objects & Scenes</button>
+          <button class="tool-card" data-view-link="video-studio">Video Concepts</button>
+          <button class="tool-card" data-view-link="audio-studio">Audio & Voice</button>
+          <button class="tool-card" data-view-link="documents">Presentations</button>
+          <button class="tool-card" data-view-link="website-builder">Website Design</button>
+        </div>
+      </section>
+
+      <!-- ================ DOCUMENTS & OFFICE ================ -->
+      <section id="view-documents" class="view">
+        <div class="page-header"><h1>Documents & Office Workspace</h1>
+          <p>Work with documents, spreadsheets, presentations and PDFs.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-action="create-document">Word-style Document</button>
+          <button class="tool-card" data-action="create-spreadsheet">Excel-style Spreadsheet</button>
+          <button class="tool-card" data-action="create-presentation">PowerPoint-style Slides</button>
+          <button class="tool-card" data-action="open-pdf-tools">PDF Tools</button>
+          <button class="tool-card" data-action="open-converter">File Converter</button>
+          <button class="tool-card" data-action="open-ai-writer">AI Writer</button>
+        </div>
+        <div id="office-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ CODE STUDIO ================ -->
+      <section id="view-ide" class="view">
+        <div class="page-header"><h1>K-ULTRA Code Studio</h1>
+          <p>Development workspace for web, software, apps and scripts.</p></div>
+        <div class="ide-toolbar">
+          <select id="code-language">
+            <option value="javascript">JavaScript</option>
+            <option value="typescript">TypeScript</option>
+            <option value="python">Python</option>
+            <option value="html">HTML</option>
+            <option value="css">CSS</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="php">PHP</option>
+            <option value="go">Go</option>
+            <option value="rust">Rust</option>
+            <option value="sql">SQL</option>
+            <option value="json">JSON</option>
+            <option value="bash">Shell</option>
+          </select>
+          <button type="button" data-action="code-new">New</button>
+          <button type="button" data-action="code-open">Open</button>
+          <button type="button" data-action="code-save">Save</button>
+          <button type="button" data-action="code-format">Format</button>
+          <button type="button" data-action="code-debug">Debug with AI</button>
+          <button type="button" class="primary-btn" data-action="code-run">▶ Run</button>
+          <button type="button" data-action="code-download">Download</button>
+        </div>
+        <div class="ide-layout">
+          <aside class="file-explorer">
+            <strong>EXPLORER</strong>
+            <div id="project-file-list"></div>
+            <button type="button" data-action="code-add-file">＋ New File</button>
+          </aside>
+          <div class="editor-column">
+            <div id="code-editor" class="code-editor">
+              <textarea id="code-input" spellcheck="false"
+                aria-label="Code editor"
+                placeholder="// Start writing your code here..."></textarea>
+            </div>
+            <div class="terminal-panel">
+              <div class="terminal-heading">
+                <strong>OUTPUT / TERMINAL</strong>
+                <button type="button" data-action="clear-terminal">Clear</button>
+              </div>
+              <pre id="code-output">Ready. Choose a language and write code.</pre>
+            </div>
+          </div>
+        </div>
+        <p class="security-note">Code execution must use a secure sandbox service. Do not run untrusted code directly on the server.</p>
+      </section>
+
+      <!-- ================ PLAYGROUND ================ -->
+      <section id="view-playground" class="view">
+        <div class="page-header"><h1>Code Playground</h1>
+          <p>Experiment with code and preview supported web projects.</p></div>
+        <div class="playground-layout">
+          <textarea id="playground-html" placeholder="HTML"></textarea>
+          <textarea id="playground-css" placeholder="CSS"></textarea>
+          <textarea id="playground-js" placeholder="JavaScript"></textarea>
+          <button class="primary-btn" data-action="playground-run">Run Preview</button>
+          <iframe id="playground-preview" title="Code preview"
+                  sandbox="allow-scripts" loading="lazy"></iframe>
+        </div>
+      </section>
+
+      <!-- ================ CHALLENGES ================ -->
+      <section id="view-challenges" class="view">
+        <div class="page-header"><h1>Programming Challenges</h1>
+          <p>Practice algorithms, data structures and technical interviews.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-action="challenge-beginner">Beginner</button>
+          <button class="tool-card" data-action="challenge-intermediate">Intermediate</button>
+          <button class="tool-card" data-action="challenge-advanced">Advanced</button>
+          <button class="tool-card" data-action="challenge-interview">Interview Practice</button>
+        </div>
+        <div id="challenge-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ DEVELOPER UTILITIES ================ -->
+      <section id="view-devtools" class="view">
+        <div class="page-header"><h1>Developer Utilities</h1>
+          <p>Everyday tools for software engineers and IT professionals.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-tool="json">JSON Formatter</button>
+          <button class="tool-card" data-tool="xml">XML Formatter</button>
+          <button class="tool-card" data-tool="html">HTML Formatter</button>
+          <button class="tool-card" data-tool="css">CSS Formatter</button>
+          <button class="tool-card" data-tool="sql">SQL Formatter</button>
+          <button class="tool-card" data-tool="base64">Base64</button>
+          <button class="tool-card" data-tool="url">URL Encoder</button>
+          <button class="tool-card" data-tool="hash">Hash Generator</button>
+          <button class="tool-card" data-tool="uuid">UUID Generator</button>
+          <button class="tool-card" data-tool="regex">Regex Tester</button>
+          <button class="tool-card" data-tool="jwt">JWT Inspector</button>
+          <button class="tool-card" data-tool="diff">Text Diff</button>
+          <button class="tool-card" data-tool="markdown">Markdown Preview</button>
+          <button class="tool-card" data-tool="timestamp">Timestamp Converter</button>
+          <button class="tool-card" data-tool="qr">QR Code</button>
+          <button class="tool-card" data-tool="api">API Tester</button>
+        </div>
+        <div id="devtool-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ COMPUTER & OS ================ -->
+      <section id="view-computer" class="view">
+        <div class="page-header"><h1>Computer & Operating Systems</h1>
+          <p>Learn about computers, hardware, software, networks and operating systems.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-prompt="Explain computer hardware and components.">Computer Hardware</button>
+          <button class="tool-card" data-prompt="Explain Windows troubleshooting and administration.">Windows</button>
+          <button class="tool-card" data-prompt="Explain Linux commands and administration.">Linux</button>
+          <button class="tool-card" data-prompt="Explain macOS features and troubleshooting.">macOS</button>
+          <button class="tool-card" data-prompt="Explain Android architecture and troubleshooting.">Android</button>
+          <button class="tool-card" data-prompt="Explain iOS and iPhone troubleshooting.">iOS</button>
+          <button class="tool-card" data-prompt="Teach computer networking and TCP/IP.">Networking</button>
+          <button class="tool-card" data-prompt="Explain cloud computing and servers.">Cloud & Servers</button>
+          <button class="tool-card" data-prompt="Explain cybersecurity best practices.">Cybersecurity</button>
+          <button class="tool-card" data-prompt="Help me troubleshoot a computer problem.">Troubleshooting</button>
+        </div>
+        <div id="computer-help-results" class="results-panel"></div>
+      </section>
+
+      <!-- ================ IT SERVICES ================ -->
+      <section id="view-it-services" class="view">
+        <div class="page-header"><h1>IT Industry Services</h1>
+          <p>Explore technology domains and professional IT workflows.</p></div>
+        <div class="tool-grid">
+          <button class="tool-card" data-it="web-development">Web Development</button>
+          <button class="tool-card" data-it="mobile-development">Mobile App Development</button>
+          <button class="tool-card" data-it="software-engineering">Software Engineering</button>
+          <button class="tool-card" data-it="ai-ml">AI & Machine Learning</button>
+          <button class="tool-card" data-it="data-science">Data Science</button>
+          <button class="tool-card" data-it="cloud-devops">Cloud & DevOps</button>
+          <button class="tool-card" data-it="cybersecurity">Cybersecurity</button>
+          <button class="tool-card" data-it="networking">Networking</button>
+          <button class="tool-card" data-it="database">Database Engineering</button>
+          <button class="tool-card" data-it="testing">QA & Automation Testing</button>
+          <button class="tool-card" data-it="blockchain">Blockchain & Web3</button>
+          <button class="tool-card" data-it="iot">IoT & Embedded Systems</button>
+          <button class="tool-card" data-it="ar-vr">AR / VR / XR</button>
+          <button class="tool-card" data-it="robotics">Robotics</button>
+          <button class="tool-card" data-it="erp">ERP & Enterprise Systems</button>
+          <button class="tool-card" data-it="support">IT Support & Helpdesk</button>
+        </div>
+        <div id="it-service-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ 3D STUDIO ================ -->
+      <section id="view-3d-studio" class="view">
+        <div class="page-header"><h1>3D Creation Studio</h1>
+          <p>Create and preview 3D scenes, objects and interactive visual experiences.</p></div>
+        <div class="studio-toolbar">
+          <button data-action="3d-new">New Scene</button>
+          <button data-action="3d-add-cube">Add Cube</button>
+          <button data-action="3d-add-sphere">Add Sphere</button>
+          <button data-action="3d-add-light">Add Light</button>
+          <button data-action="3d-reset">Reset View</button>
+          <button data-action="3d-export">Export Scene</button>
+          <button data-action="3d-screenshot">Download Preview</button>
+        </div>
+        <div class="three-studio-layout">
+          <div id="three-canvas-container" class="three-canvas-container">
+            <div id="three-loading">3D Studio will initialize here.</div>
+          </div>
+          <aside class="properties-panel">
+            <h3>Scene Properties</h3>
+            <label>Object name<input id="3d-object-name" type="text"></label>
+            <label>Position X<input id="3d-position-x" type="number" step="0.1" value="0"></label>
+            <label>Position Y<input id="3d-position-y" type="number" step="0.1" value="0"></label>
+            <label>Position Z<input id="3d-position-z" type="number" step="0.1" value="0"></label>
+            <label>Scale<input id="3d-scale" type="number" min="0.1" max="10" step="0.1" value="1"></label>
+            <label>Material color<input id="3d-color" type="color" value="#637cff"></label>
+            <button type="button" data-action="3d-apply">Apply Properties</button>
+          </aside>
+        </div>
+        <div class="studio-actions">
+          <button data-action="3d-download-png">Download PNG</button>
+          <button data-action="3d-download-model">Download 3D Model</button>
+          <button data-action="3d-fullscreen">Fullscreen Preview</button>
+        </div>
+      </section>
+
+      <!-- ================ IMAGE STUDIO ================ -->
+      <section id="view-image-studio" class="view">
+        <div class="page-header"><h1>AI Image Studio</h1>
+          <p>Generate, inspect and edit images using connected image services.</p></div>
+        <form id="image-generation-form" class="tool-form">
+          <textarea id="image-prompt" placeholder="Describe the image you want to create..."></textarea>
+          <select id="image-style">
+            <option value="realistic">Photorealistic</option>
+            <option value="3d">3D Render</option>
+            <option value="anime">Anime</option>
+            <option value="illustration">Illustration</option>
+            <option value="cinematic">Cinematic</option>
+            <option value="logo">Logo</option>
+            <option value="architecture">Architecture</option>
+          </select>
+          <select id="image-ratio">
+            <option value="1:1">Square</option>
+            <option value="16:9">Landscape</option>
+            <option value="9:16">Portrait</option>
+            <option value="4:3">4:3</option>
+          </select>
+          <button class="primary-btn" type="submit">Generate Image</button>
+        </form>
+        <div id="image-results" class="media-results"></div>
+        <div class="studio-actions">
+          <button data-action="image-download">Download Image</button>
+          <button data-action="image-preview">Preview</button>
+        </div>
+      </section>
+
+      <!-- ================ VIDEO STUDIO ================ -->
+      <section id="view-video-studio" class="view">
+        <div class="page-header"><h1>AI Video Studio</h1>
+          <p>Prepare video concepts, scripts, storyboards and connected video generation jobs.</p></div>
+        <form id="video-form" class="tool-form">
+          <textarea id="video-prompt" placeholder="Describe your video idea..."></textarea>
+          <select id="video-format">
+            <option value="16:9">Landscape 16:9</option>
+            <option value="9:16">Vertical 9:16</option>
+            <option value="1:1">Square 1:1</option>
+          </select>
+          <button class="primary-btn" type="submit">Create Video Plan</button>
+        </form>
+        <div id="video-results" class="results-panel"></div>
+        <div id="video-preview" class="media-preview"></div>
+      </section>
+
+      <!-- ================ AUDIO STUDIO ================ -->
+      <section id="view-audio-studio" class="view">
+        <div class="page-header"><h1>Audio & Voice Studio</h1>
+          <p>Speech, narration, transcripts and audio tools.</p></div>
+        <div class="tool-grid">
+          <button data-action="audio-text-to-speech">Text to Speech</button>
+          <button data-action="audio-transcribe">Transcribe Audio</button>
+          <button data-action="audio-record">Record Audio</button>
+          <button data-action="audio-stop">Stop Recording</button>
+        </div>
+        <textarea id="audio-text" placeholder="Enter text for speech..."></textarea>
+        <select id="audio-language">
+          <option value="auto">Auto language</option>
+          <option value="te-IN">Telugu</option>
+          <option value="en-IN">English</option>
+          <option value="hi-IN">Hindi</option>
+          <option value="ta-IN">Tamil</option>
+        </select>
+        <div id="audio-results" class="results-panel"></div>
+      </section>
+
+      <!-- ================ WEBSITE BUILDER ================ -->
+      <section id="view-website-builder" class="view">
+        <div class="page-header"><h1>AI Website & App Builder</h1>
+          <p>Plan websites, generate code and preview your project.</p></div>
+        <form id="website-builder-form" class="tool-form">
+          <textarea id="website-description"
+            placeholder="Describe the website or app you want to build..."></textarea>
+          <select id="website-type">
+            <option value="website">Website</option>
+            <option value="webapp">Web Application</option>
+            <option value="pwa">Progressive Web App</option>
+            <option value="ecommerce">E-Commerce Website</option>
+            <option value="dashboard">Admin Dashboard</option>
+          </select>
+          <button class="primary-btn" type="submit">Generate Project Plan</button>
+        </form>
+        <div id="website-builder-results" class="results-panel"></div>
+        <div class="studio-actions">
+          <button data-action="website-preview">Preview</button>
+          <button data-action="website-download">Download Project</button>
+        </div>
+        <iframe id="website-preview-frame" title="Website preview"
+                sandbox="allow-scripts" loading="lazy"></iframe>
+      </section>
+
+      <!-- ================ E-COMMERCE ================ -->
+      <section id="view-ecommerce" class="view">
+        <div class="page-header"><h1>K-ULTRA Marketplace</h1>
+          <p>Discover products, manage carts and explore seller tools.</p></div>
+        <div class="commerce-toolbar">
+          <input id="product-search" type="search" placeholder="Search products...">
+          <select id="product-category">
+            <option value="all">All categories</option>
+            <option value="electronics">Electronics</option>
+            <option value="computers">Computers</option>
+            <option value="software">Software</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home</option>
+            <option value="books">Books</option>
+            <option value="services">Digital services</option>
+          </select>
+          <button data-action="open-cart">Cart <span id="cart-count">0</span></button>
+          <button data-action="open-wishlist">Wishlist</button>
+        </div>
+        <div id="product-grid" class="product-grid">
+          <p class="empty-state">Products will appear when the marketplace catalog is connected.</p>
+        </div>
+        <div class="seller-tools">
+          <h2>Seller Center</h2>
+          <button data-action="seller-dashboard">Seller Dashboard</button>
+          <button data-action="seller-add-product">Add Product</button>
+          <button data-action="seller-orders">Manage Orders</button>
+        </div>
+        <p class="security-note">Real checkout requires a configured payment provider and secure server-side payment verification.</p>
+      </section>
+
+      <!-- ================ TRAVEL ================ -->
+      <section id="view-travel" class="view">
+        <div class="page-header"><h1>Travel & Booking Center</h1>
+          <p>Plan trips, compare options and manage travel itineraries.</p></div>
+        <div class="booking-tabs">
+          <button data-booking-type="flights">Flights</button>
+          <button data-booking-type="hotels">Hotels</button>
+          <button data-booking-type="trains">Trains</button>
+          <button data-booking-type="buses">Buses</button>
+          <button data-booking-type="cars">Car Rental</button>
+          <button data-booking-type="activities">Activities</button>
+        </div>
+        <form id="travel-search-form" class="tool-form">
+          <label>From<input id="travel-origin" type="text" placeholder="Origin"></label>
+          <label>To<input id="travel-destination" type="text" placeholder="Destination"></label>
+          <label>Departure<input id="travel-date" type="date"></label>
+          <label>Return<input id="travel-return-date" type="date"></label>
+          <label>Travelers<input id="travel-travelers" type="number" min="1" value="1"></label>
+          <button class="primary-btn" type="submit">Search Travel Options</button>
+        </form>
+        <div id="travel-results" class="results-panel"></div>
+        <div id="travel-itinerary" class="workspace-panel"></div>
+        <p class="security-note">Live availability and confirmed bookings require a connected travel provider. Never enter payment details into an unverified form.</p>
+      </section>
+
+      <!-- ================ PROJECTS ================ -->
+      <section id="view-projects" class="view">
+        <div class="page-header"><h1>Projects & Task Management</h1>
+          <p>Plan projects, organize tasks and track progress.</p></div>
+        <div class="project-toolbar">
+          <button data-action="project-create">＋ New Project</button>
+          <button data-action="task-create">＋ New Task</button>
+          <select id="project-view-mode">
+            <option value="board">Kanban Board</option>
+            <option value="list">List View</option>
+            <option value="calendar">Calendar View</option>
+          </select>
+        </div>
+        <div id="project-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ CRM ================ -->
+      <section id="view-crm" class="view">
+        <div class="page-header"><h1>CRM & Customer Management</h1>
+          <p>Organize customer records, leads and support workflows.</p></div>
+        <div class="tool-grid">
+          <button data-action="crm-contacts">Contacts</button>
+          <button data-action="crm-leads">Leads</button>
+          <button data-action="crm-deals">Deals</button>
+          <button data-action="crm-tickets">Support Tickets</button>
+          <button data-action="crm-reports">Reports</button>
+        </div>
+        <div id="crm-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ COMPANY ================ -->
+      <section id="view-company" class="view">
+        <div class="page-header"><h1>Company Workspace</h1>
+          <p>Manage teams, operations and company knowledge.</p></div>
+        <div class="tool-grid">
+          <button data-action="company-hr">HR & Recruitment</button>
+          <button data-action="company-attendance">Attendance</button>
+          <button data-action="company-payroll">Payroll Integration</button>
+          <button data-action="company-invoices">Invoices</button>
+          <button data-action="company-finance">Finance</button>
+          <button data-action="company-knowledge">Knowledge Base</button>
+          <button data-action="company-analytics">Business Analytics</button>
+          <button data-action="company-team">Team Management</button>
+        </div>
+        <div id="company-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ MARKETING ================ -->
+      <section id="view-marketing" class="view">
+        <div class="page-header"><h1>Marketing & SEO Studio</h1>
+          <p>Plan content, campaigns, SEO and customer communication.</p></div>
+        <div class="tool-grid">
+          <button data-action="marketing-seo">SEO Audit</button>
+          <button data-action="marketing-content">Content Planner</button>
+          <button data-action="marketing-social">Social Media</button>
+          <button data-action="marketing-email">Email Campaign</button>
+          <button data-action="marketing-ads">Ad Campaign Planner</button>
+          <button data-action="marketing-analytics">Campaign Analytics</button>
+        </div>
+        <div id="marketing-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ LEARNING ================ -->
+      <section id="view-learning" class="view">
+        <div class="page-header"><h1>K-ULTRA Learning Center</h1>
+          <p>Learn programming, IT, business and emerging technologies.</p></div>
+        <div class="tool-grid">
+          <button data-course="programming">Programming</button>
+          <button data-course="computer-science">Computer Science</button>
+          <button data-course="ai">AI & Machine Learning</button>
+          <button data-course="cybersecurity">Cybersecurity</button>
+          <button data-course="cloud">Cloud Computing</button>
+          <button data-course="business">Business & Management</button>
+          <button data-course="design">UI / UX Design</button>
+          <button data-course="office">Office Productivity</button>
+        </div>
+        <div id="learning-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ COURSES ================ -->
+      <section id="view-courses" class="view">
+        <div class="page-header"><h1>Courses & Learning Paths</h1>
+          <p>Structured lessons, quizzes and progress tracking.</p></div>
+        <div id="course-catalog" class="content-grid"></div>
+      </section>
+
+      <!-- ================ CERTIFICATES ================ -->
+      <section id="view-certificates" class="view">
+        <div class="page-header"><h1>Certificates & Achievements</h1>
+          <p>View achievements earned through supported learning programs.</p></div>
+        <div id="certificate-list" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ CAREERS ================ -->
+      <section id="view-careers" class="view">
+        <div class="page-header"><h1>Careers & Jobs</h1>
+          <p>Explore career paths, build your resume and prepare for interviews.</p></div>
+        <div class="tool-grid">
+          <button data-action="career-resume">Resume Builder</button>
+          <button data-action="career-interview">Interview Preparation</button>
+          <button data-action="career-roadmap">Career Roadmap</button>
+          <button data-action="career-jobs">Job Search</button>
+        </div>
+        <div id="career-workspace" class="workspace-panel"></div>
+      </section>
+
+      <!-- ================ PROFILE ================ -->
+      <section id="view-profile" class="view">
+        <div class="page-header"><h1>My Profile</h1>
+          <p>Manage your account and personal workspace.</p></div>
+        <div id="profile-details" class="workspace-panel"></div>
+        <button class="secondary-btn" data-action="convert-guest">Create Account / Sign In</button>
+      </section>
+
+      <!-- ================ SETTINGS ================ -->
+      <section id="view-settings" class="view">
+        <div class="page-header"><h1>Settings</h1>
+          <p>Personalize your K-ULTRA AI experience.</p></div>
+        <div class="settings-list">
+          <label>Appearance
+            <select id="theme-select">
+              <option value="dark">Dark</option>
+              <option value="light">Light</option>
+              <option value="system">System</option>
+            </select>
+          </label>
+          <label>Preferred language
+            <select id="preferred-language">
+              <option value="auto">Automatic</option>
+              <option value="te">తెలుగు</option>
+              <option value="en">English</option>
+              <option value="hi">हिन्दी</option>
+              <option value="ta">தமிழ்</option>
+              <option value="kn">ಕನ್ನಡ</option>
+              <option value="ml">മലയാളം</option>
+            </select>
+          </label>
+          <label><input id="setting-voice" type="checkbox"> Enable voice replies</label>
+          <label><input id="setting-notifications" type="checkbox"> Enable notifications</label>
+          <label><input id="setting-save-history" type="checkbox" checked> Save chat history on this device</label>
+          <button class="primary-btn" data-action="save-settings">Save Settings</button>
+          <button class="secondary-btn" data-action="export-data">Export My Data</button>
+          <button class="danger-btn" data-action="delete-local-data">Delete Local Guest Data</button>
+          <button class="secondary-btn" data-action="sign-out">Sign Out</button>
+        </div>
+      </section>
+
+      <!-- ================ ADMIN ================ -->
+      <section id="view-admin" class="view">
+        <div class="page-header"><h1>Admin Control Center</h1>
+          <p>Restricted administrative tools. Access is controlled by verified roles.</p></div>
+        <div class="quick-stats">
+          <article class="stat-card"><span>Users</span><strong id="admin-users">—</strong></article>
+          <article class="stat-card"><span>Usage</span><strong id="admin-usage">—</strong></article>
+          <article class="stat-card"><span>Orders</span><strong id="admin-orders">—</strong></article>
+          <article class="stat-card"><span>System</span><strong id="admin-system">—</strong></article>
+        </div>
+        <div class="tool-grid">
+          <button data-action="admin-users">User Management</button>
+          <button data-action="admin-roles">Roles & Permissions</button>
+          <button data-action="admin-audit">Audit Logs</button>
+          <button data-action="admin-content">Content Moderation</button>
+          <button data-action="admin-products">Product Management</button>
+          <button data-action="admin-settings">Platform Settings</button>
+          <button data-action="admin-backups">Backup Management</button>
+          <button data-action="admin-health">System Health</button>
+        </div>
+        <div id="admin-workspace" class="workspace-panel"></div>
+      </section>
+
+      <footer class="app-footer">
+        <span>K-ULTRA AI · VERSION 252.0 · ULTIMATE EDITION</span>
+        <span>Built for the next generation of technology.</span>
       </footer>
     </main>
   </div>
 
-  <div id="toast" class="toast" role="status"></div>
+  <!-- ================= GLOBAL DIALOGS ================= -->
+  <dialog id="global-dialog" class="global-dialog">
+    <div class="dialog-header">
+      <h2 id="dialog-title">K-ULTRA AI</h2>
+      <button type="button" class="icon-btn"
+              data-action="close-dialog" aria-label="Close">×</button>
+    </div>
+    <div id="dialog-content" class="dialog-content"></div>
+    <div class="dialog-actions">
+      <button type="button" class="secondary-btn"
+              data-action="close-dialog">Close</button>
+    </div>
+  </dialog>
 
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <div id="confirm-dialog" class="confirm-dialog hidden" role="alertdialog"
+       aria-modal="true" aria-labelledby="confirm-title">
+    <div class="confirm-card">
+      <h2 id="confirm-title">Confirm action</h2>
+      <p id="confirm-message">Are you sure?</p>
+      <div class="dialog-actions">
+        <button type="button" data-action="confirm-cancel">Cancel</button>
+        <button type="button" class="danger-btn"
+                data-action="confirm-accept">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="global-live-region" class="sr-only"
+       aria-live="polite" aria-atomic="true"></div>
+
+  <noscript>
+    <div class="noscript-warning">
+      K-ULTRA AI requires JavaScript to run. Please enable JavaScript in your browser.
+    </div>
+  </noscript>
 </body>
-</html>                                                                                                                               </html>
-
+</html>
