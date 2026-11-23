@@ -1,1 +1,93 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d1c">
+  <meta name="description" content="K-ULTRA AI - Your intelligent AI workspace">
+  <title>K-ULTRA AI — Version 252</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="brand-mark">K</div>
+      <h1>K-ULTRA AI</h1>
+      <p class="muted">Your intelligent workspace</p>
+      <div class="auth-tabs">
+        <button id="loginTab" class="active">Login</button>
+        <button id="signupTab">Create account</button>
+      </div>
+      <form id="authForm">
+        <label>Email</label>
+        <input id="authEmail" type="email" placeholder="you@example.com" required autocomplete="email">
+        <label>Password</label>
+        <input id="authPassword" type="password" placeholder="Enter password" required minlength="6" autocomplete="current-password">
+        <button id="authSubmit" class="primary-btn" type="submit">Login</button>
+      </form>
+      <button id="googleLogin" class="google-btn" type="button">Continue with Google</button>
+      <p id="authError" class="error-text" role="alert"></p>
+      <p class="tiny muted">Secure authentication powered by Firebase.</p>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-brand"><span class="brand-mark small">K</span><b>K-ULTRA AI</b></div>
+      <button id="newChat" class="new-chat">＋ New chat</button>
+      <div class="side-label">YOUR WORKSPACE</div>
+      <div id="historyList" class="history-list"></div>
+      <div class="sidebar-bottom">
+        <button id="themeToggle" class="side-action">◐ Change theme</button>
+        <button id="logoutBtn" class="side-action">↪ Sign out</button>
+        <div class="version">VERSION 252.0 · ULTIMATE</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuToggle" class="icon-btn" aria-label="Open menu">☰</button>
+        <div><b>K-ULTRA AI</b><span class="top-subtitle"> · Intelligent Assistant</span></div>
+        <div class="top-right"><span id="connectionStatus" class="status">Checking...</span></div>
+      </header>
+
+      <section class="chat-area">
+        <div id="welcome" class="welcome">
+          <div class="welcome-logo">K</div>
+          <h1>Welcome to K-ULTRA AI</h1>
+          <p>What would you like to create today?</p>
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Explain artificial intelligence in simple words">✦ Learn something</button>
+            <button class="suggestion" data-prompt="Help me write a JavaScript program">⌘ Write code</button>
+            <button class="suggestion" data-prompt="Help me plan a new project">▦ Plan a project</button>
+            <button class="suggestion" data-prompt="Give me ideas for a technology business">◇ Explore ideas</button>
+          </div>
+        </div>
+        <div id="messages" class="messages" aria-live="polite"></div>
+      </section>
+
+      <footer class="composer-wrap">
+        <form id="chatForm" class="composer">
+          <textarea id="messageInput" rows="1" maxlength="12000" placeholder="Message K-ULTRA AI..." aria-label="Your message"></textarea>
+          <div class="composer-bottom">
+            <div class="composer-tools">
+              <button id="voiceBtn" type="button" class="tool-btn" title="Voice input">🎙 Voice</button>
+              <span class="composer-hint">AI can make mistakes. Verify important information.</span>
+            </div>
+            <button id="sendBtn" type="submit" class="send-btn" aria-label="Send message">➤</button>
+          </div>
+        </form>
+      </footer>
+    </main>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>                                                                                                                               </html>
+
