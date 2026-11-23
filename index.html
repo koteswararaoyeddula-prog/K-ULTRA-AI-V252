@@ -1099,5 +1099,19 @@
       K-ULTRA AI requires JavaScript to run. Please enable JavaScript in your browser.
     </div>
   </noscript>
+  <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(registration => {
+          console.log("K-ULTRA AI Service Worker registered:", registration.scope);
+        })
+        .catch(error => {
+          console.error("Service Worker registration failed:", error);
+        });
+    });
+  }
+  </script>
 </body>
 </html>
