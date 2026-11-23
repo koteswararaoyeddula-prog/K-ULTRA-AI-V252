@@ -15,7 +15,10 @@ const APP_SHELL = [
   "./style.css",
   "./config.js",
   "./app.js",
-  "./manifest.json"
+  "./manifest.json",
+  "./assets/icons/icon-192.png",
+  "./assets/icons/icon-512.png",
+  "./assets/icons/icon-512-maskable.png"
 ];
 
 // Install: cache essential application files.
