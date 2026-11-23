@@ -7,7 +7,7 @@
  * Progressive Web App Service Worker
  */
 
-const CACHE_VERSION = "kultra-v252-cache-v2";
+const CACHE_VERSION = "kultra-v252-cache-v3";
 
 const APP_SHELL = [
   "./",
