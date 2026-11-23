@@ -575,17 +575,42 @@
   // Authentication
   // --------------------------------------------------
 
-  function getFirebaseAuth() {
-    try {
-      if (window.firebase && typeof window.firebase.auth === "function") {
-        return window.firebase.auth();
-      }
-    } catch (error) {
-      console.error("Firebase Auth initialization error:", error);
+  
+function getFirebaseAuth() {
+  try {
+    if (
+      !window.firebase ||
+      typeof window.firebase.initializeApp !== "function" ||
+      typeof window.firebase.auth !== "function"
+    ) {
+      throw new Error("Firebase SDK scripts are not loaded.");
     }
 
+    const firebaseConfig = CONFIG.FIREBASE?.CONFIG;
+
+    if (
+      !firebaseConfig ||
+      !firebaseConfig.apiKey ||
+      !firebaseConfig.projectId ||
+      !firebaseConfig.appId
+    ) {
+      throw new Error("Firebase configuration is incomplete.");
+    }
+
+    // Initialize Firebase only once.
+    if (!window.firebase.apps.length) {
+      window.firebase.initializeApp(firebaseConfig);
+    }
+
+    // Return initialized Firebase Authentication.
+    return window.firebase.auth();
+
+  } catch (error) {
+    console.error("Firebase Auth initialization error:", error);
     return null;
   }
+}
+  
 
   function showAuthScreen() {
     elements.authScreen?.classList.remove("hidden");
