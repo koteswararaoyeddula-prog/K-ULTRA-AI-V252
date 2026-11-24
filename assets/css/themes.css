@@ -1,5 +1,10 @@
 
-/* K-UNIQUE AI Theme System */
+/* ============================================
+   @K-UNIQUE — ADVANCED THEME SYSTEM
+   VERSION 1.2.0
+============================================ */
+
+/* LIGHT THEME VARIABLES */
 
 body.light-theme {
   --bg: #f5f7fc;
@@ -13,9 +18,81 @@ body.light-theme {
   --border: rgba(20,35,65,.12);
 }
 
+/* TOPBAR */
+
 body.light-theme .topbar {
   background: rgba(255,255,255,.94);
+  border-bottom-color: var(--border);
 }
+
+/* SIDEBAR */
+
+body.light-theme .sidebar {
+  background: var(--sidebar);
+  border-right-color: var(--border);
+}
+
+body.light-theme .sidebar-header h2 {
+  background: linear-gradient(90deg, #5269e8, #089eae);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+body.light-theme .nav-item {
+  color: #667085;
+}
+
+body.light-theme .nav-item.active,
+body.light-theme .nav-item:hover {
+  color: #172033;
+  background: #edf1fa;
+  border-color: var(--border);
+}
+
+/* BUTTONS */
+
+body.light-theme .new-chat-btn {
+  color: #ffffff;
+}
+
+body.light-theme #themeToggle {
+  background: #f5f7fc;
+  color: #172033;
+  border-color: var(--border);
+}
+
+body.light-theme #sendBtn {
+  color: #ffffff;
+}
+
+/* WELCOME SCREEN */
+
+body.light-theme .welcome-screen h1 {
+  background: linear-gradient(90deg, #243b9b, #078b9c);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+body.light-theme .welcome-screen p {
+  color: #667085;
+}
+
+/* SUGGESTIONS */
+
+body.light-theme .suggestion {
+  background: #ffffff;
+  color: #172033;
+  border-color: rgba(20,35,65,.12);
+}
+
+body.light-theme .suggestion:hover {
+  background: #f5f7fc;
+  border-color: #5269e8;
+}
+
+/* CHAT MESSAGES */
 
 body.light-theme .chat-message.user {
   background: #e5eaff;
@@ -26,51 +103,61 @@ body.light-theme .chat-message.user {
 body.light-theme .chat-message.assistant {
   background: #ffffff;
   color: #172033;
+  border-color: var(--border);
 }
+
+/* CHAT INPUT */
 
 body.light-theme #chatForm {
   background: #ffffff;
   border-color: rgba(82,105,232,.3);
+  box-shadow: 0 8px 30px rgba(20,35,65,.08);
 }
 
 body.light-theme #messageInput {
   color: #172033;
 }
 
-body.light-theme .welcome-screen h1 {
-  background: linear-gradient(90deg, #243b9b, #078b9c);
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+body.light-theme #messageInput::placeholder {
+  color: #98a2b3;
 }
 
 body.light-theme .chat-input-area {
   background: linear-gradient(transparent, #f5f7fc 20%);
 }
 
-body.light-theme .suggestion {
-  background: #ffffff;
-  color: #172033;
-}
-
-body.light-theme .nav-item {
+body.light-theme .chat-input-area > p {
   color: #667085;
 }
 
-body.light-theme .nav-item.active,
-body.light-theme .nav-item:hover {
-  color: #172033;
-}
-
-body.light-theme .new-chat-btn {
-  color: #ffffff;
-}
-
-body.light-theme #sendBtn {
-  color: #ffffff;
-}
+/* HISTORY */
 
 body.light-theme #clearHistoryBtn,
 body.light-theme #historyList button {
+  background: #ffffff;
   color: #172033;
+  border-color: var(--border);
+}
+
+/* USER STATUS */
+
+body.light-theme #userStatus {
+  color: #667085;
+}
+
+/* SMOOTH THEME TRANSITIONS */
+
+body,
+.sidebar,
+.topbar,
+.main-content,
+.chat-page,
+.suggestion,
+.chat-message,
+#chatForm,
+#themeToggle {
+  transition:
+    background-color .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
