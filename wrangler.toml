@@ -1,0 +1,26 @@
+
+# ============================================
+# @K-UNIQUE — CLOUDFLARE CONFIGURATION
+# ============================================
+
+name = "kunique-backend"
+main = "worker/workers.js"
+
+compatibility_date = "2026-11-24"
+
+workers_dev = true
+
+# Cloudflare Workers AI binding
+[ai]
+binding = "AI"
+
+# Environment variables
+[vars]
+
+FIREBASE_PROJECT_ID = "YOUR_FIREBASE_PROJECT_ID"
+
+REQUIRE_AUTH = "true"
+
+# Initial testing only.
+# Replace * with your actual website domain before production.
+ALLOWED_ORIGINS = "*"
