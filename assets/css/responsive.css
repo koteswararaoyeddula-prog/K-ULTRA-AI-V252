@@ -1,50 +1,36 @@
 
-/* =========================================
-   @K-UNIQUE
-   FILE: assets/css/responsive.css
-   RESPONSIVE DESIGN SYSTEM
-========================================= */
+/* K-UNIQUE Responsive Design */
 
-/* LARGE LAPTOPS */
-@media (max-width: 1400px) {
-  .module-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-/* TABLETS AND SMALL LAPTOPS */
 @media (max-width: 1024px) {
   :root {
-    --sidebar-width: 230px;
+    --sidebar-width: 235px;
   }
 
-  .page-content {
-    padding: 22px;
+  .welcome-screen {
+    width: 92%;
   }
 
-  .module-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .welcome-section {
-    padding: 35px 28px;
-  }
-
-  .topbar {
-    padding: 0 20px;
+  .message-container {
+    width: 94%;
   }
 }
 
-/* TABLETS */
 @media (max-width: 768px) {
   .sidebar {
+    width: 280px;
+    max-width: 85vw;
     transform: translateX(-100%);
-    width: 265px;
-    box-shadow: 10px 0 40px rgba(0,0,0,.3);
+    transition: transform .25s ease;
+    box-shadow: none;
   }
 
   .sidebar.open {
     transform: translateX(0);
+    box-shadow: 10px 0 35px rgba(0,0,0,.35);
+  }
+
+  .sidebar-header button {
+    display: block;
   }
 
   .main-content {
@@ -53,236 +39,93 @@
   }
 
   #menuToggle {
-    display: grid;
-    place-items: center;
+    display: block;
   }
 
   .topbar {
-    height: 65px;
+    height: 60px;
     padding: 0 15px;
   }
 
-  .topbar-left,
-  .topbar-right {
-    gap: 10px;
+  .chat-page {
+    min-height: calc(100vh - 60px);
   }
 
-  .breadcrumb {
-    font-size: 11px;
+  .welcome-screen {
+    padding: 45px 0 25px;
   }
 
-  .page-content {
-    padding: 18px;
-  }
-
-  .welcome-section {
-    padding: 32px 23px;
-  }
-
-  .welcome-section h1 {
-    font-size: 36px;
-  }
-
-  .module-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .module-card {
-    padding: 17px;
-    min-height: 175px;
-  }
-
-  .ai-preview {
-    padding: 23px;
-  }
-}
-
-/* MOBILE PHONES */
-@media (max-width: 480px) {
-  .topbar {
-    height: 60px;
-    padding: 0 10px;
-  }
-
-  .topbar-left,
-  .topbar-right {
-    gap: 7px;
-  }
-
-  .breadcrumb {
-    gap: 5px;
-    font-size: 10px;
-  }
-
-  .connection-status {
-    font-size: 0;
-    gap: 0;
-  }
-
-  .connection-status .status-dot {
-    width: 9px;
-    height: 9px;
-  }
-
-  .icon-button {
-    width: 34px;
-    height: 34px;
-    font-size: 15px;
-  }
-
-  .login-button {
-    padding: 9px 12px;
-    font-size: 10px;
-  }
-
-  .page-content {
-    padding: 13px;
-  }
-
-  .welcome-section {
-    padding: 28px 19px;
-    border-radius: 16px;
-  }
-
-  .welcome-section h1 {
+  .welcome-screen h1 {
     font-size: 29px;
   }
 
-  .welcome-section > p {
-    font-size: 12px;
-  }
-
-  .welcome-tag {
-    font-size: 9px;
-    margin-bottom: 15px;
-  }
-
-  .welcome-actions {
-    flex-direction: column;
-  }
-
-  .welcome-actions button {
-    width: 100%;
-  }
-
-  .section-heading {
-    margin: 28px 0 15px;
-  }
-
-  .section-heading h2 {
-    font-size: 17px;
-  }
-
-  .section-heading p {
-    font-size: 10px;
-  }
-
-  .module-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .suggestion-grid {
+    grid-template-columns: 1fr;
     gap: 10px;
   }
 
-  .module-card {
-    padding: 13px;
-    min-height: 165px;
-    border-radius: 13px;
+  .suggestion {
+    padding: 14px;
   }
 
-  .module-icon {
-    width: 36px;
-    height: 36px;
-    font-size: 19px;
-    margin-bottom: 12px;
+  .message-container {
+    width: 94%;
+    padding-bottom: 145px;
   }
 
-  .module-card h3 {
-    font-size: 12px;
+  .chat-message {
+    max-width: 94%;
+    padding: 13px 15px;
+    font-size: 14px;
   }
 
-  .module-card p {
-    font-size: 10px;
+  .chat-input-area {
+    padding: 12px 10px;
   }
 
-  .module-card > span {
-    font-size: 10px;
+  #chatForm {
+    width: 100%;
+    border-radius: 15px;
+    gap: 7px;
+    padding: 8px;
   }
 
-  .ai-preview {
-    padding: 20px 16px;
-    border-radius: 14px;
+  #messageInput {
+    font-size: 16px;
+    padding: 10px 7px;
   }
 
-  .ai-preview h2 {
-    font-size: 19px;
-  }
-
-  .ai-preview p {
-    font-size: 11px;
-  }
-
-  .ai-preview-icon {
-    font-size: 55px;
-  }
-
-  .app-footer {
-    padding: 16px 12px;
-    font-size: 9px;
-    flex-direction: column;
-    text-align: center;
+  #sendBtn {
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
   }
 
   .module-page {
-    padding: 22px 17px;
-  }
-
-  .module-page h1 {
-    font-size: 23px;
+    padding: 22px 15px;
   }
 }
 
-/* VERY SMALL PHONES */
-@media (max-width: 350px) {
-  .module-grid {
-    grid-template-columns: 1fr;
+@media (max-width: 380px) {
+  .topbar h3 {
+    font-size: 15px;
   }
 
-  .welcome-section h1 {
+  #userStatus {
+    font-size: 11px;
+  }
+
+  .welcome-screen h1 {
     font-size: 25px;
   }
 
-  .breadcrumb {
-    font-size: 9px;
-  }
-
-  .login-button {
-    padding: 8px;
+  .chat-message {
+    max-width: 98%;
   }
 }
 
-/* LANDSCAPE MOBILE */
-@media (max-height: 500px) and (orientation: landscape) {
-  .sidebar-menu {
-    padding-top: 8px;
-    padding-bottom: 8px;
-  }
-
-  .brand {
-    padding: 12px 15px;
-  }
-
-  .topbar {
-    height: 55px;
-  }
-}
-
-/* ACCESSIBILITY */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    transition-duration: .01ms !important;
+@media (min-width: 769px) {
+  .sidebar {
+    transform: translateX(0);
   }
 }
