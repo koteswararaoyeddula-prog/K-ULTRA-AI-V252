@@ -1,7 +1,7 @@
 
 /* =========================================
    @K-UNIQUE — MAIN APPLICATION
-   VERSION: 1.0.0
+   VERSION: 1.1.0
    FILE: assets/js/app.js
 ========================================= */
 
@@ -11,11 +11,14 @@
   const APP = {
     initialized: false,
     currentPage: "ai",
-    theme: "dark"
+    theme: "dark",
+    backendOnline: false
   };
 
   const $ = selector => document.querySelector(selector);
   const $$ = selector => [...document.querySelectorAll(selector)];
+
+  /* NOTIFICATIONS */
 
   function notify(message, type = "info") {
     let container = $("#kuniqueNotifications");
@@ -29,11 +32,11 @@
 
     const item = document.createElement("div");
     item.className = "app-notification " + type;
-    item.textContent = message;
+    item.textContent = String(message);
 
     container.appendChild(item);
 
-    setTimeout(() => item.remove(), 4000);
+    window.setTimeout(() => item.remove(), 4000);
   }
 
   /* SIDEBAR */
@@ -48,6 +51,7 @@
     if (!sidebar) return;
 
     sidebar.classList.toggle("open");
+
     document.body.classList.toggle(
       "sidebar-open",
       sidebar.classList.contains("open")
@@ -67,15 +71,28 @@
     try {
       localStorage.setItem("kunique_theme", APP.theme);
     } catch (error) {
-      console.warn("Theme storage unavailable.");
+      console.warn("[K-UNIQUE] Theme storage unavailable.");
     }
 
     const button = $("#themeToggle");
 
     if (button) {
       button.textContent =
-        APP.theme === "dark" ? "☀️ Light Mode" : "🌙 Dark Mode";
+        APP.theme === "dark"
+          ? "☀️ Light Mode"
+          : "🌙 Dark Mode";
+
+      button.setAttribute(
+        "aria-label",
+        "Switch to " + (APP.theme === "dark" ? "light" : "dark") + " theme"
+      );
     }
+
+    window.dispatchEvent(
+      new CustomEvent("kunique:theme-changed", {
+        detail: { theme: APP.theme }
+      })
+    );
   }
 
   function initializeTheme() {
@@ -91,14 +108,10 @@
   /* NAVIGATION */
 
   function navigate(page) {
-    const aiPage = $("#aiPage");
-    const historyPage = $("#historyPage");
-    const settingsPage = $("#settingsPage");
-
     const pages = {
-      ai: aiPage,
-      history: historyPage,
-      settings: settingsPage
+      ai: $("#aiPage"),
+      history: $("#historyPage"),
+      settings: $("#settingsPage")
     };
 
     if (!pages[page]) {
@@ -107,7 +120,9 @@
     }
 
     Object.entries(pages).forEach(([name, element]) => {
-      if (element) element.hidden = name !== page;
+      if (element) {
+        element.hidden = name !== page;
+      }
     });
 
     APP.currentPage = page;
@@ -127,10 +142,13 @@
     const heading = $(".topbar h3");
 
     if (heading) {
-      heading.textContent =
-        page === "ai" ? "@K-UNIQUE AI" :
-        page === "history" ? "Chat History" :
-        "Settings";
+      const titles = {
+        ai: "@K-UNIQUE AI",
+        history: "Chat History",
+        settings: "Settings"
+      };
+
+      heading.textContent = titles[page];
     }
 
     if (page === "history") {
@@ -138,7 +156,9 @@
     }
 
     if (page === "ai") {
-      setTimeout(() => $("#messageInput")?.focus(), 100);
+      window.setTimeout(() => {
+        $("#messageInput")?.focus();
+      }, 100);
     }
 
     closeSidebar();
@@ -161,20 +181,25 @@
 
   /* BACKEND STATUS */
 
-  async function checkBackend() {
+  function updateBackendStatus(state, message) {
     const status = $("#connectionStatus");
+    if (!status) return;
 
-    if (status) {
-      status.textContent = "Checking backend...";
-      status.className = "checking";
-    }
+    status.className = state;
+    status.textContent = message;
+  }
+
+  async function checkBackend() {
+    updateBackendStatus("checking", "Checking backend...");
 
     try {
-      if (!window.KUNIQUE_API?.healthCheck) {
+      const api = window.KUNIQUE_API;
+
+      if (!api?.healthCheck) {
         throw new Error("API connector not loaded.");
       }
 
-      const result = await window.KUNIQUE_API.healthCheck();
+      const result = await api.healthCheck();
 
       if (!result.connected) {
         throw new Error(result.error || "Backend offline.");
@@ -182,34 +207,61 @@
 
       const health = result.data || {};
 
-      if (status) {
-        status.textContent =
-          health.status === "online"
-            ? "● Backend Online"
-            : "● Connected";
+      APP.backendOnline = true;
 
-        status.className = "connected";
-      }
+      updateBackendStatus(
+        "connected",
+        health.status === "online"
+          ? "● Backend Online"
+          : "● Backend Connected"
+      );
+
+      window.dispatchEvent(
+        new CustomEvent("kunique:backend-status", {
+          detail: {
+            online: true,
+            health
+          }
+        })
+      );
 
       return true;
 
     } catch (error) {
-      if (status) {
-        status.textContent = "● Backend Offline";
-        status.className = "error";
-      }
+      APP.backendOnline = false;
 
-      console.error("[K-UNIQUE] Backend:", error);
+      updateBackendStatus(
+        "error",
+        "● Backend Offline"
+      );
+
+      console.error("[K-UNIQUE] Backend error:", error);
+
+      window.dispatchEvent(
+        new CustomEvent("kunique:backend-status", {
+          detail: {
+            online: false,
+            error: error.message
+          }
+        })
+      );
+
       return false;
     }
   }
 
-  /* AUTH UI */
+  /* FIREBASE AUTH UI */
 
   function initializeAuthUI() {
     const auth = window.KUNIQUE_AUTH;
 
-    if (!auth?.onAuthStateChanged) return;
+    if (!auth?.onAuthStateChanged) {
+      const status = $("#userStatus");
+
+      if (status) status.textContent = "Guest";
+
+      return;
+    }
 
     auth.onAuthStateChanged(user => {
       const status = $("#userStatus");
@@ -219,6 +271,12 @@
           ? user.displayName || user.email || "User"
           : "Guest";
       }
+
+      window.dispatchEvent(
+        new CustomEvent("kunique:user-updated", {
+          detail: { user: user || null }
+        })
+      );
     });
   }
 
@@ -236,7 +294,9 @@
     });
 
     document.addEventListener("keydown", event => {
-      if (event.key === "Escape") closeSidebar();
+      if (event.key === "Escape") {
+        closeSidebar();
+      }
     });
 
     document.addEventListener("click", event => {
@@ -252,6 +312,16 @@
         closeSidebar();
       }
     });
+
+    window.addEventListener("online", () => {
+      notify("Internet connection restored.", "success");
+      checkBackend();
+    });
+
+    window.addEventListener("offline", () => {
+      APP.backendOnline = false;
+      updateBackendStatus("error", "● No Internet Connection");
+    });
   }
 
   /* INITIALIZATION */
@@ -266,23 +336,26 @@
     bindControls();
     initializeAuthUI();
 
-    if (window.KUNIQUE_CHAT?.init) {
-      window.KUNIQUE_CHAT.init();
-    }
+    // chat.js has its own guarded initialization.
+    window.KUNIQUE_CHAT?.init?.();
 
     navigate("ai");
     checkBackend();
 
-    console.log("@K-UNIQUE application initialized.");
+    console.log("[K-UNIQUE] Application initialized.");
   }
+
+  /* PUBLIC API */
 
   window.KUNIQUE_APP = Object.freeze({
     initialize,
     navigate,
     notify,
     checkBackend,
+
     getCurrentPage: () => APP.currentPage,
-    getCurrentTheme: () => APP.theme
+    getCurrentTheme: () => APP.theme,
+    isBackendOnline: () => APP.backendOnline
   });
 
   if (document.readyState === "loading") {
@@ -294,3 +367,4 @@
   }
 
 })(window, document);
+     
