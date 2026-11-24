@@ -1,0 +1,260 @@
+
+/* =========================================
+   @K-UNIQUE
+   FILE: assets/css/themes.css
+   DARK + LIGHT THEME SYSTEM
+========================================= */
+
+/* DARK THEME - DEFAULT */
+
+:root,
+body.dark-theme {
+  color-scheme: dark;
+
+  --bg: #080d1c;
+  --sidebar: #0b1121;
+  --surface: #101a2e;
+  --surface-hover: #17243c;
+
+  --primary: #637cff;
+  --primary-hover: #5269eb;
+  --accent: #28c9d8;
+
+  --text: #f1f5ff;
+  --muted: #91a0b8;
+
+  --border: rgba(255,255,255,.08);
+  --success: #27d995;
+  --danger: #ff647c;
+}
+
+/* LIGHT THEME */
+
+body.light-theme {
+  color-scheme: light;
+
+  --bg: #f3f6fc;
+  --sidebar: #ffffff;
+  --surface: #ffffff;
+  --surface-hover: #edf2ff;
+
+  --primary: #536df5;
+  --primary-hover: #4059df;
+  --accent: #089db5;
+
+  --text: #18233b;
+  --muted: #718096;
+
+  --border: rgba(30,50,90,.12);
+  --success: #0ca678;
+  --danger: #e54865;
+}
+
+/* GLOBAL THEME TRANSITIONS */
+
+body,
+.sidebar,
+.main-content,
+.topbar,
+.module-card,
+.user-card,
+.module-page,
+.welcome-section,
+.ai-preview,
+.icon-button,
+.menu-item,
+.app-footer {
+  transition:
+    background-color .25s ease,
+    color .25s ease,
+    border-color .25s ease;
+}
+
+/* LIGHT SIDEBAR */
+
+body.light-theme .sidebar {
+  box-shadow: 3px 0 20px rgba(30,50,90,.04);
+}
+
+body.light-theme .brand {
+  border-bottom-color: var(--border);
+}
+
+body.light-theme .brand-info h2 {
+  color: #18233b;
+}
+
+body.light-theme .menu-label {
+  color: #8491a8;
+}
+
+body.light-theme .menu-item {
+  color: #66758e;
+}
+
+body.light-theme .menu-item:hover {
+  background: #edf2ff;
+  color: #4059df;
+}
+
+body.light-theme .menu-item.active {
+  color: #4059df;
+  background: rgba(83,109,245,.10);
+  border-left-color: var(--primary);
+}
+
+/* LIGHT USER CARD */
+
+body.light-theme .user-card {
+  background: #f3f6fc;
+}
+
+body.light-theme .user-card strong {
+  color: #18233b;
+}
+
+/* LIGHT TOPBAR */
+
+body.light-theme .topbar {
+  background: rgba(255,255,255,.92);
+  border-bottom-color: var(--border);
+}
+
+body.light-theme .breadcrumb {
+  color: #8491a8;
+}
+
+body.light-theme .breadcrumb strong {
+  color: var(--text);
+}
+
+body.light-theme .icon-button {
+  background: #edf2ff;
+  color: #4059df;
+}
+
+body.light-theme .icon-button:hover {
+  background: #dfe7ff;
+}
+
+/* LIGHT WELCOME SECTION */
+
+body.light-theme .welcome-section {
+  background:
+    radial-gradient(
+      ellipse at 90% 20%,
+      rgba(8,157,181,.10),
+      transparent 45%
+    ),
+    radial-gradient(
+      ellipse at 10% 90%,
+      rgba(83,109,245,.10),
+      transparent 50%
+    ),
+    #ffffff;
+  border-color: var(--border);
+}
+
+body.light-theme .welcome-section h1 {
+  color: #18233b;
+}
+
+body.light-theme .welcome-section h1 span {
+  background: linear-gradient(90deg,#536df5,#089db5);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* LIGHT BUTTONS */
+
+body.light-theme .secondary-button {
+  background: #edf2ff;
+  color: #4059df;
+  border-color: #dce5fa;
+}
+
+body.light-theme .secondary-button:hover {
+  background: #e2eaff;
+}
+
+/* LIGHT MODULE CARDS */
+
+body.light-theme .module-card {
+  background: #ffffff;
+  border-color: #e4eaf4;
+  box-shadow: 0 4px 15px rgba(30,50,90,.035);
+}
+
+body.light-theme .module-card:hover {
+  background: #f8faff;
+  border-color: rgba(83,109,245,.4);
+  box-shadow: 0 10px 25px rgba(30,50,90,.08);
+}
+
+body.light-theme .module-card h3 {
+  color: #18233b;
+}
+
+body.light-theme .module-icon {
+  background: rgba(8,157,181,.09);
+  color: #089db5;
+}
+
+/* LIGHT AI PREVIEW */
+
+body.light-theme .ai-preview {
+  background: linear-gradient(
+    110deg,
+    rgba(83,109,245,.09),
+    rgba(8,157,181,.07)
+  );
+  border-color: var(--border);
+}
+
+body.light-theme .ai-preview h2 {
+  color: #18233b;
+}
+
+body.light-theme .ai-preview-icon {
+  color: #089db5;
+  text-shadow: 0 0 30px rgba(8,157,181,.2);
+}
+
+/* LIGHT MODULE PAGES */
+
+body.light-theme .module-page {
+  background: #ffffff;
+  border-color: #e4eaf4;
+}
+
+body.light-theme .module-page h1 {
+  color: #18233b;
+}
+
+/* LIGHT FOOTER */
+
+body.light-theme .app-footer {
+  border-top-color: var(--border);
+  background: #f3f6fc;
+}
+
+/* LIGHT SCROLLBAR */
+
+body.light-theme::-webkit-scrollbar-track {
+  background: #f3f6fc;
+}
+
+body.light-theme::-webkit-scrollbar-thumb {
+  background: #cbd5e5;
+}
+
+/* THEME COLOR TEXT */
+
+body.light-theme .welcome-tag {
+  color: #089db5;
+}
+
+body.light-theme .connection-status {
+  color: #718096;
+}
