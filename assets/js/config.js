@@ -1,9 +1,8 @@
 
 /* ============================================
-   @K-UNIQUE — ULTIMATE SUPER PLATFORM
+   @K-UNIQUE — CENTRAL CONFIGURATION
    VERSION: 1.0.0
    FILE: assets/js/config.js
-   CENTRAL CONFIGURATION SYSTEM
 ============================================ */
 
 (function (window) {
@@ -11,21 +10,20 @@
 
   const CONFIG = {
 
-    /* APP INFORMATION */
-
     APP: {
       NAME: "@K-UNIQUE",
       VERSION: "1.0.0",
       EDITION: "ULTIMATE SUPER PLATFORM",
-      DESCRIPTION: "All-in-One AI, IT, Business and E-Commerce Platform",
+      DESCRIPTION: "All-in-One AI Platform",
       ENVIRONMENT: "production",
       DEBUG: false
     },
 
-    /* BACKEND CONFIGURATION */
+    /* CLOUDFLARE BACKEND */
 
     API: {
-    BASE_URL: "https://k-ultra-ai-backend.yeddulakoteswararao.workers.dev",
+      BASE_URL:
+        "https://k-ultra-ai-backend.yeddulakoteswararao.workers.dev",
 
       ENDPOINTS: {
         HEALTH: "/api/health",
@@ -48,12 +46,9 @@
       RETRY_DELAY: 1000
     },
 
-    /* AI ENGINE CONFIGURATION */
+    /* AI ENGINE */
 
     AI: {
-
-      /* PRIMARY ENGINE */
-
       PRIMARY: {
         PROVIDER: "cloudflare-workers-ai",
         ENABLED: true,
@@ -61,8 +56,6 @@
         BINDING: "AI",
         MODEL: "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
       },
-
-      /* SECONDARY ENGINE */
 
       SECONDARY: {
         PROVIDER: "google-gemini",
@@ -72,8 +65,6 @@
         SECRET_NAME: "GEMINI_API_KEY"
       },
 
-      /* ROUTING */
-
       ROUTING: {
         MODE: "primary-with-fallback",
         FALLBACK_ENABLED: true,
@@ -82,17 +73,13 @@
         MAX_FALLBACK_ATTEMPTS: 1
       },
 
-      /* CHAT SETTINGS */
-
       CHAT: {
         MAX_MESSAGE_LENGTH: 12000,
         MAX_HISTORY: 20,
-        STREAMING: true,
+        STREAMING: false,
         TEMPERATURE: 0.7,
         MAX_OUTPUT_TOKENS: 2048
       },
-
-      /* AI FEATURES */
 
       FEATURES: {
         CHAT: true,
@@ -106,19 +93,10 @@
       }
     },
 
-    /* FIREBASE CONFIGURATION */
+    /* FIREBASE */
 
     FIREBASE: {
-
       ENABLED: true,
-
-      /*
-       * Replace these placeholders with your
-       * Firebase Web App configuration.
-       *
-       * Firebase web configuration is public
-       * project configuration, not a secret.
-       */
 
       CONFIG: {
         apiKey: "YOUR_FIREBASE_WEB_API_KEY",
@@ -140,7 +118,6 @@
     /* PLATFORM MODULES */
 
     MODULES: {
-
       AI_CENTER: true,
       ECOMMERCE: true,
       IT_SERVICES: true,
@@ -153,11 +130,12 @@
       ADMIN_PANEL: true
     },
 
-    /* STORAGE CONFIGURATION */
+    /* STORAGE */
 
     STORAGE: {
       PROVIDER: "cloudflare-r2",
       MAX_FILE_SIZE_MB: 20,
+
       ALLOWED_FILE_TYPES: [
         "image/jpeg",
         "image/png",
@@ -177,7 +155,7 @@
       SECURE_HEADERS: true
     },
 
-    /* UI CONFIGURATION */
+    /* UI */
 
     UI: {
       DEFAULT_THEME: "dark",
@@ -188,37 +166,30 @@
       DESKTOP_SUPPORT: true
     },
 
-    /* APPLICATION STORAGE */
-
     STORAGE_KEYS: {
-      THEME: "kultra_theme",
+      THEME: "kunique_theme",
       USER: "kunique_user",
-      LANGUAGE: "kunique_language"
+      LANGUAGE: "kunique_language",
+      CHAT: "kunique_chat_history"
     }
-
   };
 
-  /* CONFIGURATION VALIDATION */
+  /* VALIDATION */
 
   function validateConfig() {
-
     const errors = [];
 
     if (!CONFIG.APP.NAME) {
-      errors.push("Application name is missing.");
+      errors.push("Application name missing.");
     }
 
-    if (!CONFIG.API.BASE_URL ||
-        CONFIG.API.BASE_URL.includes("YOUR-CLOUDFLARE")) {
-      errors.push("Cloudflare Worker URL is not configured.");
+    if (!CONFIG.API.BASE_URL.startsWith("https://")) {
+      errors.push("Invalid Worker URL.");
     }
 
-    if (!CONFIG.AI.PRIMARY.ENABLED) {
-      errors.push("Primary AI engine is disabled.");
-    }
-
-    if (errors.length) {
-      console.warn("[K-UNIQUE] Configuration warnings:", errors);
+    if (!CONFIG.FIREBASE.CONFIG.projectId ||
+        CONFIG.FIREBASE.CONFIG.projectId.includes("YOUR_")) {
+      errors.push("Firebase project ID not configured.");
     }
 
     return {
@@ -227,10 +198,9 @@
     };
   }
 
-  /* API URL HELPER */
+  /* API URL */
 
   function getAPI(endpoint) {
-
     const path = CONFIG.API.ENDPOINTS[endpoint];
 
     if (!path) {
@@ -240,7 +210,7 @@
     return CONFIG.API.BASE_URL.replace(/\/+$/, "") + path;
   }
 
-  /* EXPORT CONFIGURATION */
+  /* EXPORT */
 
   Object.defineProperty(window, "KUNIQUE_CONFIG", {
     value: Object.freeze(CONFIG),
@@ -250,7 +220,7 @@
 
   window.KUNIQUE_CONFIG_HELPERS = Object.freeze({
     validate: validateConfig,
-    getAPI: getAPI
+    getAPI
   });
 
   console.log(
