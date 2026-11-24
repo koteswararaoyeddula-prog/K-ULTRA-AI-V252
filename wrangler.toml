@@ -11,7 +11,7 @@ compatibility_date = "2026-11-24"
 workers_dev = true
 
 # Cloudflare Workers AI binding
-[ai]
+[[ai]]
 binding = "AI"
 
 # Environment variables
