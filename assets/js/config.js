@@ -96,24 +96,25 @@
     /* FIREBASE */
 
     FIREBASE: {
-      ENABLED: true,
+  ENABLED: true,
 
-      CONFIG: {
-        apiKey: "YOUR_FIREBASE_WEB_API_KEY",
-        authDomain: "YOUR_PROJECT.firebaseapp.com",
-        projectId: "YOUR_FIREBASE_PROJECT_ID",
-        storageBucket: "YOUR_PROJECT.firebasestorage.app",
-        messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-        appId: "YOUR_FIREBASE_APP_ID"
-      },
+  CONFIG: {
+    apiKey: "AIzaSyCOliK0d8VxYuHnkkGwRTWVgDt1EYxIvJo",
+    authDomain: "k-ultra-ai-v252.firebaseapp.com",
+    projectId: "k-ultra-ai-v252",
+    storageBucket: "k-ultra-ai-v252.firebasestorage.app",
+    messagingSenderId: "735286729786",
+    appId: "1:735286729786:web:8c82134a931adafc032903",
+    measurementId: "G-B0NGN6FQJS"
+  },
 
-      AUTH: {
-        EMAIL_LOGIN: true,
-        GOOGLE_LOGIN: true,
-        PASSWORD_RESET: true,
-        EMAIL_VERIFICATION: true
-      }
-    },
+  AUTH: {
+    EMAIL_LOGIN: true,
+    GOOGLE_LOGIN: true,
+    PASSWORD_RESET: true,
+    EMAIL_VERIFICATION: true
+  }
+},
 
     /* PLATFORM MODULES */
 
