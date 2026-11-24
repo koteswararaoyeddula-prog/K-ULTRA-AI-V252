@@ -25,7 +25,7 @@
     /* BACKEND CONFIGURATION */
 
     API: {
-      BASE_URL: "https://YOUR-CLOUDFLARE-WORKER-URL",
+    BASE_URL: "https://k-ultra-ai-backend.yeddulakoteswararao.workers.dev",
 
       ENDPOINTS: {
         HEALTH: "/api/health",
