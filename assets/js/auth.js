@@ -2,12 +2,14 @@
 /* =========================================
    @K-UNIQUE — AUTHENTICATION SYSTEM
    Firebase Authentication
-   ========================================= */
+   VERSION: 1.0.1
+========================================= */
 
-(function () {
+(function (window) {
   "use strict";
 
   const CONFIG = window.KUNIQUE_CONFIG;
+
   const AUTH = {
     initialized: false,
     available: false,
@@ -33,15 +35,17 @@
   function getFriendlyError(error) {
     const messages = {
       "auth/email-already-in-use": "This email is already registered.",
-      "auth/invalid-email": "Please enter a valid email address.",
-      "auth/weak-password": "Password must be at least 6 characters.",
+      "auth/invalid-email": "Enter a valid email address.",
+      "auth/weak-password": "Password must contain at least 6 characters.",
       "auth/user-not-found": "No account found with this email.",
       "auth/wrong-password": "Incorrect email or password.",
       "auth/invalid-credential": "Invalid email or password.",
-      "auth/too-many-requests": "Too many attempts. Please try again later.",
+      "auth/too-many-requests": "Too many attempts. Try again later.",
       "auth/popup-closed-by-user": "Google login was cancelled.",
+      "auth/popup-blocked": "Popup blocked. Trying redirect login.",
       "auth/network-request-failed": "Network error. Check your internet.",
-      "auth/operation-not-allowed": "This login method is not enabled in Firebase."
+      "auth/operation-not-allowed": "Enable this login method in Firebase.",
+      "auth/unauthorized-domain": "Add this website domain in Firebase Authorized Domains."
     };
 
     return messages[error?.code] || error?.message || "Authentication failed.";
@@ -50,7 +54,7 @@
   function ensureAvailable() {
     if (!AUTH.available || !AUTH.firebaseAuth) {
       throw new Error(
-        "Firebase Authentication is not ready. Check Firebase SDK and config.js."
+        "Firebase Authentication is not ready. Check SDK and config.js."
       );
     }
   }
@@ -68,8 +72,6 @@
   function initialize() {
     if (AUTH.initialized) return AUTH.available;
 
-    AUTH.initialized = true;
-
     if (!window.firebase) {
       console.error("[K-UNIQUE Auth] Firebase SDK not loaded.");
       return false;
@@ -78,9 +80,7 @@
     const firebaseConfig = getFirebaseConfig();
 
     if (!validateFirebaseConfig(firebaseConfig)) {
-      console.warn(
-        "[K-UNIQUE Auth] Add your real Firebase Web App configuration in config.js."
-      );
+      console.error("[K-UNIQUE Auth] Firebase config is incomplete.");
       return false;
     }
 
@@ -91,11 +91,12 @@
 
       AUTH.firebaseAuth = window.firebase.auth();
       AUTH.available = true;
+      AUTH.initialized = true;
 
       AUTH.firebaseAuth.setPersistence(
         window.firebase.auth.Auth.Persistence.LOCAL
       ).catch(error => {
-        console.warn("[K-UNIQUE Auth] Persistence:", error);
+        console.warn("[K-UNIQUE Auth] Persistence error:", error);
       });
 
       AUTH.firebaseAuth.onAuthStateChanged(user => {
@@ -103,11 +104,15 @@
       });
 
       console.log("[K-UNIQUE Auth] Firebase initialized.");
+
       return true;
 
     } catch (error) {
       console.error("[K-UNIQUE Auth] Initialization failed:", error);
+
       AUTH.available = false;
+      AUTH.initialized = false;
+
       return false;
     }
   }
@@ -116,10 +121,11 @@
     ensureAvailable();
 
     try {
-      const result = await AUTH.firebaseAuth.createUserWithEmailAndPassword(
-        email.trim(),
-        password
-      );
+      const result =
+        await AUTH.firebaseAuth.createUserWithEmailAndPassword(
+          email.trim(),
+          password
+        );
 
       if (displayName.trim()) {
         await result.user.updateProfile({
@@ -144,10 +150,11 @@
     ensureAvailable();
 
     try {
-      const result = await AUTH.firebaseAuth.signInWithEmailAndPassword(
-        email.trim(),
-        password
-      );
+      const result =
+        await AUTH.firebaseAuth.signInWithEmailAndPassword(
+          email.trim(),
+          password
+        );
 
       return {
         success: true,
@@ -164,19 +171,61 @@
     ensureAvailable();
 
     try {
-      const provider = new window.firebase.auth.GoogleAuthProvider();
+      const provider =
+        new window.firebase.auth.GoogleAuthProvider();
 
       provider.setCustomParameters({
         prompt: "select_account"
       });
 
-      const result = await AUTH.firebaseAuth.signInWithPopup(provider);
+      try {
+        const result =
+          await AUTH.firebaseAuth.signInWithPopup(provider);
 
-      return {
-        success: true,
-        user: result.user,
-        message: "Google login successful."
-      };
+        return {
+          success: true,
+          user: result.user,
+          message: "Google login successful."
+        };
+
+      } catch (error) {
+        if (
+          error.code === "auth/popup-blocked" ||
+          error.code === "auth/operation-not-supported-in-this-environment"
+        ) {
+          await AUTH.firebaseAuth.signInWithRedirect(provider);
+
+          return {
+            success: true,
+            redirecting: true,
+            message: "Redirecting to Google login."
+          };
+        }
+
+        throw error;
+      }
+
+    } catch (error) {
+      throw new Error(getFriendlyError(error));
+    }
+  }
+
+  async function handleRedirectResult() {
+    ensureAvailable();
+
+    try {
+      const result =
+        await AUTH.firebaseAuth.getRedirectResult();
+
+      if (result && result.user) {
+        return {
+          success: true,
+          user: result.user,
+          message: "Google login successful."
+        };
+      }
+
+      return { success: true, user: null };
 
     } catch (error) {
       throw new Error(getFriendlyError(error));
@@ -188,7 +237,11 @@
 
     try {
       await AUTH.firebaseAuth.signOut();
-      return { success: true, message: "Logged out successfully." };
+
+      return {
+        success: true,
+        message: "Logged out successfully."
+      };
 
     } catch (error) {
       throw new Error(getFriendlyError(error));
@@ -199,7 +252,9 @@
     ensureAvailable();
 
     try {
-      await AUTH.firebaseAuth.sendPasswordResetEmail(email.trim());
+      await AUTH.firebaseAuth.sendPasswordResetEmail(
+        email.trim()
+      );
 
       return {
         success: true,
@@ -214,7 +269,7 @@
   async function resendVerificationEmail() {
     ensureAvailable();
 
-    const user = AUTH.firebaseAuth.currentUser;
+    const user = getCurrentUser();
 
     if (!user) {
       throw new Error("Please login first.");
@@ -282,6 +337,7 @@
     register,
     login,
     googleLogin,
+    handleRedirectResult,
     logout,
     resetPassword,
     resendVerificationEmail,
@@ -299,5 +355,4 @@
 
   initialize();
 
-})();
-    
+})(window);
