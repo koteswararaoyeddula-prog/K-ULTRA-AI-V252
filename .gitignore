@@ -1,0 +1,24 @@
+
+# Dependencies
+node_modules/
+
+# Cloudflare
+.wrangler/
+
+# Secrets
+.dev.vars
+.env
+.env.*
+!.env.example
+
+# Logs
+npm-debug.log*
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Build output
+dist/
+build/
