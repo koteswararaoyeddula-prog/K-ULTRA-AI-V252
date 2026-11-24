@@ -1,28 +1,30 @@
 
 /* ============================================
    @K-UNIQUE — CLOUDFLARE WORKERS BACKEND
-   Version 1.0.0
+   VERSION: 1.1.0
+
    PRIMARY: Cloudflare Workers AI
-   FALLBACK: Google Gemini API
-   ============================================ */
+   FALLBACK: Google Gemini 2.5 Flash
+   AUTH: Firebase ID Token
+============================================ */
 
 const CONFIG = {
-  VERSION: "1.0.0",
+  VERSION: "1.1.0",
 
   AI_MODEL: "@cf/meta/llama-3.3-70b-instruct-fp8-fast",
-
   GEMINI_MODEL: "gemini-2.5-flash",
 
   MAX_MESSAGE_LENGTH: 12000,
   MAX_HISTORY: 20,
 
   AI_TIMEOUT: 45000,
-  GEMINI_TIMEOUT: 45000
+  GEMINI_TIMEOUT: 45000,
+  MAX_OUTPUT_TOKENS: 2048
 };
 
 /* ============================================
-   RESPONSE HELPERS
-   ============================================ */
+   JSON RESPONSE
+============================================ */
 
 function json(data, status = 200, headers = {}) {
   return new Response(JSON.stringify(data), {
@@ -35,10 +37,14 @@ function json(data, status = 200, headers = {}) {
   });
 }
 
+/* ============================================
+   CORS
+============================================ */
+
 function getCorsHeaders(request, env) {
   const origin = request.headers.get("Origin") || "";
 
-  const allowed = String(env.ALLOWED_ORIGINS || "*")
+  const allowed = String(env.ALLOWED_ORIGINS || "")
     .split(",")
     .map(value => value.trim())
     .filter(Boolean);
@@ -51,14 +57,14 @@ function getCorsHeaders(request, env) {
     permitted,
     headers: {
       "Access-Control-Allow-Origin":
-        allowed.includes("*") ? "*" : (permitted ? origin : "null"),
+        allowed.includes("*")
+          ? "*"
+          : permitted
+            ? origin
+            : "null",
 
-      "Access-Control-Allow-Methods":
-        "GET, POST, OPTIONS",
-
-      "Access-Control-Allow-Headers":
-        "Content-Type, Authorization",
-
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "Content-Type, Authorization",
       "Access-Control-Max-Age": "86400",
       "Vary": "Origin"
     }
@@ -66,8 +72,77 @@ function getCorsHeaders(request, env) {
 }
 
 /* ============================================
+   FIREBASE JWT HELPERS
+============================================ */
+
+function decodeBase64Url(value) {
+  let base64 = value
+    .replace(/-/g, "+")
+    .replace(/_/g, "/");
+
+  while (base64.length % 4) {
+    base64 += "=";
+  }
+
+  return atob(base64);
+}
+
+function decodeJwtPart(value) {
+  const decoded = decodeBase64Url(value);
+
+  const bytes = Uint8Array.from(
+    decoded,
+    character => character.charCodeAt(0)
+  );
+
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+/* ============================================
+   FIREBASE SIGNING KEY CACHE
+============================================ */
+
+let firebaseKeysCache = null;
+let firebaseKeysExpiry = 0;
+
+async function getFirebaseSigningKeys() {
+  const now = Date.now();
+
+  if (firebaseKeysCache && now < firebaseKeysExpiry) {
+    return firebaseKeysCache;
+  }
+
+  const response = await fetch(
+    "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to retrieve Firebase signing keys.");
+  }
+
+  const data = await response.json();
+
+  if (!Array.isArray(data.keys)) {
+    throw new Error("Invalid Firebase signing key response.");
+  }
+
+  firebaseKeysCache = data.keys;
+
+  const cacheControl = response.headers.get("Cache-Control") || "";
+  const maxAge = cacheControl.match(/max-age=(\d+)/i);
+
+  firebaseKeysExpiry = now + (
+    maxAge
+      ? Number(maxAge[1]) * 1000
+      : 3600000
+  );
+
+  return firebaseKeysCache;
+}
+
+/* ============================================
    FIREBASE TOKEN VERIFICATION
-   ============================================ */
+============================================ */
 
 async function verifyFirebaseToken(request, env) {
   const projectId = env.FIREBASE_PROJECT_ID;
@@ -76,7 +151,8 @@ async function verifyFirebaseToken(request, env) {
     throw new Error("Firebase project ID is not configured.");
   }
 
-  const authorization = request.headers.get("Authorization") || "";
+  const authorization =
+    request.headers.get("Authorization") || "";
 
   if (!authorization.startsWith("Bearer ")) {
     throw new Error("Authentication required.");
@@ -86,51 +162,53 @@ async function verifyFirebaseToken(request, env) {
   const parts = token.split(".");
 
   if (parts.length !== 3) {
-    throw new Error("Invalid authentication token.");
+    throw new Error("Invalid Firebase token.");
   }
 
   let header;
   let payload;
 
   try {
-    header = JSON.parse(atob(parts[0].replace(/-/g, "+").replace(/_/g, "/")));
-    payload = JSON.parse(atob(parts[1].replace(/-/g, "+").replace(/_/g, "/")));
+    header = decodeJwtPart(parts[0]);
+    payload = decodeJwtPart(parts[1]);
   } catch {
-    throw new Error("Invalid authentication token.");
+    throw new Error("Invalid Firebase token format.");
   }
 
-  if (header.alg !== "RS256" || !header.kid) {
-    throw new Error("Invalid token signature type.");
+  if (
+    header.alg !== "RS256" ||
+    !header.kid
+  ) {
+    throw new Error("Unsupported token signature.");
   }
 
   const now = Math.floor(Date.now() / 1000);
 
   if (
     payload.aud !== projectId ||
-    payload.iss !== `https://securetoken.google.com/${projectId}` ||
-    !payload.sub ||
+    payload.iss !==
+      `https://securetoken.google.com/${projectId}` ||
+    typeof payload.sub !== "string" ||
+    payload.sub.length === 0 ||
     payload.exp <= now ||
-    payload.iat > now + 60
+    payload.iat > now + 60 ||
+    !payload.auth_time ||
+    payload.auth_time > now
   ) {
-    throw new Error("Authentication token is expired or invalid.");
+    throw new Error("Firebase token is expired or invalid.");
   }
 
-  const keyResponse = await fetch(
-    "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com"
-  );
+  const keys = await getFirebaseSigningKeys();
 
-  if (!keyResponse.ok) {
-    throw new Error("Could not verify Firebase signing keys.");
-  }
-
-  const keyData = await keyResponse.json();
-
-  const jwk = keyData.keys.find(
+  const jwk = keys.find(
     key => key.kid === header.kid
   );
 
   if (!jwk) {
-    throw new Error("Unknown Firebase signing key.");
+    firebaseKeysCache = null;
+    firebaseKeysExpiry = 0;
+
+    throw new Error("Firebase signing key not found.");
   }
 
   const publicKey = await crypto.subtle.importKey(
@@ -144,12 +222,8 @@ async function verifyFirebaseToken(request, env) {
     ["verify"]
   );
 
-  const base64 = parts[2]
-    .replace(/-/g, "+")
-    .replace(/_/g, "/");
-
-  const signature = Uint8Array.from(
-    atob(base64),
+  const signatureBytes = Uint8Array.from(
+    decodeBase64Url(parts[2]),
     character => character.charCodeAt(0)
   );
 
@@ -160,20 +234,20 @@ async function verifyFirebaseToken(request, env) {
   const valid = await crypto.subtle.verify(
     "RSASSA-PKCS1-v1_5",
     publicKey,
-    signature,
+    signatureBytes,
     signedData
   );
 
   if (!valid) {
-    throw new Error("Firebase token signature verification failed.");
+    throw new Error("Firebase token signature is invalid.");
   }
 
   return payload;
 }
 
 /* ============================================
-   AI INPUT HELPERS
-   ============================================ */
+   HISTORY CLEANER
+============================================ */
 
 function cleanHistory(history) {
   if (!Array.isArray(history)) return [];
@@ -186,12 +260,19 @@ function cleanHistory(history) {
       typeof item.content === "string"
     )
     .map(item => ({
-      role: item.role === "assistant" || item.role === "model"
-        ? "assistant"
-        : "user",
-      content: item.content.slice(0, CONFIG.MAX_MESSAGE_LENGTH)
+      role:
+        item.role === "assistant" || item.role === "model"
+          ? "assistant"
+          : "user",
+
+      content: item.content
+        .slice(0, CONFIG.MAX_MESSAGE_LENGTH)
     }));
 }
+
+/* ============================================
+   WORKERS AI RESPONSE EXTRACTOR
+============================================ */
 
 function extractWorkersAIResponse(result) {
   if (typeof result === "string") {
@@ -209,24 +290,28 @@ function extractWorkersAIResponse(result) {
 
 /* ============================================
    PRIMARY AI — CLOUDFLARE WORKERS AI
-   ============================================ */
+============================================ */
 
 async function callWorkersAI(env, messages) {
   if (!env.AI) {
-    throw new Error("Cloudflare Workers AI binding is missing.");
+    throw new Error("Workers AI binding is missing.");
   }
-
-  const operation = env.AI.run(CONFIG.AI_MODEL, {
-    messages,
-    max_tokens: 2048,
-    temperature: 0.7
-  });
 
   let timer;
 
   try {
+    const operation = env.AI.run(
+      CONFIG.AI_MODEL,
+      {
+        messages,
+        max_tokens: CONFIG.MAX_OUTPUT_TOKENS,
+        temperature: 0.7
+      }
+    );
+
     const result = await Promise.race([
       operation,
+
       new Promise((_, reject) => {
         timer = setTimeout(
           () => reject(new Error("Workers AI timeout.")),
@@ -235,22 +320,22 @@ async function callWorkersAI(env, messages) {
       })
     ]);
 
-    const response = extractWorkersAIResponse(result);
+    const answer = extractWorkersAIResponse(result);
 
-    if (!response || typeof response !== "string") {
+    if (!answer || typeof answer !== "string") {
       throw new Error("Workers AI returned an empty response.");
     }
 
-    return response.trim();
+    return answer.trim();
 
   } finally {
-    clearTimeout(timer);
+    if (timer) clearTimeout(timer);
   }
 }
 
 /* ============================================
    SECONDARY AI — GOOGLE GEMINI
-   ============================================ */
+============================================ */
 
 async function callGemini(env, messages) {
   const apiKey = env.GEMINI_API_KEY;
@@ -259,7 +344,15 @@ async function callGemini(env, messages) {
     throw new Error("Gemini API secret is not configured.");
   }
 
-  const contents = messages.map(item => ({
+  const systemMessage = messages.find(
+    item => item.role === "system"
+  );
+
+  const conversationMessages = messages.filter(
+    item => item.role !== "system"
+  );
+
+  const contents = conversationMessages.map(item => ({
     role: item.role === "assistant" ? "model" : "user",
     parts: [{ text: item.content }]
   }));
@@ -276,17 +369,27 @@ async function callGemini(env, messages) {
       `https://generativelanguage.googleapis.com/v1beta/models/${CONFIG.GEMINI_MODEL}:generateContent`,
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json",
           "x-goog-api-key": apiKey
         },
+
         body: JSON.stringify({
+          systemInstruction: systemMessage
+            ? {
+                parts: [{ text: systemMessage.content }]
+              }
+            : undefined,
+
           contents,
+
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 2048
+            maxOutputTokens: CONFIG.MAX_OUTPUT_TOKENS
           }
         }),
+
         signal: controller.signal
       }
     );
@@ -295,19 +398,20 @@ async function callGemini(env, messages) {
 
     if (!response.ok) {
       throw new Error(
-        data?.error?.message || `Gemini HTTP ${response.status}`
+        data?.error?.message ||
+        `Gemini HTTP ${response.status}`
       );
     }
 
-    const text = data?.candidates?.[0]?.content?.parts
+    const answer = data?.candidates?.[0]?.content?.parts
       ?.map(part => part.text || "")
       .join("");
 
-    if (!text) {
+    if (!answer || !answer.trim()) {
       throw new Error("Gemini returned an empty response.");
     }
 
-    return text.trim();
+    return answer.trim();
 
   } finally {
     clearTimeout(timer);
@@ -316,8 +420,8 @@ async function callGemini(env, messages) {
 
 /* ============================================
    AI PROVIDER ROUTER
-   PRIMARY FIRST, FALLBACK ONLY ON FAILURE
-   ============================================ */
+   WORKERS AI FIRST — GEMINI SECOND
+============================================ */
 
 async function generateAIResponse(env, message, history) {
   const messages = [
@@ -325,16 +429,19 @@ async function generateAIResponse(env, message, history) {
       role: "system",
       content:
         "You are @K-UNIQUE AI, a helpful, intelligent, " +
-        "multilingual AI assistant. Give clear and accurate answers."
+        "multilingual AI assistant. Answer clearly and accurately. " +
+        "Follow the user's requested language whenever possible."
     },
+
     ...history,
+
     {
       role: "user",
       content: message
     }
   ];
 
-  // First attempt: Cloudflare Workers AI.
+  // PRIMARY PROVIDER
   try {
     const response = await callWorkersAI(env, messages);
 
@@ -344,14 +451,14 @@ async function generateAIResponse(env, message, history) {
       fallbackUsed: false
     };
 
-  } catch (primaryError) {
+  } catch (error) {
     console.error(
-      "[K-UNIQUE] Primary AI failed:",
-      primaryError.message
+      "[K-UNIQUE] Workers AI failed:",
+      error.message
     );
   }
 
-  // Second attempt: Gemini only if primary fails.
+  // FALLBACK PROVIDER
   try {
     const response = await callGemini(env, messages);
 
@@ -361,21 +468,19 @@ async function generateAIResponse(env, message, history) {
       fallbackUsed: true
     };
 
-  } catch (fallbackError) {
+  } catch (error) {
     console.error(
       "[K-UNIQUE] Gemini fallback failed:",
-      fallbackError.message
+      error.message
     );
 
-    throw new Error(
-      "Both AI providers are currently unavailable."
-    );
+    throw new Error("Both AI providers are unavailable.");
   }
 }
 
 /* ============================================
    CHAT ENDPOINT
-   ============================================ */
+============================================ */
 
 async function handleChat(request, env) {
   let body;
@@ -383,19 +488,29 @@ async function handleChat(request, env) {
   try {
     body = await request.json();
   } catch {
-    return json({ success: false, error: "Invalid JSON body." }, 400);
+    return json({
+      success: false,
+      error: "Invalid JSON body."
+    }, 400);
   }
 
-  const message = typeof body.message === "string"
-    ? body.message.trim()
-    : "";
+  const message =
+    typeof body.message === "string"
+      ? body.message.trim()
+      : "";
 
   if (!message) {
-    return json({ success: false, error: "Message is required." }, 400);
+    return json({
+      success: false,
+      error: "Message is required."
+    }, 400);
   }
 
   if (message.length > CONFIG.MAX_MESSAGE_LENGTH) {
-    return json({ success: false, error: "Message is too long." }, 413);
+    return json({
+      success: false,
+      error: "Message is too long."
+    }, 413);
   }
 
   const history = cleanHistory(body.history);
@@ -427,7 +542,7 @@ async function handleChat(request, env) {
 
 /* ============================================
    HEALTH CHECK
-   ============================================ */
+============================================ */
 
 function handleHealth(env) {
   return json({
@@ -437,13 +552,14 @@ function handleHealth(env) {
     status: "online",
     workersAI: Boolean(env.AI),
     geminiConfigured: Boolean(env.GEMINI_API_KEY),
+    authenticationConfigured: Boolean(env.FIREBASE_PROJECT_ID),
     timestamp: new Date().toISOString()
   });
 }
 
 /* ============================================
    MAIN ROUTER
-   ============================================ */
+============================================ */
 
 export default {
   async fetch(request, env) {
@@ -453,10 +569,10 @@ export default {
     const cors = getCorsHeaders(request, env);
 
     if (!cors.permitted) {
-      return json(
-        { success: false, error: "Origin not allowed." },
-        403
-      );
+      return json({
+        success: false,
+        error: "Origin not allowed."
+      }, 403);
     }
 
     if (request.method === "OPTIONS") {
@@ -469,14 +585,23 @@ export default {
     let response;
 
     try {
-      if (request.method === "GET" && path === "/api/health") {
+      if (
+        request.method === "GET" &&
+        path === "/api/health"
+      ) {
         response = handleHealth(env);
 
-      } else if (request.method === "POST" && path === "/api/chat") {
+      } else if (
+        request.method === "POST" &&
+        path === "/api/chat"
+      ) {
+        const authRequired =
+          String(env.REQUIRE_AUTH).toLowerCase() === "true";
 
-        if (env.REQUIRE_AUTH === "true") {
+        if (authRequired) {
           try {
             await verifyFirebaseToken(request, env);
+
           } catch (error) {
             response = json({
               success: false,
@@ -518,4 +643,4 @@ export default {
     });
   }
 };
-    
+       
