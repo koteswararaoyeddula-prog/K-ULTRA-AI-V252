@@ -1,0 +1,26 @@
+
+/* Additional responsive refinements */
+@media(min-width:1600px){
+  .page-content{padding:45px}
+  .modules-grid{gap:20px}
+  .module-card{min-height:215px;padding:23px}
+}
+@media(max-width:480px){
+  .topbar-actions{gap:7px}
+  .breadcrumb{font-size:9px}
+  .welcome-section p{font-size:10px}
+  .hero-content h2{font-size:30px}
+  .hero-content p{font-size:10px}
+  .hero-card{min-height:300px}
+  .section-heading h2{font-size:16px}
+  .stat-card strong{font-size:22px}
+  .module-card h3{font-size:12px}
+  .module-card p{font-size:9px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    scroll-behavior:auto!important;
+    animation-duration:.01ms!important;
+    transition-duration:.01ms!important;
+  }
+}
