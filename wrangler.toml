@@ -17,7 +17,7 @@ binding = "AI"
 # Environment variables
 [vars]
 
-FIREBASE_PROJECT_ID = "YOUR_FIREBASE_PROJECT_ID"
+FIREBASE_PROJECT_ID = "k-ultra-ai-v252"
 
 REQUIRE_AUTH = "true"
 
