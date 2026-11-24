@@ -1,417 +1,322 @@
 
-/* =========================================
-   @K-UNIQUE — AI CHAT ENGINE
-   Version 1.0.0
-   ========================================= */
+/* ============================================
+   @K-UNIQUE AI CHAT
+   VERSION: 1.0.0
+   FILE: assets/js/chat.js
+============================================ */
 
-(function () {
+(function (window) {
   "use strict";
 
-  const CONFIG = window.KUNIQUE_CONFIG || {};
+  const API = window.KUNIQUE_API;
+
+  if (!API) {
+    console.error("[K-UNIQUE] API connector not loaded.");
+    return;
+  }
 
   const CHAT = {
     history: [],
-    isSending: false,
-    maxHistory: CONFIG.AI?.CHAT?.MAX_HISTORY || 20,
-    elements: {},
-    initialized: false
+    busy: false,
+    storageKey: "kunique_chat_history"
   };
 
-  const SELECTORS = {
-    input: [
-      "#chatInput",
-      "#messageInput",
-      "[data-chat-input]"
-    ],
-    send: [
-      "#sendMessage",
-      "#sendButton",
-      "[data-chat-send]"
-    ],
-    messages: [
-      "#chatMessages",
-      "#messagesContainer",
-      "[data-chat-messages]"
-    ],
-    newChat: [
-      "#newChat",
-      "[data-new-chat]"
-    ]
-  };
+  const elements = {};
 
-  function findElement(selectors) {
-    for (const selector of selectors) {
-      const element = document.querySelector(selector);
-      if (element) return element;
-    }
-    return null;
-  }
-
-  function cacheElements() {
-    CHAT.elements.input = findElement(SELECTORS.input);
-    CHAT.elements.send = findElement(SELECTORS.send);
-    CHAT.elements.messages = findElement(SELECTORS.messages);
-    CHAT.elements.newChat = findElement(SELECTORS.newChat);
-  }
-
-  function createId() {
-    return "msg_" + Date.now() + "_" +
-      Math.random().toString(36).slice(2, 8);
+  function getElements() {
+    elements.form = document.getElementById("chatForm");
+    elements.input = document.getElementById("messageInput");
+    elements.send = document.getElementById("sendBtn");
+    elements.messages = document.getElementById("messageContainer");
+    elements.welcome = document.getElementById("welcomeScreen");
   }
 
   function saveHistory() {
     try {
-      const safeHistory = CHAT.history.slice(-CHAT.maxHistory);
-
-      sessionStorage.setItem(
-        "kunique_chat_history",
-        JSON.stringify(safeHistory)
+      localStorage.setItem(
+        CHAT.storageKey,
+        JSON.stringify(CHAT.history.slice(-50))
       );
     } catch (error) {
-      console.warn("[K-UNIQUE Chat] History could not be saved.", error);
+      console.warn("[K-UNIQUE] Could not save history:", error);
     }
   }
 
   function loadHistory() {
     try {
-      const saved = sessionStorage.getItem("kunique_chat_history");
+      const saved = localStorage.getItem(CHAT.storageKey);
+      const parsed = saved ? JSON.parse(saved) : [];
 
-      if (!saved) return;
-
-      const parsed = JSON.parse(saved);
-
-      if (Array.isArray(parsed)) {
-        CHAT.history = parsed
-          .filter(item =>
+      CHAT.history = Array.isArray(parsed)
+        ? parsed.filter(item =>
             item &&
             ["user", "assistant"].includes(item.role) &&
             typeof item.content === "string"
-          )
-          .slice(-CHAT.maxHistory);
-      }
+          ).slice(-50)
+        : [];
     } catch (error) {
-      console.warn("[K-UNIQUE Chat] Could not load history.", error);
       CHAT.history = [];
     }
   }
 
-  function scrollToBottom() {
-    const container = CHAT.elements.messages;
-    if (!container) return;
+  function createMessage(role, content) {
+    const message = document.createElement("div");
 
-    container.scrollTop = container.scrollHeight;
-  }
+    message.className = "chat-message " + role;
+    message.textContent = content;
 
-  function createMessageElement(role, content, id) {
-    const wrapper = document.createElement("article");
-    wrapper.className = "chat-message " + role + "-message";
-    wrapper.dataset.messageId = id || createId();
-
-    const avatar = document.createElement("div");
-    avatar.className = "message-avatar";
-    avatar.textContent = role === "user" ? "You" : "AI";
-
-    const body = document.createElement("div");
-    body.className = "message-body";
-
-    const heading = document.createElement("div");
-    heading.className = "message-author";
-    heading.textContent = role === "user" ? "You" : "@K-UNIQUE AI";
-
-    const text = document.createElement("div");
-    text.className = "message-content";
-    text.textContent = content;
-
-    body.append(heading, text);
-    wrapper.append(avatar, body);
-
-    if (role === "assistant") {
-      const actions = document.createElement("div");
-      actions.className = "message-actions";
-
-      const copyButton = document.createElement("button");
-      copyButton.type = "button";
-      copyButton.className = "copy-message";
-      copyButton.textContent = "Copy";
-      copyButton.addEventListener("click", () => {
-        copyText(content, copyButton);
-      });
-
-      actions.append(copyButton);
-      body.append(actions);
-    }
-
-    return wrapper;
-  }
-
-  async function copyText(value, button) {
-    try {
-      await navigator.clipboard.writeText(value);
-
-      if (button) {
-        const previous = button.textContent;
-        button.textContent = "Copied!";
-        setTimeout(() => {
-          button.textContent = previous;
-        }, 1500);
-      }
-    } catch (error) {
-      console.error("[K-UNIQUE Chat] Copy failed:", error);
-    }
-  }
-
-  function renderMessage(message) {
-    const container = CHAT.elements.messages;
-    if (!container) return;
-
-    const element = createMessageElement(
-      message.role,
-      message.content,
-      message.id
-    );
-
-    container.appendChild(element);
-    scrollToBottom();
-  }
-
-  function renderHistory() {
-    const container = CHAT.elements.messages;
-    if (!container) return;
-
-    container.replaceChildren();
-
-    CHAT.history.forEach(renderMessage);
-  }
-
-  function addMessage(role, content) {
-    const message = {
-      id: createId(),
-      role,
-      content: String(content),
-      timestamp: Date.now()
-    };
-
-    CHAT.history.push(message);
-    CHAT.history = CHAT.history.slice(-CHAT.maxHistory);
-
-    renderMessage(message);
-    saveHistory();
+    elements.messages.appendChild(message);
 
     return message;
   }
 
-  function showTyping() {
-    const container = CHAT.elements.messages;
-    if (!container) return;
+  function scrollToBottom() {
+    requestAnimationFrame(() => {
+      elements.messages.scrollTop =
+        elements.messages.scrollHeight;
 
-    removeTyping();
-
-    const typing = document.createElement("div");
-    typing.className = "chat-typing";
-    typing.id = "kuniqueTypingIndicator";
-    typing.textContent = "@K-UNIQUE AI is thinking...";
-
-    container.appendChild(typing);
-    scrollToBottom();
-  }
-
-  function removeTyping() {
-    document.getElementById("kuniqueTypingIndicator")?.remove();
-  }
-
-  function setSendingState(sending) {
-    CHAT.isSending = sending;
-
-    if (CHAT.elements.send) {
-      CHAT.elements.send.disabled = sending;
-      CHAT.elements.send.textContent = sending ? "Sending..." : "Send";
-    }
-
-    if (CHAT.elements.input) {
-      CHAT.elements.input.disabled = sending;
-    }
-  }
-
-  function getConversationHistory() {
-    return CHAT.history
-      .filter(item => ["user", "assistant"].includes(item.role))
-      .slice(-CHAT.maxHistory)
-      .map(item => ({
-        role: item.role,
-        content: item.content
-      }));
-  }
-
-  async function requestAI(message) {
-    if (!window.KUNIQUE_API?.chat) {
-      throw new Error("AI API connector is not loaded.");
-    }
-
-    const history = getConversationHistory();
-
-    // Current user message is already in history.
-    return window.KUNIQUE_API.chat({
-      message,
-      history,
-      provider: "auto"
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
     });
   }
 
-  function extractAIResponse(result) {
-    if (typeof result === "string") return result;
+  function renderHistory() {
+    elements.messages.innerHTML = "";
 
-    if (!result || typeof result !== "object") {
-      throw new Error("The AI returned an empty response.");
-    }
-
-    const response =
-      result.response ??
-      result.message ??
-      result.content ??
-      result.text ??
-      result.data?.response ??
-      result.data?.message;
-
-    if (typeof response === "string" && response.trim()) {
-      return response.trim();
-    }
-
-    throw new Error("Could not read the AI response.");
-  }
-
-  async function sendMessage(value) {
-    const message = String(value || "").trim();
-
-    if (!message || CHAT.isSending) return;
-
-    const maxLength = CONFIG.AI?.CHAT?.MAX_MESSAGE_LENGTH || 12000;
-
-    if (message.length > maxLength) {
-      addMessage(
-        "assistant",
-        "Your message is too long. Please keep it under " +
-        maxLength + " characters."
-      );
+    if (CHAT.history.length > 0) {
+      elements.welcome.hidden = true;
+    } else {
+      elements.welcome.hidden = false;
       return;
     }
 
-    if (CHAT.elements.input) {
-      CHAT.elements.input.value = "";
-    }
+    CHAT.history.forEach(item => {
+      createMessage(item.role, item.content);
+    });
 
-    addMessage("user", message);
-    setSendingState(true);
-    showTyping();
-
-    try {
-      const result = await requestAI(message);
-      const response = extractAIResponse(result);
-
-      removeTyping();
-      addMessage("assistant", response);
-
-    } catch (error) {
-      removeTyping();
-
-      console.error("[K-UNIQUE Chat] AI request failed:", error);
-
-      addMessage(
-        "assistant",
-        "Sorry, I couldn't get a response right now. " +
-        (error.message || "Please try again.")
-      );
-
-    } finally {
-      removeTyping();
-      setSendingState(false);
-
-      if (CHAT.elements.input) {
-        CHAT.elements.input.focus();
-      }
-    }
+    scrollToBottom();
   }
 
-  function clearChat() {
-    CHAT.history = [];
+  function setBusy(busy) {
+    CHAT.busy = busy;
+    elements.send.disabled = busy;
+    elements.input.disabled = busy;
 
-    try {
-      sessionStorage.removeItem("kunique_chat_history");
-    } catch (error) {
-      console.warn("[K-UNIQUE Chat] Could not clear saved history.");
-    }
-
-    if (CHAT.elements.messages) {
-      CHAT.elements.messages.replaceChildren();
-    }
-
-    window.dispatchEvent(
-      new CustomEvent("kunique:new-chat")
+    elements.send.textContent = busy ? "…" : "➤";
+    elements.send.setAttribute(
+      "aria-label",
+      busy ? "Sending message" : "Send message"
     );
   }
 
-  function bindEvents() {
-    const input = CHAT.elements.input;
-    const send = CHAT.elements.send;
-    const newChat = CHAT.elements.newChat;
+  async function sendMessage(rawMessage) {
+    const message = rawMessage.trim();
 
-    if (send) {
-      send.addEventListener("click", () => {
-        sendMessage(input?.value || "");
-      });
+    if (!message || CHAT.busy) return;
+
+    if (message.length > 12000) {
+      alert("Message is too long. Maximum 12000 characters.");
+      return;
     }
 
-    if (input) {
-      input.addEventListener("keydown", event => {
-        if (event.key === "Enter" && !event.shiftKey) {
-          event.preventDefault();
-          sendMessage(input.value);
-        }
-      });
-    }
+    elements.welcome.hidden = true;
 
-    if (newChat) {
-      newChat.addEventListener("click", clearChat);
+    CHAT.history.push({
+      role: "user",
+      content: message
+    });
+
+    createMessage("user", message);
+
+    elements.input.value = "";
+    elements.input.style.height = "auto";
+
+    saveHistory();
+    scrollToBottom();
+
+    const loadingMessage = createMessage(
+      "assistant",
+      "Thinking..."
+    );
+
+    setBusy(true);
+
+    try {
+      // Exclude the latest user message from history because
+      // the API sends it separately as "message".
+      const previousHistory = CHAT.history
+        .slice(0, -1)
+        .slice(-20);
+
+      const response = await API.chat(
+        message,
+        previousHistory
+      );
+
+      loadingMessage.remove();
+
+      const answer =
+        response?.reply ||
+        response?.response ||
+        response?.message ||
+        response?.data?.reply ||
+        response?.data?.response ||
+        (typeof response === "string" ? response : "");
+
+      if (!answer) {
+        throw new Error(
+          response?.error || "AI returned an empty response."
+        );
+      }
+
+      const finalAnswer = String(answer);
+
+      CHAT.history.push({
+        role: "assistant",
+        content: finalAnswer
+      });
+
+      createMessage("assistant", finalAnswer);
+
+      saveHistory();
+      scrollToBottom();
+
+    } catch (error) {
+      loadingMessage.textContent =
+        "Error: " + (error.message || "Unable to contact AI.");
+
+      console.error("[K-UNIQUE] Chat error:", error);
+
+    } finally {
+      setBusy(false);
+      elements.input.focus();
     }
   }
 
-  function initialize() {
-    if (CHAT.initialized) return;
+  function newChat() {
+    if (CHAT.busy) return;
 
-    cacheElements();
+    CHAT.history = [];
+    saveHistory();
 
-    if (!CHAT.elements.input || !CHAT.elements.messages) {
-      console.info(
-        "[K-UNIQUE Chat] Chat UI elements not found yet. " +
-        "Call KUNIQUE_CHAT.initialize() after rendering the chat page."
-      );
+    elements.messages.innerHTML = "";
+    elements.welcome.hidden = false;
+    elements.input.value = "";
+    elements.input.focus();
+  }
+
+  function clearHistory() {
+    if (!confirm("Clear all chat history?")) return;
+    newChat();
+  }
+
+  function showHistory() {
+    const historyList = document.getElementById("historyList");
+
+    if (!historyList) return;
+
+    historyList.innerHTML = "";
+
+    if (!CHAT.history.length) {
+      const empty = document.createElement("p");
+      empty.textContent = "No chat history yet.";
+      historyList.appendChild(empty);
+      return;
+    }
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent =
+      CHAT.history[0].content.slice(0, 70);
+
+    button.addEventListener("click", () => {
+      renderHistory();
+
+      const aiPage = document.getElementById("aiPage");
+      const historyPage = document.getElementById("historyPage");
+
+      if (aiPage) aiPage.hidden = false;
+      if (historyPage) historyPage.hidden = true;
+    });
+
+    historyList.appendChild(button);
+  }
+
+  function bindEvents() {
+    elements.form.addEventListener("submit", event => {
+      event.preventDefault();
+      sendMessage(elements.input.value);
+    });
+
+    elements.input.addEventListener("keydown", event => {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !event.isComposing
+      ) {
+        event.preventDefault();
+        elements.form.requestSubmit();
+      }
+    });
+
+    elements.input.addEventListener("input", () => {
+      elements.input.style.height = "auto";
+      elements.input.style.height =
+        Math.min(elements.input.scrollHeight, 180) + "px";
+    });
+
+    document.getElementById("newChatBtn")
+      ?.addEventListener("click", newChat);
+
+    document.getElementById("clearHistoryBtn")
+      ?.addEventListener("click", clearHistory);
+
+    document.querySelectorAll("[data-prompt]")
+      .forEach(button => {
+        button.addEventListener("click", () => {
+          sendMessage(button.dataset.prompt || "");
+        });
+      });
+
+    document.getElementById("historyPage")
+      ?.addEventListener("click", showHistory);
+  }
+
+  function init() {
+    getElements();
+
+    if (
+      !elements.form ||
+      !elements.input ||
+      !elements.send ||
+      !elements.messages ||
+      !elements.welcome
+    ) {
+      console.error("[K-UNIQUE] Chat HTML elements are missing.");
       return;
     }
 
     loadHistory();
-    renderHistory();
     bindEvents();
+    renderHistory();
 
-    CHAT.initialized = true;
-
-    console.log("[K-UNIQUE Chat] Chat engine initialized.");
+    console.log("[K-UNIQUE] AI Chat initialized.");
   }
 
   window.KUNIQUE_CHAT = Object.freeze({
-    initialize,
+    init,
     sendMessage,
-    clearChat,
-    getHistory: () => [...CHAT.history],
-    get isSending() {
-      return CHAT.isSending;
-    }
+    newChat,
+    clearHistory,
+    getHistory: () => CHAT.history.slice()
   });
 
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initialize, {
-      once: true
-    });
+    document.addEventListener("DOMContentLoaded", init, { once: true });
   } else {
-    initialize();
+    init();
   }
 
-})();
+})(window);
