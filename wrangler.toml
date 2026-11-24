@@ -23,4 +23,4 @@ REQUIRE_AUTH = "true"
 
 # Initial testing only.
 # Replace * with your actual website domain before production.
-ALLOWED_ORIGINS = "*"
+ALLOWED_ORIGINS = "https://koteswararaoyeddula-prog.github.io"
