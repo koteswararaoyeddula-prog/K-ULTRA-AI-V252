@@ -4,16 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080d1c">
-  <title>@K-UNIQUE AI</title>
 
+  <meta name="theme-color" content="#080d1c">
+  <meta name="description" content="@K-UNIQUE AI - Your intelligent AI assistant for chat, coding, research and creativity.">
+
+  <title>@K-UNIQUE AI — Ultimate AI Assistant</title>
+
+  <!-- STYLESHEETS -->
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="assets/css/responsive.css">
   <link rel="stylesheet" href="assets/css/themes.css">
 
+  <!-- FIREBASE SDK -->
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
 
+  <!-- APPLICATION SCRIPTS -->
   <script defer src="assets/js/config.js"></script>
   <script defer src="assets/js/api.js"></script>
   <script defer src="assets/js/auth.js"></script>
@@ -22,86 +28,241 @@
 </head>
 
 <body>
+
   <div class="app-container">
 
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
+
       <div class="sidebar-header">
         <h2>@K-UNIQUE</h2>
-        <button id="closeSidebar" aria-label="Close menu">×</button>
+
+        <button
+          type="button"
+          id="closeSidebar"
+          aria-label="Close menu"
+          aria-controls="sidebar"
+        >×</button>
       </div>
 
-      <button class="new-chat-btn" id="newChatBtn">
+      <button
+        type="button"
+        class="new-chat-btn"
+        id="newChatBtn"
+      >
         + New Chat
       </button>
 
-      <nav class="sidebar-nav">
-        <button class="nav-item active" data-page="ai">🤖 AI Chat</button>
-        <button class="nav-item" data-page="history">🕘 History</button>
-        <button class="nav-item" data-page="settings">⚙️ Settings</button>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+
+        <button
+          type="button"
+          class="nav-item active"
+          data-page="ai"
+        >
+          🤖 AI Chat
+        </button>
+
+        <button
+          type="button"
+          class="nav-item"
+          data-page="history"
+        >
+          🕘 History
+        </button>
+
+        <button
+          type="button"
+          class="nav-item"
+          data-page="settings"
+        >
+          ⚙️ Settings
+        </button>
+
       </nav>
 
       <div class="sidebar-footer">
-        <div id="connectionStatus">Checking connection...</div>
-        <button id="themeToggle">🌙 Theme</button>
-      </div>
-    </aside>
 
-    <main class="main-content">
-      <header class="topbar">
-        <button id="menuToggle" aria-label="Open menu">☰</button>
-        <h3>@K-UNIQUE AI</h3>
-        <div id="userStatus">Guest</div>
-      </header>
-
-      <section class="chat-page" id="aiPage">
-        <div class="welcome-screen" id="welcomeScreen">
-          <h1>Welcome to @K-UNIQUE AI</h1>
-          <p>Your intelligent AI assistant.</p>
-
-          <div class="suggestion-grid">
-            <button class="suggestion" data-prompt="Explain artificial intelligence simply">
-              Explain AI
-            </button>
-            <button class="suggestion" data-prompt="Write a professional email">
-              Write an email
-            </button>
-            <button class="suggestion" data-prompt="Help me build a website">
-              Build a website
-            </button>
-            <button class="suggestion" data-prompt="Write JavaScript code for beginners">
-              Write code
-            </button>
-          </div>
+        <div id="connectionStatus" role="status">
+          Checking connection...
         </div>
 
-        <div class="message-container" id="messageContainer"></div>
+        <button
+          type="button"
+          id="themeToggle"
+          aria-label="Toggle theme"
+        >
+          🌙 Theme
+        </button>
 
+      </div>
+
+    </aside>
+
+    <!-- MOBILE SIDEBAR BACKDROP -->
+    <div
+      class="sidebar-backdrop"
+      id="sidebarBackdrop"
+      aria-hidden="true"
+    ></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+
+        <button
+          type="button"
+          id="menuToggle"
+          aria-label="Open menu"
+          aria-controls="sidebar"
+          aria-expanded="false"
+        >
+          ☰
+        </button>
+
+        <h3>@K-UNIQUE AI</h3>
+
+        <div id="userStatus" aria-live="polite">
+          Guest
+        </div>
+
+      </header>
+
+      <!-- AI CHAT PAGE -->
+      <section
+        class="chat-page"
+        id="aiPage"
+        aria-label="AI Chat"
+      >
+
+        <!-- WELCOME SCREEN -->
+        <div class="welcome-screen" id="welcomeScreen">
+
+          <h1>Welcome to @K-UNIQUE AI</h1>
+
+          <p>
+            Your intelligent AI assistant.
+            Ask anything, create anything.
+          </p>
+
+          <div class="suggestion-grid">
+
+            <button
+              type="button"
+              class="suggestion"
+              data-prompt="Explain artificial intelligence simply"
+            >
+              🤖 Explain AI
+            </button>
+
+            <button
+              type="button"
+              class="suggestion"
+              data-prompt="Write a professional email"
+            >
+              ✉️ Write an email
+            </button>
+
+            <button
+              type="button"
+              class="suggestion"
+              data-prompt="Help me build a website"
+            >
+              🌐 Build a website
+            </button>
+
+            <button
+              type="button"
+              class="suggestion"
+              data-prompt="Write JavaScript code for beginners"
+            >
+              💻 Write code
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- CHAT MESSAGES -->
+        <div
+          class="message-container"
+          id="messageContainer"
+          aria-live="polite"
+          aria-label="Conversation messages"
+        ></div>
+
+        <!-- CHAT INPUT -->
         <div class="chat-input-area">
+
           <form id="chatForm">
+
             <textarea
               id="messageInput"
               placeholder="Message @K-UNIQUE AI..."
               rows="1"
               maxlength="12000"
+              aria-label="Enter your message"
               required
             ></textarea>
-            <button type="submit" id="sendBtn">➤</button>
+
+            <button
+              type="submit"
+              id="sendBtn"
+              aria-label="Send message"
+            >
+              ➤
+            </button>
+
           </form>
-          <p>AI can make mistakes. Verify important information.</p>
+
+          <p>
+            AI can make mistakes. Verify important information.
+          </p>
+
         </div>
+
       </section>
 
-      <section id="historyPage" class="module-page" hidden>
+      <!-- HISTORY PAGE -->
+      <section
+        id="historyPage"
+        class="module-page"
+        aria-label="Chat history"
+        hidden
+      >
+
         <h2>Chat History</h2>
+
         <div id="historyList"></div>
+
       </section>
 
-      <section id="settingsPage" class="module-page" hidden>
+      <!-- SETTINGS PAGE -->
+      <section
+        id="settingsPage"
+        class="module-page"
+        aria-label="Settings"
+        hidden
+      >
+
         <h2>Settings</h2>
+
         <p>@K-UNIQUE AI Settings</p>
-        <button id="clearHistoryBtn">Clear Chat History</button>
+
+        <button
+          type="button"
+          id="clearHistoryBtn"
+        >
+          Clear Chat History
+        </button>
+
       </section>
+
     </main>
+
   </div>
+
 </body>
 </html>
