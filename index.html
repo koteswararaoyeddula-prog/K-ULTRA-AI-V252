@@ -4,189 +4,290 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080d19">
-  <meta name="description" content="K-UNIQUE - Your all-in-one AI, business, commerce and technology platform.">
-  <title>K-UNIQUE | One Platform. Unlimited Possibilities.</title>
-  <link rel="manifest" href="/manifest.json">
-  <link rel="icon" href="/assets/icons/favicon.svg">
-  <link rel="stylesheet" href="/css/main.css">
-  <link rel="stylesheet" href="/css/themes.css">
-  <link rel="stylesheet" href="/css/responsive.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <meta name="theme-color" content="#080d1c">
+  <meta name="description" content="@K-UNIQUE - Ultimate AI, IT, Business, E-commerce and Cybersecurity Super Platform">
+
+  <title>@K-UNIQUE — Ultimate Super Platform</title>
+
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/themes.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <script defer src="assets/js/config.js"></script>
+  <script defer src="assets/js/api.js"></script>
+  <script defer src="assets/js/auth.js"></script>
+  <script defer src="assets/js/chat.js"></script>
+  <script defer src="assets/js/app.js"></script>
 </head>
+
 <body>
-  <div class="app-shell">
 
+  <div class="app-container">
+
+    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
+
       <div class="brand">
-        <div class="brand-icon"><i class="fa-solid fa-cube"></i></div>
-        <div>
-          <h2>K-UNIQUE</h2>
-          <span>Digital Super Platform</span>
+        <div class="brand-logo">K</div>
+        <div class="brand-info">
+          <h2>@K-UNIQUE</h2>
+          <span>ULTIMATE SUPER PLATFORM</span>
         </div>
-        <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Close menu">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
       </div>
 
-      <div class="workspace">
-        <span class="workspace-dot"></span>
-        <span>Personal Workspace</span>
-        <i class="fa-solid fa-chevron-down"></i>
+      <div class="sidebar-menu">
+
+        <p class="menu-label">MAIN MENU</p>
+
+        <a href="#home" class="menu-item active" data-page="home">
+          <span>⌂</span> Home
+        </a>
+
+        <a href="#ai" class="menu-item" data-page="ai">
+          <span>✧</span> AI Assistant
+        </a>
+
+        <a href="#shop" class="menu-item" data-page="shop">
+          <span>▣</span> E-Commerce
+        </a>
+
+        <a href="#services" class="menu-item" data-page="services">
+          <span>⚙</span> IT Services
+        </a>
+
+        <a href="#security" class="menu-item" data-page="security">
+          <span>⬡</span> Cybersecurity
+        </a>
+
+        <a href="#education" class="menu-item" data-page="education">
+          <span>▤</span> Education
+        </a>
+
+        <a href="#business" class="menu-item" data-page="business">
+          <span>▥</span> Business
+        </a>
+
+        <a href="#community" class="menu-item" data-page="community">
+          <span>◎</span> Community
+        </a>
+
+        <a href="#messages" class="menu-item" data-page="messages">
+          <span>✉</span> Messages
+        </a>
+
+        <p class="menu-label">ACCOUNT</p>
+
+        <a href="#profile" class="menu-item" data-page="profile">
+          <span>◉</span> My Profile
+        </a>
+
+        <a href="#settings" class="menu-item" data-page="settings">
+          <span>⚙</span> Settings
+        </a>
+
       </div>
-
-      <nav class="navigation">
-        <div class="nav-label">WORKSPACE</div>
-        <button class="nav-item active" data-page="home">
-          <i class="fa-solid fa-house"></i><span>Overview</span>
-        </button>
-        <button class="nav-item" data-page="ai">
-          <i class="fa-solid fa-wand-magic-sparkles"></i><span>AI Assistant</span><span class="nav-tag">AI</span>
-        </button>
-        <button class="nav-item" data-page="whatsapp">
-          <i class="fa-brands fa-whatsapp"></i><span>Communication</span>
-        </button>
-        <button class="nav-item" data-page="ecommerce">
-          <i class="fa-solid fa-bag-shopping"></i><span>E-Commerce</span>
-        </button>
-
-        <div class="nav-label">TECHNOLOGY</div>
-        <button class="nav-item" data-page="cybersecurity">
-          <i class="fa-solid fa-shield-halved"></i><span>Cybersecurity</span>
-        </button>
-        <button class="nav-item" data-page="it">
-          <i class="fa-solid fa-code"></i><span>IT Services</span>
-        </button>
-        <button class="nav-item" data-page="cloud">
-          <i class="fa-solid fa-cloud"></i><span>Cloud Center</span>
-        </button>
-
-        <div class="nav-label">BUSINESS & LEARNING</div>
-        <button class="nav-item" data-page="business">
-          <i class="fa-solid fa-chart-line"></i><span>Business Suite</span>
-        </button>
-        <button class="nav-item" data-page="education">
-          <i class="fa-solid fa-graduation-cap"></i><span>Education</span>
-        </button>
-        <button class="nav-item" data-page="productivity">
-          <i class="fa-solid fa-list-check"></i><span>Productivity</span>
-        </button>
-
-        <div class="nav-label">SYSTEM</div>
-        <button class="nav-item" data-page="settings">
-          <i class="fa-solid fa-gear"></i><span>Settings</span>
-        </button>
-        <button class="nav-item" data-page="admin">
-          <i class="fa-solid fa-user-shield"></i><span>Admin Panel</span>
-        </button>
-      </nav>
 
       <div class="sidebar-bottom">
-        <div class="upgrade-card">
-          <i class="fa-solid fa-crown"></i>
-          <h4>Unlock More Power</h4>
-          <p>Explore advanced platform features.</p>
-          <button data-page="business">Explore Features <i class="fa-solid fa-arrow-right"></i></button>
-        </div>
-        <div class="profile">
-          <div class="avatar">KU</div>
-          <div class="profile-info">
-            <strong>My Account</strong>
-            <span>Guest Workspace</span>
+        <div class="user-card">
+          <div class="user-avatar">K</div>
+          <div>
+            <strong>Guest User</strong>
+            <small>Free Account</small>
           </div>
-          <button class="icon-btn" data-page="settings" aria-label="Account settings">
-            <i class="fa-solid fa-ellipsis"></i>
-          </button>
         </div>
       </div>
+
     </aside>
 
-    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
-    <main class="main-area">
+      <!-- TOPBAR -->
       <header class="topbar">
+
         <div class="topbar-left">
-          <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Open menu">
-            <i class="fa-solid fa-bars"></i>
+          <button class="icon-button" id="menuToggle" aria-label="Toggle menu">
+            ☰
           </button>
-          <div class="breadcrumb">K-UNIQUE <i class="fa-solid fa-chevron-right"></i> <span id="currentPage">Overview</span></div>
+
+          <div class="breadcrumb">
+            <span>@K-UNIQUE</span>
+            <span>/</span>
+            <strong id="pageTitle">Home</strong>
+          </div>
         </div>
 
-        <div class="topbar-actions">
-          <label class="global-search">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="search" id="globalSearch" placeholder="Search anything...">
-            <kbd>⌘ K</kbd>
-          </label>
-          <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
-            <i class="fa-solid fa-moon"></i>
+        <div class="topbar-right">
+
+          <div class="connection-status" id="connectionStatus">
+            <span class="status-dot"></span>
+            <span id="connectionText">Checking...</span>
+          </div>
+
+          <button class="icon-button" id="themeToggle" aria-label="Toggle theme">
+            ◐
           </button>
-          <button class="icon-btn notification-btn" aria-label="Notifications">
-            <i class="fa-regular fa-bell"></i><span></span>
+
+          <button class="icon-button" aria-label="Notifications">
+            ♧
           </button>
+
+          <a href="login.html" class="login-button">
+            Login
+          </a>
+
         </div>
+
       </header>
 
-      <section class="page-content" id="pageContent" aria-live="polite">
-        <div class="welcome-section">
-          <div>
-            <span class="eyebrow"><span class="live-dot"></span> YOUR DIGITAL WORLD</span>
-            <h1>Welcome to <span>K-UNIQUE.</span></h1>
-            <p>Everything you need. One intelligent platform.</p>
+      <!-- PAGE CONTENT -->
+      <section class="page-content" id="pageContent">
+
+        <!-- HOME PAGE -->
+        <section class="page-section active" id="home">
+
+          <div class="welcome-section">
+            <span class="welcome-tag">WELCOME TO THE FUTURE</span>
+
+            <h1>
+              Everything You Need.
+              <span>One Platform.</span>
+            </h1>
+
+            <p>
+              Discover AI intelligence, technology, business,
+              shopping, cybersecurity and education in one place.
+            </p>
+
+            <div class="welcome-actions">
+              <button class="primary-button" data-navigate="ai">
+                Explore AI Assistant →
+              </button>
+
+              <button class="secondary-button" data-navigate="services">
+                Explore Services
+              </button>
+            </div>
           </div>
-          <div class="welcome-date" id="welcomeDate"></div>
-        </div>
 
-        <div class="hero-card">
-          <div class="hero-content">
-            <span class="hero-badge"><i class="fa-solid fa-sparkles"></i> THE NEXT GENERATION PLATFORM</span>
-            <h2>Imagine More.<br><span>Create Without Limits.</span></h2>
-            <p>Explore artificial intelligence, business, technology and digital experiences in one place.</p>
-            <button class="primary-btn" data-page="ai">Explore AI Assistant <i class="fa-solid fa-arrow-right"></i></button>
+          <!-- PLATFORM MODULES -->
+          <div class="section-heading">
+            <div>
+              <h2>Explore Platform</h2>
+              <p>Everything connected in one ecosystem.</p>
+            </div>
           </div>
-          <div class="hero-visual"><div class="orb orb-one"></div><div class="orb orb-two"></div><div class="orb-core"><i class="fa-solid fa-cube"></i></div></div>
-        </div>
 
-        <div class="section-heading">
-          <div><span class="eyebrow">YOUR CONTROL CENTER</span><h2>Platform Overview</h2></div>
-          <span class="status-pill"><span class="live-dot"></span> Interface Online</span>
-        </div>
+          <div class="module-grid">
 
-        <div class="stats-grid">
-          <article class="stat-card"><div class="stat-icon purple"><i class="fa-solid fa-wand-magic-sparkles"></i></div><span>AI Tools</span><strong>01</strong><small>AI workspace</small></article>
-          <article class="stat-card"><div class="stat-icon green"><i class="fa-solid fa-cart-shopping"></i></div><span>Commerce</span><strong>01</strong><small>Shopping workspace</small></article>
-          <article class="stat-card"><div class="stat-icon blue"><i class="fa-solid fa-shield-halved"></i></div><span>Security</span><strong>01</strong><small>Security workspace</small></article>
-          <article class="stat-card"><div class="stat-icon orange"><i class="fa-solid fa-cloud"></i></div><span>Cloud</span><strong>01</strong><small>Cloud workspace</small></article>
-        </div>
+            <article class="module-card" data-navigate="ai">
+              <div class="module-icon">✧</div>
+              <h3>AI Assistant</h3>
+              <p>Chat, coding, research and AI tools.</p>
+              <span>Explore →</span>
+            </article>
 
-        <div class="section-heading">
-          <div><span class="eyebrow">DISCOVER</span><h2>Your Digital Services</h2></div>
-        </div>
+            <article class="module-card" data-navigate="shop">
+              <div class="module-icon">▣</div>
+              <h3>E-Commerce</h3>
+              <p>Products, shopping and marketplace.</p>
+              <span>Explore →</span>
+            </article>
 
-        <div class="modules-grid">
-          <button class="module-card module-ai" data-page="ai"><div class="module-icon"><i class="fa-solid fa-brain"></i></div><span class="module-label">INTELLIGENCE</span><h3>AI Assistant</h3><p>Chat, research, create and analyze with AI.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-chat" data-page="whatsapp"><div class="module-icon"><i class="fa-brands fa-whatsapp"></i></div><span class="module-label">COMMUNICATION</span><h3>Messaging Hub</h3><p>Connect through messaging and collaboration.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-shop" data-page="ecommerce"><div class="module-icon"><i class="fa-solid fa-store"></i></div><span class="module-label">MARKETPLACE</span><h3>E-Commerce</h3><p>Discover products and manage your store.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-security" data-page="cybersecurity"><div class="module-icon"><i class="fa-solid fa-shield-halved"></i></div><span class="module-label">PROTECTION</span><h3>Cybersecurity</h3><p>Security checks, learning and monitoring.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-it" data-page="it"><div class="module-icon"><i class="fa-solid fa-code"></i></div><span class="module-label">DEVELOPMENT</span><h3>IT Services</h3><p>Developer utilities and technology tools.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-business" data-page="business"><div class="module-icon"><i class="fa-solid fa-chart-pie"></i></div><span class="module-label">MANAGEMENT</span><h3>Business Suite</h3><p>Manage projects, customers and operations.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-education" data-page="education"><div class="module-icon"><i class="fa-solid fa-graduation-cap"></i></div><span class="module-label">KNOWLEDGE</span><h3>Education</h3><p>Learn, practice and improve your skills.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-          <button class="module-card module-cloud" data-page="cloud"><div class="module-icon"><i class="fa-solid fa-cloud"></i></div><span class="module-label">STORAGE</span><h3>Cloud Center</h3><p>Cloud storage and file management.</p><span class="module-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span></button>
-        </div>
+            <article class="module-card" data-navigate="services">
+              <div class="module-icon">⚙</div>
+              <h3>IT Services</h3>
+              <p>Software, websites and cloud solutions.</p>
+              <span>Explore →</span>
+            </article>
 
-        <footer class="app-footer">
-          <strong>K-UNIQUE</strong>
-          <span>One Platform. Unlimited Possibilities.</span>
-          <span>Version 1.0</span>
-        </footer>
+            <article class="module-card" data-navigate="security">
+              <div class="module-icon">⬡</div>
+              <h3>Cybersecurity</h3>
+              <p>Digital security and protection tools.</p>
+              <span>Explore →</span>
+            </article>
+
+            <article class="module-card" data-navigate="education">
+              <div class="module-icon">▤</div>
+              <h3>Education</h3>
+              <p>Learn technology and new skills.</p>
+              <span>Explore →</span>
+            </article>
+
+            <article class="module-card" data-navigate="business">
+              <div class="module-icon">▥</div>
+              <h3>Business</h3>
+              <p>Productivity and business management.</p>
+              <span>Explore →</span>
+            </article>
+
+            <article class="module-card" data-navigate="community">
+              <div class="module-icon">◎</div>
+              <h3>Community</h3>
+              <p>Connect, share and collaborate.</p>
+              <span>Explore →</span>
+            </article>
+
+            <article class="module-card" data-navigate="messages">
+              <div class="module-icon">✉</div>
+              <h3>Messaging</h3>
+              <p>Connect and communicate.</p>
+              <span>Explore →</span>
+            </article>
+
+          </div>
+
+          <!-- AI PREVIEW -->
+          <div class="ai-preview">
+
+            <div>
+              <span class="welcome-tag">POWERED BY AI</span>
+              <h2>Meet Your AI Assistant</h2>
+
+              <p>
+                Your intelligent assistant for questions,
+                coding, learning and productivity.
+              </p>
+
+              <button class="primary-button" data-navigate="ai">
+                Start Conversation →
+              </button>
+            </div>
+
+            <div class="ai-preview-icon">✧</div>
+
+          </div>
+
+        </section>
+
+        <!-- DYNAMIC MODULE PAGES -->
+        <section class="page-section" id="otherPage">
+          <div class="module-page">
+            <div class="module-icon" id="activeModuleIcon">✧</div>
+            <h1 id="activeModuleTitle">Module</h1>
+            <p id="activeModuleDescription">
+              Welcome to @K-UNIQUE.
+            </p>
+            <div id="moduleContent"></div>
+          </div>
+        </section>
+
       </section>
+
+      <!-- FOOTER -->
+      <footer class="app-footer">
+        <p>© 2026 @K-UNIQUE. All Rights Reserved.</p>
+        <span>Built for the Future.</span>
+      </footer>
+
     </main>
+
   </div>
 
-  <script src="/js/config.js"></script>
-  <script src="/js/router.js"></script>
-  <script src="/js/ui.js"></script>
-  <script src="/js/app.js"></script>
 </body>
-                                </html>
-                                
+</html>
