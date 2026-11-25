@@ -4,265 +4,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <meta name="theme-color" content="#080d1c">
-  <meta name="description" content="@K-UNIQUE AI - Your intelligent AI assistant for chat, coding, research and creativity.">
-
-  <title>@K-UNIQUE AI — Ultimate AI Assistant</title>
-
-  <!-- STYLESHEETS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="stylesheet" href="assets/css/responsive.css">
-  <link rel="stylesheet" href="assets/css/themes.css">
-
-  <!-- FIREBASE SDK -->
-  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
-  <script defer src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-
-  <!-- APPLICATION SCRIPTS -->
-  <script defer src="assets/js/config.js"></script>
-  <script defer src="assets/js/api.js"></script>
-  <script defer src="assets/js/auth.js"></script>
-  <script defer src="assets/js/chat.js"></script>
-  <script defer src="assets/js/app.js"></script>
+  <meta name="description" content="K-ULTRA AI Version 252 - AI workspace and online store">
+  <title>K-ULTRA AI — Version 252</title>
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+  <div class="app">
 
-  <div class="app-container">
-
-    <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
-
-      <div class="sidebar-header">
-        <h2>@K-UNIQUE</h2>
-
-        <button
-          type="button"
-          id="closeSidebar"
-          aria-label="Close menu"
-          aria-controls="sidebar"
-        >×</button>
+      <div class="brand">
+        <div class="brand-logo">K</div>
+        <div>
+          <strong>K-ULTRA AI</strong>
+          <small>VERSION 252</small>
+        </div>
       </div>
 
-      <button
-        type="button"
-        class="new-chat-btn"
-        id="newChatBtn"
-      >
-        + New Chat
-      </button>
+      <button class="new-chat" data-page="chat">＋ New Chat</button>
 
-      <nav class="sidebar-nav" aria-label="Main navigation">
-
-        <button
-          type="button"
-          class="nav-item active"
-          data-page="ai"
-        >
-          🤖 AI Chat
-        </button>
-
-        <button
-          type="button"
-          class="nav-item"
-          data-page="history"
-        >
-          🕘 History
-        </button>
-
-        <button
-          type="button"
-          class="nav-item"
-          data-page="settings"
-        >
-          ⚙️ Settings
-        </button>
-
+      <nav class="nav">
+        <button class="nav-item active" data-page="chat">✦ <span>AI Chat</span></button>
+        <button class="nav-item" data-page="store">🛍 <span>AI Store</span></button>
+        <button class="nav-item" data-page="developer">⌘ <span>Developer Studio</span></button>
+        <button class="nav-item" data-page="location">⌖ <span>Location & Maps</span></button>
+        <button class="nav-item" data-page="files">▤ <span>File Tools</span></button>
+        <button class="nav-item" data-page="image">▧ <span>Image Studio</span></button>
+        <button class="nav-item" data-page="office">▦ <span>Office Tools</span></button>
       </nav>
 
-      <div class="sidebar-footer">
-
-        <div id="connectionStatus" role="status">
-          Checking connection...
+      <div class="sidebar-bottom">
+        <button class="nav-item" data-page="settings">⚙ <span>Settings</span></button>
+        <div class="user-card">
+          <div class="avatar">K</div>
+          <div>
+            <strong>Guest User</strong>
+            <small>Version 252</small>
+          </div>
         </div>
-
-        <button
-          type="button"
-          id="themeToggle"
-          aria-label="Toggle theme"
-        >
-          🌙 Theme
-        </button>
-
       </div>
-
     </aside>
 
-    <!-- MOBILE SIDEBAR BACKDROP -->
-    <div
-      class="sidebar-backdrop"
-      id="sidebarBackdrop"
-      aria-hidden="true"
-    ></div>
-
-    <!-- MAIN CONTENT -->
-    <main class="main-content">
-
-      <!-- TOPBAR -->
+    <main class="main">
       <header class="topbar">
-
-        <button
-          type="button"
-          id="menuToggle"
-          aria-label="Open menu"
-          aria-controls="sidebar"
-          aria-expanded="false"
-        >
-          ☰
-        </button>
-
-        <h3>@K-UNIQUE AI</h3>
-
-        <div id="userStatus" aria-live="polite">
-          Guest
+        <button class="icon-button mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="page-title" id="pageTitle">AI Chat</div>
+        <div class="top-actions">
+          <button class="icon-button" id="themeBtn" title="Change theme">◐</button>
+          <button class="icon-button" id="fullscreenBtn" title="Fullscreen">⛶</button>
         </div>
-
       </header>
 
-      <!-- AI CHAT PAGE -->
-      <section
-        class="chat-page"
-        id="aiPage"
-        aria-label="AI Chat"
-      >
+      <section class="page active" id="page-chat">
+        <div class="chat-area" id="chatArea">
+          <div class="welcome" id="welcome">
+            <div class="welcome-icon">✦</div>
+            <h1>Welcome to <span>K-ULTRA AI</span></h1>
+            <p>Your AI workspace for ideas, coding, research and more.</p>
 
-        <!-- WELCOME SCREEN -->
-        <div class="welcome-screen" id="welcomeScreen">
+            <div class="suggestions">
+              <button class="suggestion" data-prompt="Help me write a website">✦ Create a website</button>
+              <button class="suggestion" data-prompt="Explain a programming concept">⌘ Learn programming</button>
+              <button class="suggestion" data-prompt="Help me plan a project">▤ Plan a project</button>
+              <button class="suggestion" data-prompt="Help me research a topic">⌕ Research a topic</button>
+            </div>
+          </div>
+        </div>
 
-          <h1>Welcome to @K-UNIQUE AI</h1>
+        <div class="composer-wrap">
+          <form class="composer" id="chatForm">
+            <textarea id="messageInput" rows="1" placeholder="Message K-ULTRA AI..." aria-label="Message"></textarea>
+            <div class="composer-tools">
+              <div class="tool-buttons">
+                <button type="button" class="tool-btn" id="attachBtn">＋ Attach</button>
+                <button type="button" class="tool-btn" data-page="developer">⌘ Code</button>
+              </div>
+              <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">↑</button>
+            </div>
+          </form>
+          <p class="disclaimer">K-ULTRA AI can make mistakes. Verify important information.</p>
+        </div>
+      </section>
 
-          <p>
-            Your intelligent AI assistant.
-            Ask anything, create anything.
-          </p>
-
-          <div class="suggestion-grid">
-
-            <button
-              type="button"
-              class="suggestion"
-              data-prompt="Explain artificial intelligence simply"
-            >
-              🤖 Explain AI
-            </button>
-
-            <button
-              type="button"
-              class="suggestion"
-              data-prompt="Write a professional email"
-            >
-              ✉️ Write an email
-            </button>
-
-            <button
-              type="button"
-              class="suggestion"
-              data-prompt="Help me build a website"
-            >
-              🌐 Build a website
-            </button>
-
-            <button
-              type="button"
-              class="suggestion"
-              data-prompt="Write JavaScript code for beginners"
-            >
-              💻 Write code
-            </button>
-
+      <section class="page" id="page-store">
+        <div class="content-page">
+          <div class="section-heading">
+            <div>
+              <h1>K-ULTRA Store</h1>
+              <p>Discover products and shop online.</p>
+            </div>
+            <button class="primary-btn" id="cartBtn">🛒 Cart <span id="cartCount">0</span></button>
           </div>
 
+          <div class="store-search">
+            <input id="productSearch" type="search" placeholder="Search products...">
+          </div>
+
+          <div class="categories">
+            <button class="category active" data-category="All">All</button>
+            <button class="category" data-category="Electronics">Electronics</button>
+            <button class="category" data-category="Fashion">Fashion</button>
+            <button class="category" data-category="Home">Home</button>
+            <button class="category" data-category="Accessories">Accessories</button>
+          </div>
+
+          <div class="product-grid" id="productGrid"></div>
+          <div class="cart-panel" id="cartPanel" hidden></div>
         </div>
-
-        <!-- CHAT MESSAGES -->
-        <div
-          class="message-container"
-          id="messageContainer"
-          aria-live="polite"
-          aria-label="Conversation messages"
-        ></div>
-
-        <!-- CHAT INPUT -->
-        <div class="chat-input-area">
-
-          <form id="chatForm">
-
-            <textarea
-              id="messageInput"
-              placeholder="Message @K-UNIQUE AI..."
-              rows="1"
-              maxlength="12000"
-              aria-label="Enter your message"
-              required
-            ></textarea>
-
-            <button
-              type="submit"
-              id="sendBtn"
-              aria-label="Send message"
-            >
-              ➤
-            </button>
-
-          </form>
-
-          <p>
-            AI can make mistakes. Verify important information.
-          </p>
-
-        </div>
-
       </section>
 
-      <!-- HISTORY PAGE -->
-      <section
-        id="historyPage"
-        class="module-page"
-        aria-label="Chat history"
-        hidden
-      >
-
-        <h2>Chat History</h2>
-
-        <div id="historyList"></div>
-
+      <section class="page" id="page-developer">
+        <div class="content-page">
+          <h1>Developer Studio</h1>
+          <p>Write and preview HTML, CSS and JavaScript.</p>
+          <div class="editor">
+            <div class="editor-bar">
+              <span>index.html</span>
+              <button class="primary-btn" id="previewBtn">▶ Preview</button>
+            </div>
+            <textarea id="codeEditor" spellcheck="false"><!DOCTYPE html>
+<html>
+<body>
+  <h1>Hello K-ULTRA AI!</h1>
+  <p>My first project.</p>
+</body>
+</html></textarea>
+          </div>
+          <iframe id="codePreview" title="Code preview" sandbox></iframe>
+        </div>
       </section>
 
-      <!-- SETTINGS PAGE -->
-      <section
-        id="settingsPage"
-        class="module-page"
-        aria-label="Settings"
-        hidden
-      >
+      <section class="page" id="page-location">
+        <div class="content-page">
+          <h1>Location & Maps</h1>
+          <p>Find your current location with browser permission.</p>
+          <button class="primary-btn" id="locationBtn">⌖ Find My Location</button>
+          <div class="result-card" id="locationResult">Your location will appear here.</div>
+          <p class="muted">Location access requires HTTPS and your permission. Maps will be connected in a later step.</p>
+        </div>
+      </section>
 
-        <h2>Settings</h2>
+      <section class="page" id="page-files">
+        <div class="content-page">
+          <h1>File Tools</h1>
+          <p>Select a file to view its name and size.</p>
+          <input type="file" id="fileInput" multiple>
+          <div class="result-card" id="fileResult">No files selected.</div>
+        </div>
+      </section>
 
-        <p>@K-UNIQUE AI Settings</p>
+      <section class="page" id="page-image">
+        <div class="content-page">
+          <h1>Image Studio</h1>
+          <p>Upload and preview an image.</p>
+          <input type="file" id="imageInput" accept="image/*">
+          <div id="imagePreview"></div>
+        </div>
+      </section>
 
-        <button
-          type="button"
-          id="clearHistoryBtn"
-        >
-          Clear Chat History
-        </button>
+      <section class="page" id="page-office">
+        <div class="content-page">
+          <h1>Office Tools</h1>
+          <p>Quick notes and text editor.</p>
+          <textarea class="office-editor" id="officeEditor" placeholder="Write your notes here..."></textarea>
+          <button class="primary-btn" id="downloadNotes">Download Notes</button>
+        </div>
+      </section>
 
+      <section class="page" id="page-settings">
+        <div class="content-page">
+          <h1>Settings</h1>
+          <p>Customize your K-ULTRA AI workspace.</p>
+          <div class="settings-card">
+            <label for="themeSelect">Theme</label>
+            <select id="themeSelect">
+              <option value="dark">Ultra Dark</option>
+              <option value="light">Light</option>
+              <option value="blue">Cyber Blue</option>
+              <option value="purple">Neon Purple</option>
+              <option value="green">Emerald</option>
+            </select>
+          </div>
+          <div class="settings-card">
+            <label for="fontSize">Font size</label>
+            <select id="fontSize">
+              <option value="14px">Small</option>
+              <option value="16px" selected>Medium</option>
+              <option value="18px">Large</option>
+            </select>
+          </div>
+          <div class="settings-card">
+            <button class="primary-btn" id="clearChat">Clear current chat</button>
+          </div>
+        </div>
       </section>
 
     </main>
-
   </div>
 
+  <input type="file" id="hiddenFileInput" hidden multiple>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
 </body>
 </html>
