@@ -648,3 +648,66 @@ body.theme-green {
     font-size: 13px;
   }
   }
+
+/* K-ULTRA AI V252 — PAGE VISIBILITY FIX */
+
+.page {
+  display: none !important;
+  flex: 1;
+  min-height: 0;
+}
+
+.page.active {
+  display: flex !important;
+  flex-direction: column;
+}
+
+/* Keep chat layout inside its own page */
+#page-chat {
+  min-height: 0;
+}
+
+#page-chat.active {
+  display: flex !important;
+}
+
+/* Prevent page content from overflowing */
+.main {
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+}
+
+.content-page {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: hidden;
+}
+
+/* Mobile layout correction */
+@media (max-width: 760px) {
+  .main {
+    width: 100%;
+  }
+
+  .page {
+    width: 100%;
+  }
+
+  .content-page {
+    padding: 18px 14px;
+  }
+
+  .chat-area {
+    padding: 20px 12px;
+  }
+
+  .welcome {
+    margin-top: 25px;
+  }
+
+  .composer-wrap {
+    padding: 0 10px 12px;
+  }
+}
