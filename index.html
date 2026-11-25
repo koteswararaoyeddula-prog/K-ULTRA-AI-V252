@@ -3,209 +3,198 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#080d1c">
-  <meta name="description" content="K-ULTRA AI Version 252 - AI workspace and online store">
-  <title>K-ULTRA AI — Version 252</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="K-ULTRA AI Version 252 AI Workspace and Store">
+  <title>K-ULTRA AI V252</title>
+  <link rel="stylesheet" href="style.css?v=2524">
 </head>
 <body>
-  <div class="app">
+<div class="app">
 
-    <aside class="sidebar" id="sidebar">
-      <div class="brand">
-        <div class="brand-logo">K</div>
-        <div>
-          <strong>K-ULTRA AI</strong>
-          <small>VERSION 252</small>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">K</div>
+      <div><b>K-ULTRA AI</b><small>VERSION 252</small></div>
+    </div>
+
+    <button class="new-chat" data-page="chat">＋ New Chat</button>
+
+    <nav class="nav">
+      <button class="nav-item active" data-page="chat">✦ AI Chat</button>
+      <button class="nav-item" data-page="store">🛍 Store</button>
+      <button class="nav-item" data-page="developer">⌘ Developer Studio</button>
+      <button class="nav-item" data-page="location">⌖ Location</button>
+      <button class="nav-item" data-page="files">▤ File Tools</button>
+      <button class="nav-item" data-page="image">▧ Image Studio</button>
+      <button class="nav-item" data-page="office">▦ Office Tools</button>
+      <button class="nav-item" data-page="settings">⚙ Settings</button>
+    </nav>
+
+    <div class="user-card">
+      <div class="avatar">K</div>
+      <div><b>Guest User</b><small>Version 252</small></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn">☰</button>
+      <b id="pageTitle">AI Chat</b>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeBtn" title="Change theme">◐</button>
+        <button class="icon-btn" id="fullscreenBtn" title="Fullscreen">⛶</button>
+      </div>
+    </header>
+
+    <!-- CHAT -->
+    <section class="page active" id="page-chat">
+      <div class="chat-area" id="chatArea">
+        <div class="welcome" id="welcome">
+          <div class="welcome-logo">✦</div>
+          <h1>Welcome to <span>K-ULTRA AI</span></h1>
+          <p>Your AI workspace for ideas, coding and research.</p>
+          <div class="suggestions">
+            <button data-prompt="Help me create a website">✦ Create a website</button>
+            <button data-prompt="Teach me programming">⌘ Learn programming</button>
+            <button data-prompt="Help me plan a project">▤ Plan a project</button>
+            <button data-prompt="Research an interesting topic">⌕ Research a topic</button>
+          </div>
         </div>
       </div>
 
-      <button class="new-chat" data-page="chat">＋ New Chat</button>
-
-      <nav class="nav">
-        <button class="nav-item active" data-page="chat">✦ <span>AI Chat</span></button>
-        <button class="nav-item" data-page="store">🛍 <span>AI Store</span></button>
-        <button class="nav-item" data-page="developer">⌘ <span>Developer Studio</span></button>
-        <button class="nav-item" data-page="location">⌖ <span>Location & Maps</span></button>
-        <button class="nav-item" data-page="files">▤ <span>File Tools</span></button>
-        <button class="nav-item" data-page="image">▧ <span>Image Studio</span></button>
-        <button class="nav-item" data-page="office">▦ <span>Office Tools</span></button>
-      </nav>
-
-      <div class="sidebar-bottom">
-        <button class="nav-item" data-page="settings">⚙ <span>Settings</span></button>
-        <div class="user-card">
-          <div class="avatar">K</div>
-          <div>
-            <strong>Guest User</strong>
-            <small>Version 252</small>
+      <div class="composer-wrap">
+        <form id="chatForm" class="composer">
+          <textarea id="messageInput" rows="1" placeholder="Message K-ULTRA AI..."></textarea>
+          <div class="composer-bottom">
+            <button type="button" class="small-btn" id="attachBtn">＋ Attach</button>
+            <button type="button" class="small-btn" data-page="developer">⌘ Code</button>
+            <button type="submit" class="send-btn">↑</button>
           </div>
-        </div>
+        </form>
+        <p class="disclaimer">AI responses may contain mistakes. Verify important information.</p>
       </div>
-    </aside>
+    </section>
 
-    <main class="main">
-      <header class="topbar">
-        <button class="icon-button mobile-menu" id="menuBtn" aria-label="Open menu">☰</button>
-        <div class="page-title" id="pageTitle">AI Chat</div>
-        <div class="top-actions">
-          <button class="icon-button" id="themeBtn" title="Change theme">◐</button>
-          <button class="icon-button" id="fullscreenBtn" title="Fullscreen">⛶</button>
-        </div>
-      </header>
-
-      <section class="page active" id="page-chat">
-        <div class="chat-area" id="chatArea">
-          <div class="welcome" id="welcome">
-            <div class="welcome-icon">✦</div>
-            <h1>Welcome to <span>K-ULTRA AI</span></h1>
-            <p>Your AI workspace for ideas, coding, research and more.</p>
-
-            <div class="suggestions">
-              <button class="suggestion" data-prompt="Help me write a website">✦ Create a website</button>
-              <button class="suggestion" data-prompt="Explain a programming concept">⌘ Learn programming</button>
-              <button class="suggestion" data-prompt="Help me plan a project">▤ Plan a project</button>
-              <button class="suggestion" data-prompt="Help me research a topic">⌕ Research a topic</button>
-            </div>
-          </div>
+    <!-- STORE -->
+    <section class="page" id="page-store">
+      <div class="content">
+        <div class="heading-row">
+          <div><h1>K-ULTRA Store</h1><p>Discover products and shop online.</p></div>
+          <button class="primary-btn" id="cartBtn">🛒 Cart <span id="cartCount">0</span></button>
         </div>
 
-        <div class="composer-wrap">
-          <form class="composer" id="chatForm">
-            <textarea id="messageInput" rows="1" placeholder="Message K-ULTRA AI..." aria-label="Message"></textarea>
-            <div class="composer-tools">
-              <div class="tool-buttons">
-                <button type="button" class="tool-btn" id="attachBtn">＋ Attach</button>
-                <button type="button" class="tool-btn" data-page="developer">⌘ Code</button>
-              </div>
-              <button type="submit" class="send-btn" id="sendBtn" aria-label="Send message">↑</button>
-            </div>
-          </form>
-          <p class="disclaimer">K-ULTRA AI can make mistakes. Verify important information.</p>
+        <input class="search" id="productSearch" type="search" placeholder="Search products...">
+
+        <div class="categories">
+          <button class="category active" data-category="All">All</button>
+          <button class="category" data-category="Electronics">Electronics</button>
+          <button class="category" data-category="Fashion">Fashion</button>
+          <button class="category" data-category="Home">Home</button>
+          <button class="category" data-category="Accessories">Accessories</button>
         </div>
-      </section>
 
-      <section class="page" id="page-store">
-        <div class="content-page">
-          <div class="section-heading">
-            <div>
-              <h1>K-ULTRA Store</h1>
-              <p>Discover products and shop online.</p>
-            </div>
-            <button class="primary-btn" id="cartBtn">🛒 Cart <span id="cartCount">0</span></button>
+        <div class="product-grid" id="productGrid"></div>
+        <div class="cart-panel" id="cartPanel" hidden></div>
+      </div>
+    </section>
+
+    <!-- DEVELOPER -->
+    <section class="page" id="page-developer">
+      <div class="content">
+        <h1>Developer Studio</h1>
+        <p>Write and preview HTML, CSS and JavaScript.</p>
+        <div class="editor">
+          <div class="editor-header">
+            <span>index.html</span>
+            <button class="primary-btn" id="previewBtn">▶ Preview</button>
           </div>
-
-          <div class="store-search">
-            <input id="productSearch" type="search" placeholder="Search products...">
-          </div>
-
-          <div class="categories">
-            <button class="category active" data-category="All">All</button>
-            <button class="category" data-category="Electronics">Electronics</button>
-            <button class="category" data-category="Fashion">Fashion</button>
-            <button class="category" data-category="Home">Home</button>
-            <button class="category" data-category="Accessories">Accessories</button>
-          </div>
-
-          <div class="product-grid" id="productGrid"></div>
-          <div class="cart-panel" id="cartPanel" hidden></div>
-        </div>
-      </section>
-
-      <section class="page" id="page-developer">
-        <div class="content-page">
-          <h1>Developer Studio</h1>
-          <p>Write and preview HTML, CSS and JavaScript.</p>
-          <div class="editor">
-            <div class="editor-bar">
-              <span>index.html</span>
-              <button class="primary-btn" id="previewBtn">▶ Preview</button>
-            </div>
-            <textarea id="codeEditor" spellcheck="false"><!DOCTYPE html>
+          <textarea id="codeEditor" spellcheck="false"><!DOCTYPE html>
 <html>
 <body>
-  <h1>Hello K-ULTRA AI!</h1>
-  <p>My first project.</p>
+<h1>Hello K-ULTRA AI!</h1>
+<p>My first project.</p>
 </body>
 </html></textarea>
-          </div>
-          <iframe id="codePreview" title="Code preview" sandbox></iframe>
         </div>
-      </section>
+        <iframe id="codePreview" title="Code preview" sandbox="allow-scripts"></iframe>
+      </div>
+    </section>
 
-      <section class="page" id="page-location">
-        <div class="content-page">
-          <h1>Location & Maps</h1>
-          <p>Find your current location with browser permission.</p>
-          <button class="primary-btn" id="locationBtn">⌖ Find My Location</button>
-          <div class="result-card" id="locationResult">Your location will appear here.</div>
-          <p class="muted">Location access requires HTTPS and your permission. Maps will be connected in a later step.</p>
+    <!-- LOCATION -->
+    <section class="page" id="page-location">
+      <div class="content">
+        <h1>Location & Maps</h1>
+        <p>Find your current location with permission.</p>
+        <button class="primary-btn" id="locationBtn">⌖ Find My Location</button>
+        <div class="result" id="locationResult">Location will appear here.</div>
+        <p class="muted">GPS requires HTTPS and browser permission.</p>
+      </div>
+    </section>
+
+    <!-- FILES -->
+    <section class="page" id="page-files">
+      <div class="content">
+        <h1>File Tools</h1>
+        <p>Select files to view their names and sizes.</p>
+        <input type="file" id="fileInput" multiple>
+        <div class="result" id="fileResult">No files selected.</div>
+      </div>
+    </section>
+
+    <!-- IMAGE -->
+    <section class="page" id="page-image">
+      <div class="content">
+        <h1>Image Studio</h1>
+        <p>Upload and preview an image.</p>
+        <input type="file" id="imageInput" accept="image/*">
+        <div id="imagePreview"></div>
+      </div>
+    </section>
+
+    <!-- OFFICE -->
+    <section class="page" id="page-office">
+      <div class="content">
+        <h1>Office Tools</h1>
+        <p>Write notes and download them.</p>
+        <textarea class="office-editor" id="officeEditor" placeholder="Write your notes..."></textarea>
+        <button class="primary-btn" id="downloadNotes">Download Notes</button>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section class="page" id="page-settings">
+      <div class="content">
+        <h1>Settings</h1>
+        <div class="setting">
+          <label for="themeSelect">Theme</label>
+          <select id="themeSelect">
+            <option value="dark">Ultra Dark</option>
+            <option value="light">Light</option>
+            <option value="blue">Cyber Blue</option>
+            <option value="purple">Neon Purple</option>
+            <option value="green">Emerald</option>
+          </select>
         </div>
-      </section>
-
-      <section class="page" id="page-files">
-        <div class="content-page">
-          <h1>File Tools</h1>
-          <p>Select a file to view its name and size.</p>
-          <input type="file" id="fileInput" multiple>
-          <div class="result-card" id="fileResult">No files selected.</div>
+        <div class="setting">
+          <label for="fontSize">Font Size</label>
+          <select id="fontSize">
+            <option value="14px">Small</option>
+            <option value="16px" selected>Medium</option>
+            <option value="18px">Large</option>
+          </select>
         </div>
-      </section>
+        <button class="primary-btn" id="clearChat">Clear Chat</button>
+      </div>
+    </section>
 
-      <section class="page" id="page-image">
-        <div class="content-page">
-          <h1>Image Studio</h1>
-          <p>Upload and preview an image.</p>
-          <input type="file" id="imageInput" accept="image/*">
-          <div id="imagePreview"></div>
-        </div>
-      </section>
+  </main>
+</div>
 
-      <section class="page" id="page-office">
-        <div class="content-page">
-          <h1>Office Tools</h1>
-          <p>Quick notes and text editor.</p>
-          <textarea class="office-editor" id="officeEditor" placeholder="Write your notes here..."></textarea>
-          <button class="primary-btn" id="downloadNotes">Download Notes</button>
-        </div>
-      </section>
+<input type="file" id="hiddenFileInput" hidden multiple>
+<div class="toast" id="toast"></div>
 
-      <section class="page" id="page-settings">
-        <div class="content-page">
-          <h1>Settings</h1>
-          <p>Customize your K-ULTRA AI workspace.</p>
-          <div class="settings-card">
-            <label for="themeSelect">Theme</label>
-            <select id="themeSelect">
-              <option value="dark">Ultra Dark</option>
-              <option value="light">Light</option>
-              <option value="blue">Cyber Blue</option>
-              <option value="purple">Neon Purple</option>
-              <option value="green">Emerald</option>
-            </select>
-          </div>
-          <div class="settings-card">
-            <label for="fontSize">Font size</label>
-            <select id="fontSize">
-              <option value="14px">Small</option>
-              <option value="16px" selected>Medium</option>
-              <option value="18px">Large</option>
-            </select>
-          </div>
-          <div class="settings-card">
-            <button class="primary-btn" id="clearChat">Clear current chat</button>
-          </div>
-        </div>
-      </section>
-
-    </main>
-  </div>
-
-  <input type="file" id="hiddenFileInput" hidden multiple>
-
-  <div class="toast" id="toast"></div>
-
-  <script src="app.js"></script>
+<script src="app.js?v=2524"></script>
 </body>
-</html>
+  </html>
+  
