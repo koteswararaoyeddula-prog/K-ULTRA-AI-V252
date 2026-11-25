@@ -1,10 +1,10 @@
 
 "use strict";
 
-const $ = (id) => document.getElementById(id);
+const $ = id => document.getElementById(id);
 
 const state = {
-  currentPage: "chat",
+  page: "chat",
   category: "All",
   cart: [],
   products: [
@@ -19,74 +19,67 @@ const state = {
   ]
 };
 
-function showToast(message) {
-  const toast = $("toast");
-  toast.textContent = message;
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => {
-    toast.classList.remove("show");
-  }, 2500);
+/* Toast */
+function toast(message) {
+  const el = $("toast");
+  el.textContent = message;
+  el.classList.add("show");
+  clearTimeout(toast.timer);
+  toast.timer = setTimeout(() => el.classList.remove("show"), 2500);
 }
 
 /* Navigation */
-function openPage(page) {
-  const target = $("page-" + page);
+const pageTitles = {
+  chat: "AI Chat",
+  store: "K-ULTRA Store",
+  developer: "Developer Studio",
+  location: "Location & Maps",
+  files: "File Tools",
+  image: "Image Studio",
+  office: "Office Tools",
+  settings: "Settings"
+};
 
-  if (!target) {
-    showToast("This module is coming soon.");
+function openPage(name) {
+  const page = $("page-" + name);
+
+  if (!page) {
+    toast("Page not found: " + name);
     return;
   }
 
-  state.currentPage = page;
+  state.page = name;
 
-  document.querySelectorAll(".page").forEach((el) => {
+  document.querySelectorAll(".page").forEach(el => {
     el.classList.remove("active");
   });
 
-  target.classList.add("active");
+  page.classList.add("active");
 
-  document.querySelectorAll(".nav-item[data-page]").forEach((el) => {
-    el.classList.toggle("active", el.dataset.page === page);
+  document.querySelectorAll(".nav-item[data-page]").forEach(el => {
+    el.classList.toggle("active", el.dataset.page === name);
   });
 
-  const titles = {
-    chat: "AI Chat",
-    store: "K-ULTRA Store",
-    developer: "Developer Studio",
-    location: "Location & Maps",
-    files: "File Tools",
-    image: "Image Studio",
-    office: "Office Tools",
-    settings: "Settings"
-  };
-
-  $("pageTitle").textContent = titles[page] || page;
+  $("pageTitle").textContent = pageTitles[name] || name;
   $("sidebar").classList.remove("open");
 }
 
-document.querySelectorAll("[data-page]").forEach((button) => {
-  button.addEventListener("click", () => {
-    openPage(button.dataset.page);
-  });
+document.querySelectorAll("[data-page]").forEach(button => {
+  button.addEventListener("click", () => openPage(button.dataset.page));
 });
 
 $("menuBtn").addEventListener("click", () => {
   $("sidebar").classList.toggle("open");
 });
 
-/* Theme */
+/* Themes */
 const themes = ["dark", "light", "blue", "purple", "green"];
 
 function setTheme(theme) {
   if (!themes.includes(theme)) theme = "dark";
 
   document.body.classList.remove(
-    "theme-light",
-    "theme-blue",
-    "theme-purple",
-    "theme-green"
+    "theme-light", "theme-blue", "theme-purple", "theme-green"
   );
 
   if (theme !== "dark") {
@@ -101,20 +94,24 @@ function setTheme(theme) {
 }
 
 $("themeBtn").addEventListener("click", () => {
-  const current = themes.find((theme) =>
-    document.body.classList.contains("theme-" + theme)
-  ) || "dark";
+  let current = "dark";
+
+  for (const theme of themes) {
+    if (theme !== "dark" && document.body.classList.contains("theme-" + theme)) {
+      current = theme;
+    }
+  }
 
   const next = themes[(themes.indexOf(current) + 1) % themes.length];
   setTheme(next);
-  showToast("Theme: " + next);
+  toast("Theme changed: " + next);
 });
 
-$("themeSelect").addEventListener("change", (event) => {
+$("themeSelect").addEventListener("change", event => {
   setTheme(event.target.value);
 });
 
-$("fontSize").addEventListener("change", (event) => {
+$("fontSize").addEventListener("change", event => {
   document.body.style.fontSize = event.target.value;
 });
 
@@ -127,14 +124,13 @@ $("fullscreenBtn").addEventListener("click", async () => {
       await document.exitFullscreen();
     }
   } catch (_) {
-    showToast("Fullscreen is not supported here.");
+    toast("Fullscreen is not supported.");
   }
 });
 
-/* Chat UI */
+/* Chat interface */
 function addMessage(text, role) {
-  const welcome = $("welcome");
-  if (welcome) welcome.style.display = "none";
+  $("welcome").style.display = "none";
 
   const message = document.createElement("div");
   message.className = "message " + role;
@@ -151,7 +147,7 @@ function addMessage(text, role) {
   $("chatArea").scrollTop = $("chatArea").scrollHeight;
 }
 
-$("chatForm").addEventListener("submit", (event) => {
+$("chatForm").addEventListener("submit", event => {
   event.preventDefault();
 
   const input = $("messageInput");
@@ -163,12 +159,12 @@ $("chatForm").addEventListener("submit", (event) => {
   input.value = "";
 
   addMessage(
-    "AI backend is not connected yet. In the next setup step, we will connect this chat securely to your Cloudflare Worker and Gemini API.",
+    "The AI backend is not connected yet. We will connect Gemini through your secure Cloudflare Worker in the next setup.",
     "assistant"
   );
 });
 
-document.querySelectorAll("[data-prompt]").forEach((button) => {
+document.querySelectorAll("[data-prompt]").forEach(button => {
   button.addEventListener("click", () => {
     $("messageInput").value = button.dataset.prompt;
     $("messageInput").focus();
@@ -176,40 +172,39 @@ document.querySelectorAll("[data-prompt]").forEach((button) => {
 });
 
 $("clearChat").addEventListener("click", () => {
-  $("chatArea").innerHTML = "";
-  $("chatArea").appendChild($("welcome"));
+  document.querySelectorAll("#chatArea .message").forEach(el => el.remove());
   $("welcome").style.display = "";
-  showToast("Current chat cleared.");
+  toast("Chat cleared.");
 });
 
 /* Store */
-function formatPrice(price) {
-  return "₹" + Number(price).toLocaleString("en-IN");
+function price(value) {
+  return "₹" + Number(value).toLocaleString("en-IN");
 }
 
 function renderProducts() {
   const search = $("productSearch").value.trim().toLowerCase();
 
-  const filtered = state.products.filter((product) => {
-    const categoryMatch =
+  const products = state.products.filter(product => {
+    const categoryOK =
       state.category === "All" || product.category === state.category;
 
-    const searchMatch =
+    const searchOK =
       product.name.toLowerCase().includes(search) ||
       product.category.toLowerCase().includes(search);
 
-    return categoryMatch && searchMatch;
+    return categoryOK && searchOK;
   });
 
   const grid = $("productGrid");
-  grid.innerHTML = "";
+  grid.replaceChildren();
 
-  if (!filtered.length) {
+  if (!products.length) {
     grid.textContent = "No products found.";
     return;
   }
 
-  filtered.forEach((product) => {
+  products.forEach(product => {
     const card = document.createElement("article");
     card.className = "product-card";
 
@@ -223,27 +218,27 @@ function renderProducts() {
     const name = document.createElement("h3");
     name.textContent = product.name;
 
-    const price = document.createElement("div");
-    price.className = "product-price";
-    price.textContent = formatPrice(product.price);
+    const amount = document.createElement("div");
+    amount.className = "product-price";
+    amount.textContent = price(product.price);
 
-    const add = document.createElement("button");
-    add.className = "primary-btn";
-    add.textContent = "Add to Cart";
-    add.addEventListener("click", () => addToCart(product.id));
+    const button = document.createElement("button");
+    button.className = "primary-btn";
+    button.textContent = "Add to Cart";
+    button.addEventListener("click", () => addToCart(product.id));
 
-    info.append(name, price, add);
+    info.append(name, amount, button);
     card.append(image, info);
     grid.appendChild(card);
   });
 }
 
-document.querySelectorAll(".category").forEach((button) => {
+document.querySelectorAll(".category").forEach(button => {
   button.addEventListener("click", () => {
     state.category = button.dataset.category;
 
-    document.querySelectorAll(".category").forEach((item) => {
-      item.classList.toggle("active", item === button);
+    document.querySelectorAll(".category").forEach(el => {
+      el.classList.toggle("active", el === button);
     });
 
     renderProducts();
@@ -252,20 +247,20 @@ document.querySelectorAll(".category").forEach((button) => {
 
 $("productSearch").addEventListener("input", renderProducts);
 
-function addToCart(productId) {
-  const product = state.products.find((item) => item.id === productId);
+function addToCart(id) {
+  const product = state.products.find(item => item.id === id);
   if (!product) return;
 
-  const existing = state.cart.find((item) => item.id === productId);
+  const existing = state.cart.find(item => item.id === id);
 
   if (existing) {
-    existing.quantity += 1;
+    existing.quantity++;
   } else {
     state.cart.push({ ...product, quantity: 1 });
   }
 
   renderCart();
-  showToast("Added to cart.");
+  toast("Product added to cart.");
 }
 
 function renderCart() {
@@ -273,7 +268,7 @@ function renderCart() {
   $("cartCount").textContent = count;
 
   const panel = $("cartPanel");
-  panel.innerHTML = "";
+  panel.replaceChildren();
 
   const heading = document.createElement("h2");
   heading.textContent = "Your Cart";
@@ -284,19 +279,19 @@ function renderCart() {
     return;
   }
 
-  state.cart.forEach((item) => {
+  state.cart.forEach(item => {
     const row = document.createElement("div");
     row.className = "cart-row";
 
     const text = document.createElement("p");
     text.textContent =
-      `${item.name} × ${item.quantity} — ${formatPrice(item.price * item.quantity)}`;
+      `${item.name} × ${item.quantity} — ${price(item.price * item.quantity)}`;
 
     const remove = document.createElement("button");
-    remove.className = "tool-btn";
+    remove.className = "small-btn";
     remove.textContent = "Remove";
     remove.addEventListener("click", () => {
-      state.cart = state.cart.filter((product) => product.id !== item.id);
+      state.cart = state.cart.filter(product => product.id !== item.id);
       renderCart();
     });
 
@@ -305,19 +300,18 @@ function renderCart() {
   });
 
   const total = state.cart.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+    (sum, item) => sum + item.price * item.quantity, 0
   );
 
-  const totalLine = document.createElement("h3");
-  totalLine.textContent = "Total: " + formatPrice(total);
-  panel.appendChild(totalLine);
+  const totalEl = document.createElement("h3");
+  totalEl.textContent = "Total: " + price(total);
+  panel.appendChild(totalEl);
 
   const checkout = document.createElement("button");
   checkout.className = "primary-btn";
   checkout.textContent = "Proceed to Checkout";
   checkout.addEventListener("click", () => {
-    showToast("Secure checkout will be connected in the payment setup.");
+    toast("Secure checkout and payment will be connected later.");
   });
 
   panel.appendChild(checkout);
@@ -325,53 +319,45 @@ function renderCart() {
 
 $("cartBtn").addEventListener("click", () => {
   $("cartPanel").hidden = false;
-  $("cartPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+  $("cartPanel").scrollIntoView({ behavior: "smooth" });
 });
 
 /* Code preview */
 $("previewBtn").addEventListener("click", () => {
-  const code = $("codeEditor").value;
-  $("codePreview").srcdoc = code;
+  $("codePreview").srcdoc = $("codeEditor").value;
 });
 
 /* Location */
 $("locationBtn").addEventListener("click", () => {
-  const result = $("locationResult");
+  const output = $("locationResult");
 
   if (!navigator.geolocation) {
-    result.textContent = "Geolocation is not supported by this browser.";
+    output.textContent = "Geolocation is not supported.";
     return;
   }
 
-  result.textContent = "Requesting location permission...";
+  output.textContent = "Requesting location permission...";
 
   navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      result.textContent =
-        `Latitude: ${latitude.toFixed(6)} | Longitude: ${longitude.toFixed(6)}`;
+    position => {
+      output.textContent =
+        "Latitude: " + position.coords.latitude.toFixed(6) +
+        " | Longitude: " + position.coords.longitude.toFixed(6);
     },
-    (error) => {
+    error => {
       const messages = {
-        1: "Location permission was denied.",
-        2: "Your location could not be determined.",
+        1: "Location permission denied.",
+        2: "Location unavailable.",
         3: "Location request timed out."
       };
-
-      result.textContent = messages[error.code] || "Location error.";
+      output.textContent = messages[error.code] || "Location error.";
     },
-    {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 30000
-    }
+    { enableHighAccuracy: true, timeout: 15000, maximumAge: 30000 }
   );
 });
 
-/* File information */
-$("fileInput").addEventListener("change", (event) => {
+/* File list */
+$("fileInput").addEventListener("change", event => {
   const files = Array.from(event.target.files || []);
 
   if (!files.length) {
@@ -379,41 +365,42 @@ $("fileInput").addEventListener("change", (event) => {
     return;
   }
 
-  $("fileResult").textContent = files.map((file) => {
-    return `${file.name} — ${(file.size / 1024).toFixed(1)} KB`;
-  }).join("\n");
+  $("fileResult").textContent = files.map(file =>
+    file.name + " — " + (file.size / 1024).toFixed(1) + " KB"
+  ).join("\n");
 });
 
 /* Image preview */
-$("imageInput").addEventListener("change", (event) => {
+$("imageInput").addEventListener("change", event => {
   const file = event.target.files && event.target.files[0];
   if (!file) return;
 
   if (!file.type.startsWith("image/")) {
-    showToast("Please select an image.");
+    toast("Please select an image file.");
     return;
   }
 
   const url = URL.createObjectURL(file);
   const preview = $("imagePreview");
-  preview.innerHTML = "";
+  preview.replaceChildren();
 
   const image = document.createElement("img");
   image.src = url;
-  image.alt = "Uploaded image preview";
-
+  image.alt = "Image preview";
   image.onload = () => URL.revokeObjectURL(url);
+
   preview.appendChild(image);
 });
 
 /* Download notes */
 $("downloadNotes").addEventListener("click", () => {
-  const text = $("officeEditor").value;
+  const blob = new Blob([$(
+    "officeEditor"
+  ).value], { type: "text/plain;charset=utf-8" });
 
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
   const url = URL.createObjectURL(blob);
-
   const link = document.createElement("a");
+
   link.href = url;
   link.download = "K-ULTRA-notes.txt";
   link.click();
@@ -421,26 +408,25 @@ $("downloadNotes").addEventListener("click", () => {
   URL.revokeObjectURL(url);
 });
 
-/* Attach file */
+/* Attach */
 $("attachBtn").addEventListener("click", () => {
   $("hiddenFileInput").click();
 });
 
-$("hiddenFileInput").addEventListener("change", (event) => {
+$("hiddenFileInput").addEventListener("change", event => {
   const files = Array.from(event.target.files || []);
   if (!files.length) return;
 
-  const names = files.map((file) => file.name).join(", ");
+  const names = files.map(file => file.name).join(", ");
   $("messageInput").value +=
-    ($("messageInput").value ? "\n" : "") + "[Selected files: " + names + "]";
+    ($("messageInput").value ? "\n" : "") + "[Selected files: " + names;
 
-  showToast(files.length + " file(s) selected.");
+  toast(files.length + " file(s) selected.");
 });
 
-/* Initial setup */
+/* Start */
 try {
-  const savedTheme = localStorage.getItem("kultra-theme") || "dark";
-  setTheme(savedTheme);
+  setTheme(localStorage.getItem("kultra-theme") || "dark");
 } catch (_) {
   setTheme("dark");
 }
@@ -448,4 +434,5 @@ try {
 renderProducts();
 renderCart();
 
-console.log("K-ULTRA AI Version 252 interface loaded.");
+console.log("K-ULTRA AI Version 252 loaded.");
+    
