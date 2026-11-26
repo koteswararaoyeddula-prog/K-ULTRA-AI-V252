@@ -2,173 +2,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
 
-  <title>K-ULTRA AI</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <meta
+    name="theme-color"
+    content="#080d1c"
+  />
 
   <meta
     name="description"
-    content="K-ULTRA AI - Your intelligent AI super platform"
-  >
+    content="K-ULTRA AI Version 256 - Your secure AI digital universe."
+  />
 
-  <meta name="theme-color" content="#080d1c">
+  <title>K-ULTRA AI — Version 256</title>
 
-  <link rel="manifest" href="manifest.json">
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+
+  <!-- Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Safe HTML sanitizer -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
 </head>
 
 <body>
+  <div id="app" class="app-shell">
 
-  <!-- APP LOADING -->
-  <div id="appLoader" class="app-loader">
-    <div class="loader-logo">K</div>
-    <h2>K-ULTRA AI</h2>
-    <p>Initializing AI workspace...</p>
-  </div>
-
-  <!-- MAIN APPLICATION -->
-  <div id="app" class="app-container" hidden>
+    <!-- Mobile sidebar backdrop -->
+    <div
+      id="sidebarBackdrop"
+      class="sidebar-backdrop"
+      hidden
+    ></div>
 
     <!-- SIDEBAR -->
     <aside id="sidebar" class="sidebar">
 
-      <div class="sidebar-header">
-        <div class="brand">
-          <div class="brand-logo">K</div>
-          <div class="brand-text">
-            <h2>K-ULTRA AI</h2>
-            <span>AI SUPER PLATFORM</span>
+      <div class="sidebar-top">
+
+        <a href="./" class="brand">
+          <div class="brand-logo">
+            <span>K</span>
           </div>
+
+          <div class="brand-text">
+            <strong>K-ULTRA</strong>
+            <span>AI VERSION 256</span>
+          </div>
+        </a>
+
+        <button
+          id="closeSidebarBtn"
+          class="icon-button mobile-only"
+          type="button"
+          aria-label="Close sidebar"
+        >
+          ✕
+        </button>
+
+      </div>
+
+      <!-- New Chat -->
+      <button
+        id="newChatBtn"
+        class="new-chat-button"
+        type="button"
+      >
+        <span class="new-chat-icon">＋</span>
+        <span>New Chat</span>
+        <span class="new-chat-shortcut">⌘ K</span>
+      </button>
+
+      <!-- Navigation -->
+      <nav class="sidebar-nav" aria-label="Main navigation">
+
+        <div class="nav-section-label">
+          WORKSPACE
         </div>
 
         <button
-          id="sidebarCloseBtn"
-          class="icon-btn mobile-only"
-          aria-label="Close sidebar"
-        >✕</button>
-      </div>
-
-      <button id="newChatBtn" class="new-chat-btn">
-        <span>＋</span>
-        <span>New Chat</span>
-      </button>
-
-      <div class="sidebar-search">
-        <span>⌕</span>
-        <input
-          type="search"
-          id="chatSearchInput"
-          placeholder="Search conversations..."
-          autocomplete="off"
+          class="nav-item active"
+          type="button"
+          data-page="chat"
         >
-      </div>
-
-      <nav class="main-navigation" aria-label="Main navigation">
-
-        <button class="nav-item active" data-page="chat">
-          <span class="nav-icon">◈</span>
+          <span class="nav-icon">✧</span>
           <span>AI Chat</span>
         </button>
 
-        <button class="nav-item" data-page="image">
-          <span class="nav-icon">▧</span>
-          <span>Image Studio</span>
-        </button>
-
-        <button class="nav-item" data-page="voice">
-          <span class="nav-icon">◉</span>
-          <span>Voice Assistant</span>
-        </button>
-
-        <button class="nav-item" data-page="search">
+        <button
+          class="nav-item"
+          type="button"
+          data-page="search"
+        >
           <span class="nav-icon">⌕</span>
-          <span>AI Search</span>
+          <span>Universal Search</span>
+          <span class="nav-badge">Soon</span>
         </button>
 
-        <button class="nav-item" data-page="research">
-          <span class="nav-icon">⌘</span>
-          <span>Deep Research</span>
-        </button>
-
-        <button class="nav-item" data-page="documents">
-          <span class="nav-icon">▤</span>
-          <span>Documents</span>
-        </button>
-
-        <button class="nav-item" data-page="coding">
-          <span class="nav-icon">⌨</span>
-          <span>Coding Assistant</span>
-        </button>
-
-        <button class="nav-item" data-page="agent">
-          <span class="nav-icon">✧</span>
-          <span>AI Agents</span>
-        </button>
-
-        <button class="nav-item" data-page="data">
-          <span class="nav-icon">▥</span>
-          <span>Data Analysis</span>
-        </button>
-
-        <button class="nav-item" data-page="browser">
-          <span class="nav-icon">◎</span>
-          <span>AI Browser</span>
-        </button>
-
-        <div class="nav-divider"></div>
-
-        <button class="nav-item" data-page="shop">
-          <span class="nav-icon">🛍</span>
-          <span>AI Store</span>
-        </button>
-
-        <button class="nav-item" data-page="orders">
+        <button
+          class="nav-item"
+          type="button"
+          data-page="projects"
+        >
           <span class="nav-icon">▣</span>
-          <span>My Orders</span>
+          <span>Projects</span>
+          <span class="nav-badge">Soon</span>
         </button>
 
-        <button class="nav-item" data-page="wishlist">
-          <span class="nav-icon">♡</span>
-          <span>Wishlist</span>
+        <button
+          class="nav-item"
+          type="button"
+          data-page="files"
+        >
+          <span class="nav-icon">▤</span>
+          <span>Files & Documents</span>
+          <span class="nav-badge">Soon</span>
+        </button>
+
+        <div class="nav-section-label">
+          AI STUDIO
+        </div>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-page="image"
+        >
+          <span class="nav-icon">◈</span>
+          <span>Image Studio</span>
+          <span class="nav-badge">Soon</span>
+        </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-page="research"
+        >
+          <span class="nav-icon">⌘</span>
+          <span>AI Research</span>
+          <span class="nav-badge">Soon</span>
+        </button>
+
+        <button
+          class="nav-item"
+          type="button"
+          data-page="coding"
+        >
+          <span class="nav-icon">〈/〉</span>
+          <span>AI Coding</span>
+          <span class="nav-badge">Soon</span>
         </button>
 
       </nav>
 
-      <div class="sidebar-bottom">
+      <!-- Chat history -->
+      <div class="chat-history-section">
 
-        <button class="nav-item" data-page="settings">
-          <span class="nav-icon">⚙</span>
-          <span>Settings</span>
-        </button>
-
-        <button class="nav-item" data-page="admin" id="adminNavBtn" hidden>
-          <span class="nav-icon">▦</span>
-          <span>Admin Dashboard</span>
-        </button>
-
-        <div class="user-profile" id="userProfile">
-
-          <div class="user-avatar" id="userAvatar">G</div>
-
-          <div class="user-info">
-            <strong id="userName">Guest User</strong>
-            <span id="userEmail">Sign in to your account</span>
-          </div>
+        <div class="history-heading">
+          <span>RECENT CHATS</span>
 
           <button
-            id="accountMenuBtn"
-            class="icon-btn"
-            aria-label="Account menu"
-          >⋯</button>
+            id="clearHistoryBtn"
+            class="small-icon-button"
+            type="button"
+            aria-label="Clear chat history"
+            title="Clear chat history"
+          >
+            ⋯
+          </button>
+        </div>
+
+        <div
+          id="chatHistory"
+          class="chat-history"
+        >
+          <div class="history-empty">
+            Your conversations will appear here.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Sidebar footer -->
+      <div class="sidebar-footer">
+
+        <div class="connection-card">
+
+          <span
+            id="connectionDot"
+            class="connection-dot"
+          ></span>
+
+          <div class="connection-info">
+            <strong id="connectionText">
+              Connecting...
+            </strong>
+
+            <span id="connectionSubtext">
+              Checking AI backend
+            </span>
+          </div>
 
         </div>
+
+        <button
+          id="profileBtn"
+          class="profile-button"
+          type="button"
+        >
+
+          <div class="profile-avatar">
+            U
+          </div>
+
+          <div class="profile-details">
+            <strong id="profileName">
+              Guest User
+            </strong>
+
+            <span id="profileEmail">
+              Sign in to your account
+            </span>
+          </div>
+
+          <span class="profile-menu-icon">
+            ⋯
+          </span>
+
+        </button>
 
       </div>
 
@@ -177,33 +247,59 @@
     <!-- MAIN CONTENT -->
     <main class="main-content">
 
-      <!-- TOP BAR -->
+      <!-- Topbar -->
       <header class="topbar">
 
         <div class="topbar-left">
 
           <button
-            id="sidebarOpenBtn"
-            class="icon-btn"
+            id="openSidebarBtn"
+            class="icon-button"
+            type="button"
             aria-label="Open sidebar"
-          >☰</button>
+          >
+            ☰
+          </button>
 
-          <div class="page-heading">
-            <h1 id="pageTitle">AI Chat</h1>
-            <span id="connectionStatus" class="connection-status">
-              Connecting...
-            </span>
+          <div class="breadcrumb">
+            <span>K-ULTRA AI</span>
+            <span class="breadcrumb-separator">/</span>
+            <strong>AI Chat</strong>
           </div>
 
         </div>
 
-        <div class="topbar-actions">
+        <div class="topbar-right">
 
-          <button id="themeToggleBtn" class="icon-btn" title="Toggle theme">
+          <div class="model-selector">
+
+            <span class="model-status-dot"></span>
+
+            <span id="modelName">
+              Workers AI
+            </span>
+
+            <span class="model-dropdown-icon">
+              ▾
+            </span>
+
+          </div>
+
+          <button
+            id="themeToggleBtn"
+            class="icon-button"
+            type="button"
+            aria-label="Toggle theme"
+            title="Toggle theme"
+          >
             ◐
           </button>
 
-          <button id="signInBtn" class="sign-in-btn">
+          <button
+            id="loginBtn"
+            class="topbar-login-button"
+            type="button"
+          >
             Sign In
           </button>
 
@@ -211,650 +307,216 @@
 
       </header>
 
-      <!-- PAGE CONTENT -->
-      <section class="workspace">
+      <!-- Chat page -->
+      <section
+        id="chatPage"
+        class="chat-page"
+      >
 
-        <!-- CHAT PAGE -->
-        <section id="page-chat" class="page active">
+        <!-- Messages -->
+        <div
+          id="messagesContainer"
+          class="messages-container"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
 
-          <div id="chatWelcome" class="chat-welcome">
+          <!-- Welcome screen -->
+          <div
+            id="welcomeScreen"
+            class="welcome-screen"
+          >
 
-            <div class="welcome-logo">K</div>
+            <div class="welcome-logo">
+              <div class="welcome-logo-inner">
+                ✧
+              </div>
+            </div>
 
-            <h2>What can I help you with?</h2>
+            <div class="welcome-eyebrow">
+              YOUR DIGITAL UNIVERSE
+            </div>
 
-            <p>
-              Ask anything. Create, learn, research, code and explore
-              with K-ULTRA AI.
+            <h1>
+              Welcome to
+              <span>K-ULTRA AI</span>
+            </h1>
+
+            <p class="welcome-description">
+              One connected AI workspace for your ideas,
+              creativity, knowledge and digital world.
             </p>
 
+            <!-- Suggestion cards -->
             <div class="suggestion-grid">
 
-              <button class="suggestion-card" data-prompt="Explain a difficult topic in simple words">
-                <span>✧</span>
+              <button
+                class="suggestion-card"
+                type="button"
+                data-prompt="Explain a complex topic in simple language."
+              >
+                <span class="suggestion-icon">✧</span>
+
                 <strong>Learn something</strong>
-                <small>Understand any topic</small>
+
+                <span>
+                  Explain a complex topic simply
+                </span>
               </button>
 
-              <button class="suggestion-card" data-prompt="Help me write a professional email">
-                <span>✎</span>
+              <button
+                class="suggestion-card"
+                type="button"
+                data-prompt="Help me write a professional email."
+              >
+                <span class="suggestion-icon">✎</span>
+
                 <strong>Write something</strong>
-                <small>Emails, articles and ideas</small>
+
+                <span>
+                  Create a professional email
+                </span>
               </button>
 
-              <button class="suggestion-card" data-prompt="Help me build a website with HTML CSS and JavaScript">
-                <span>⌨</span>
-                <strong>Build with code</strong>
-                <small>Create and debug code</small>
+              <button
+                class="suggestion-card"
+                type="button"
+                data-prompt="Help me build a website step by step."
+              >
+                <span class="suggestion-icon">〈/〉</span>
+
+                <strong>Build something</strong>
+
+                <span>
+                  Create a website or application
+                </span>
               </button>
 
-              <button class="suggestion-card" data-prompt="Give me a detailed research plan for an interesting topic">
-                <span>⌕</span>
-                <strong>Research</strong>
-                <small>Explore important questions</small>
+              <button
+                class="suggestion-card"
+                type="button"
+                data-prompt="Help me plan my day and organize my tasks."
+              >
+                <span class="suggestion-icon">◇</span>
+
+                <strong>Plan my day</strong>
+
+                <span>
+                  Organize ideas and tasks
+                </span>
               </button>
 
             </div>
 
           </div>
 
-          <div id="chatMessages" class="chat-messages"></div>
+          <!-- JavaScript inserts chat messages here -->
 
-          <div id="chatTypingIndicator" class="typing-indicator" hidden>
-            <span></span>
-            <span></span>
-            <span></span>
-            <small>K-ULTRA AI is thinking...</small>
-          </div>
+        </div>
 
-          <div class="chat-composer-wrapper">
+        <!-- Composer -->
+        <div class="composer-area">
 
-            <div id="attachmentPreview" class="attachment-preview"></div>
+          <form
+            id="chatForm"
+            class="chat-composer"
+          >
 
-            <form id="chatForm" class="chat-composer">
-
-              <input
-                type="file"
-                id="chatFileInput"
-                hidden
-                multiple
-                accept=".txt,.pdf,.doc,.docx,.csv,.xlsx,.pptx,.png,.jpg,.jpeg,.webp"
-              >
-
-              <button
-                type="button"
-                id="attachFileBtn"
-                class="composer-btn"
-                title="Attach files"
-              >＋</button>
+            <div class="composer-input-row">
 
               <textarea
-                id="chatInput"
-                placeholder="Message K-ULTRA AI..."
+                id="messageInput"
+                name="message"
                 rows="1"
                 maxlength="12000"
+                placeholder="Message K-ULTRA AI..."
+                aria-label="Message K-ULTRA AI"
+                autocomplete="off"
+                required
               ></textarea>
 
               <button
-                type="button"
-                id="voiceInputBtn"
-                class="composer-btn"
-                title="Voice input"
-              >🎙</button>
-
-              <button
+                id="sendBtn"
+                class="send-button"
                 type="submit"
-                id="sendMessageBtn"
-                class="send-btn"
                 aria-label="Send message"
-              >➤</button>
-
-              <button
-                type="button"
-                id="stopGenerationBtn"
-                class="stop-btn"
-                hidden
-              >■</button>
-
-            </form>
-
-            <p class="composer-disclaimer">
-              AI can make mistakes. Check important information.
-            </p>
-
-          </div>
-
-        </section>
-
-        <!-- IMAGE STUDIO -->
-        <section id="page-image" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>AI Image Studio</h2>
-            <p>Create images from your imagination.</p>
-
-            <form id="imageForm" class="module-form">
-
-              <textarea
-                id="imagePrompt"
-                placeholder="Describe the image you want to create..."
-                rows="4"
-              ></textarea>
-
-              <div class="form-row">
-
-                <label>
-                  Aspect Ratio
-                  <select id="imageAspectRatio">
-                    <option value="1:1">Square</option>
-                    <option value="16:9">Landscape</option>
-                    <option value="9:16">Portrait</option>
-                    <option value="4:3">Classic</option>
-                  </select>
-                </label>
-
-                <label>
-                  Quality
-                  <select id="imageQuality">
-                    <option value="standard">Standard</option>
-                    <option value="high">High</option>
-                  </select>
-                </label>
-
-              </div>
-
-              <button type="submit" class="primary-btn">
-                Generate Image
-              </button>
-
-            </form>
-
-            <div id="imageResult" class="image-result"></div>
-
-            <div id="imageGallery" class="image-gallery"></div>
-
-          </div>
-
-        </section>
-
-        <!-- VOICE ASSISTANT -->
-        <section id="page-voice" class="page" hidden>
-
-          <div class="module-container center-module">
-
-            <h2>Voice Assistant</h2>
-            <p>Talk with K-ULTRA AI using your voice.</p>
-
-            <button id="startVoiceBtn" class="voice-main-btn">
-              🎙
-            </button>
-
-            <p id="voiceStatus">Ready to listen</p>
-
-            <div id="voiceTranscript" class="voice-transcript"></div>
-
-            <button id="stopVoiceBtn" class="secondary-btn" hidden>
-              Stop Voice
-            </button>
-
-          </div>
-
-        </section>
-
-        <!-- AI SEARCH -->
-        <section id="page-search" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>AI Search</h2>
-            <p>Search the web and explore information with sources.</p>
-
-            <form id="searchForm" class="module-form">
-
-              <div class="search-input-row">
-                <input
-                  type="search"
-                  id="webSearchInput"
-                  placeholder="What do you want to search?"
-                >
-
-                <button type="submit" class="primary-btn">
-                  Search
-                </button>
-              </div>
-
-            </form>
-
-            <div id="searchResults" class="search-results"></div>
-
-          </div>
-
-        </section>
-
-        <!-- DEEP RESEARCH -->
-        <section id="page-research" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Deep Research</h2>
-            <p>Investigate complex topics and create detailed reports.</p>
-
-            <form id="researchForm" class="module-form">
-
-              <textarea
-                id="researchTopic"
-                placeholder="Enter your research topic..."
-                rows="4"
-              ></textarea>
-
-              <button type="submit" class="primary-btn">
-                Start Research
-              </button>
-
-            </form>
-
-            <div id="researchProgress" class="research-progress"></div>
-            <div id="researchResult" class="research-result"></div>
-
-          </div>
-
-        </section>
-
-        <!-- DOCUMENTS -->
-        <section id="page-documents" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Document Assistant</h2>
-            <p>Upload documents to summarize, analyze and ask questions.</p>
-
-            <form id="documentForm" class="module-form">
-
-              <input
-                type="file"
-                id="documentInput"
-                accept=".pdf,.txt,.doc,.docx,.csv,.xlsx,.pptx,.png,.jpg,.jpeg"
+                title="Send message"
               >
-
-              <textarea
-                id="documentQuestion"
-                placeholder="What would you like to know about this document?"
-                rows="3"
-              ></textarea>
-
-              <button type="submit" class="primary-btn">
-                Analyze Document
+                <span>↑</span>
               </button>
 
-            </form>
-
-            <div id="documentResult" class="document-result"></div>
-
-          </div>
-
-        </section>
-
-        <!-- CODING ASSISTANT -->
-        <section id="page-coding" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Coding Assistant</h2>
-            <p>Generate, explain, debug and improve your code.</p>
-
-            <form id="codingForm" class="module-form">
-
-              <select id="codingLanguage">
-                <option value="javascript">JavaScript</option>
-                <option value="html">HTML</option>
-                <option value="css">CSS</option>
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="c">C</option>
-                <option value="cpp">C++</option>
-                <option value="other">Other</option>
-              </select>
-
-              <textarea
-                id="codingPrompt"
-                placeholder="Describe the code you need or paste code to debug..."
-                rows="6"
-              ></textarea>
-
-              <button type="submit" class="primary-btn">
-                Generate Code
-              </button>
-
-            </form>
-
-            <div id="codingResult" class="coding-result"></div>
-
-          </div>
-
-        </section>
-
-        <!-- AI AGENTS -->
-        <section id="page-agent" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>AI Agents</h2>
-            <p>Plan and execute multi-step tasks with approval controls.</p>
-
-            <form id="agentForm" class="module-form">
-
-              <textarea
-                id="agentTask"
-                placeholder="Describe the task you want the AI agent to perform..."
-                rows="4"
-              ></textarea>
-
-              <label class="checkbox-label">
-                <input type="checkbox" id="agentApproval" checked>
-                Require approval before important actions
-              </label>
-
-              <button type="submit" class="primary-btn">
-                Run Agent
-              </button>
-
-            </form>
-
-            <div id="agentProgress" class="agent-progress"></div>
-            <div id="agentResult" class="agent-result"></div>
-
-          </div>
-
-        </section>
-
-        <!-- DATA ANALYSIS -->
-        <section id="page-data" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Data Analysis</h2>
-            <p>Analyze CSV and spreadsheet data.</p>
-
-            <form id="dataAnalysisForm" class="module-form">
-
-              <input
-                type="file"
-                id="dataFileInput"
-                accept=".csv,.xlsx"
-              >
-
-              <textarea
-                id="dataQuestion"
-                placeholder="What would you like to analyze?"
-                rows="3"
-              ></textarea>
-
-              <button type="submit" class="primary-btn">
-                Analyze Data
-              </button>
-
-            </form>
-
-            <div id="dataResult" class="data-result"></div>
-            <div id="dataChart" class="data-chart"></div>
-
-          </div>
-
-        </section>
-
-        <!-- AI BROWSER -->
-        <section id="page-browser" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>AI Browser</h2>
-            <p>Use supported browser tools for research and workflows.</p>
-
-            <form id="browserForm" class="module-form">
-
-              <input
-                type="url"
-                id="browserUrl"
-                placeholder="https://example.com"
-              >
-
-              <textarea
-                id="browserTask"
-                placeholder="What should the browser assistant do?"
-                rows="3"
-              ></textarea>
-
-              <button type="submit" class="primary-btn">
-                Start Browser Task
-              </button>
-
-            </form>
-
-            <div id="browserResult" class="browser-result"></div>
-
-          </div>
-
-        </section>
-
-        <!-- STORE -->
-        <section id="page-shop" class="page" hidden>
-
-          <div class="module-container">
-
-            <div class="store-header">
-              <div>
-                <h2>AI Store</h2>
-                <p>Discover products and shop online.</p>
-              </div>
-
-              <button id="openCartBtn" class="secondary-btn">
-                🛒 Cart <span id="cartCount">0</span>
-              </button>
             </div>
 
-            <form id="productSearchForm" class="module-form">
+            <div class="composer-toolbar">
 
-              <div class="search-input-row">
+              <div class="composer-tools">
 
-                <input
-                  type="search"
-                  id="productSearchInput"
-                  placeholder="Search products..."
+                <button
+                  id="attachBtn"
+                  class="composer-tool-button"
+                  type="button"
+                  title="File upload coming soon"
+                  disabled
                 >
-
-                <button type="submit" class="primary-btn">
-                  Search
+                  ＋
+                  <span>Attach</span>
                 </button>
 
+                <span class="composer-tool-divider"></span>
+
+                <span class="composer-mode">
+                  <span class="composer-mode-dot"></span>
+                  AI Assistant
+                </span>
+
               </div>
 
-            </form>
-
-            <div class="store-filters">
-
-              <select id="productCategoryFilter">
-                <option value="all">All Categories</option>
-              </select>
-
-              <select id="productSort">
-                <option value="newest">Newest</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="rating">Top Rated</option>
-              </select>
+              <div class="composer-hint">
+                Enter to send · Shift + Enter for new line
+              </div>
 
             </div>
 
-            <div id="productGrid" class="product-grid"></div>
+          </form>
 
+          <div class="disclaimer">
+            K-ULTRA AI can make mistakes. Verify important information.
           </div>
 
-        </section>
+        </div>
 
-        <!-- CART -->
-        <section id="page-cart" class="page" hidden>
+      </section>
 
-          <div class="module-container">
+      <!-- Placeholder page for future modules -->
+      <section
+        id="placeholderPage"
+        class="placeholder-page"
+        hidden
+      >
 
-            <h2>Shopping Cart</h2>
+        <div class="placeholder-content">
 
-            <div id="cartItems" class="cart-items"></div>
-
-            <div id="cartSummary" class="cart-summary"></div>
-
-            <button id="checkoutBtn" class="primary-btn">
-              Proceed to Checkout
-            </button>
-
+          <div class="placeholder-icon">
+            ◈
           </div>
 
-        </section>
+          <h2 id="placeholderTitle">
+            Coming Soon
+          </h2>
 
-        <!-- ORDERS -->
-        <section id="page-orders" class="page" hidden>
+          <p id="placeholderDescription">
+            This module will be added in a future release.
+          </p>
 
-          <div class="module-container">
+          <button
+            id="backToChatBtn"
+            class="primary-button"
+            type="button"
+          >
+            Return to AI Chat
+          </button>
 
-            <h2>My Orders</h2>
-
-            <div id="ordersList" class="orders-list"></div>
-
-          </div>
-
-        </section>
-
-        <!-- WISHLIST -->
-        <section id="page-wishlist" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>My Wishlist</h2>
-
-            <div id="wishlistGrid" class="product-grid"></div>
-
-          </div>
-
-        </section>
-
-        <!-- SETTINGS -->
-        <section id="page-settings" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Settings</h2>
-
-            <div class="settings-section">
-
-              <h3>Appearance</h3>
-
-              <label>
-                Theme
-                <select id="settingsTheme">
-                  <option value="dark">Dark</option>
-                  <option value="light">Light</option>
-                </select>
-              </label>
-
-            </div>
-
-            <div class="settings-section">
-
-              <h3>Language</h3>
-
-              <select id="settingsLanguage">
-                <option value="auto">Auto Detect</option>
-                <option value="en">English</option>
-                <option value="te">తెలుగు</option>
-                <option value="hi">हिन्दी</option>
-              </select>
-
-            </div>
-
-            <div class="settings-section">
-
-              <h3>Account</h3>
-
-              <button id="settingsSignInBtn" class="secondary-btn">
-                Sign In / Create Account
-              </button>
-
-              <button id="signOutBtn" class="secondary-btn">
-                Sign Out
-              </button>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        <!-- ADMIN DASHBOARD -->
-        <section id="page-admin" class="page" hidden>
-
-          <div class="module-container">
-
-            <h2>Admin Dashboard</h2>
-
-            <div class="admin-stats" id="adminStats"></div>
-
-            <div class="admin-section">
-
-              <h3>Product Management</h3>
-
-              <form id="adminProductForm" class="module-form">
-
-                <input
-                  type="text"
-                  id="adminProductName"
-                  placeholder="Product name"
-                  required
-                >
-
-                <input
-                  type="number"
-                  id="adminProductPrice"
-                  placeholder="Price"
-                  min="0"
-                  step="0.01"
-                  required
-                >
-
-                <input
-                  type="number"
-                  id="adminProductStock"
-                  placeholder="Stock quantity"
-                  min="0"
-                  required
-                >
-
-                <textarea
-                  id="adminProductDescription"
-                  placeholder="Product description"
-                  rows="3"
-                ></textarea>
-
-                <button type="submit" class="primary-btn">
-                  Add Product
-                </button>
-
-              </form>
-
-            </div>
-
-            <div id="adminProductList" class="admin-product-list"></div>
-
-            <div class="admin-section">
-
-              <h3>Order Management</h3>
-
-              <div id="adminOrdersList"></div>
-
-            </div>
-
-          </div>
-
-        </section>
+        </div>
 
       </section>
 
@@ -863,213 +525,154 @@
   </div>
 
   <!-- AUTHENTICATION MODAL -->
-  <div id="authModal" class="modal" hidden>
+  <div
+    id="authModal"
+    class="modal-overlay"
+    hidden
+  >
 
-    <div class="modal-backdrop" data-close-modal="authModal"></div>
-
-    <div class="modal-content">
+    <div
+      class="auth-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="authTitle"
+    >
 
       <button
-        class="modal-close"
-        data-close-modal="authModal"
+        id="closeAuthBtn"
+        class="modal-close-button"
+        type="button"
         aria-label="Close"
-      >✕</button>
+      >
+        ✕
+      </button>
 
-      <h2 id="authModalTitle">Welcome to K-ULTRA AI</h2>
+      <div class="auth-brand">
+        <div class="brand-logo">
+          <span>K</span>
+        </div>
 
-      <p id="authModalDescription">
-        Sign in to access your AI workspace.
+        <span>K-ULTRA AI</span>
+      </div>
+
+      <h2 id="authTitle">
+        Welcome back
+      </h2>
+
+      <p id="authSubtitle">
+        Sign in to continue to your digital universe.
       </p>
 
-      <form id="authForm">
+      <!-- Google sign-in -->
+      <button
+        id="googleLoginBtn"
+        class="google-login-button"
+        type="button"
+      >
+        <span class="google-icon">G</span>
+        Continue with Google
+      </button>
+
+      <div class="auth-divider">
+        <span>OR CONTINUE WITH EMAIL</span>
+      </div>
+
+      <form
+        id="authForm"
+        class="auth-form"
+      >
+
+        <label for="authName">
+          Full name
+        </label>
 
         <input
-          type="email"
-          id="authEmail"
-          placeholder="Email address"
-          autocomplete="email"
-          required
-        >
-
-        <input
-          type="password"
-          id="authPassword"
-          placeholder="Password"
-          autocomplete="current-password"
-          required
-        >
-
-        <input
+          id="authName"
+          name="name"
           type="text"
-          id="authDisplayName"
           placeholder="Your name"
           autocomplete="name"
           hidden
-        >
+        />
 
-        <button type="submit" id="authSubmitBtn" class="primary-btn">
+        <label for="authEmail">
+          Email address
+        </label>
+
+        <input
+          id="authEmail"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          autocomplete="email"
+          required
+        />
+
+        <label for="authPassword">
+          Password
+        </label>
+
+        <input
+          id="authPassword"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          autocomplete="current-password"
+          minlength="6"
+          required
+        />
+
+        <button
+          id="authSubmitBtn"
+          class="primary-button auth-submit-button"
+          type="submit"
+        >
           Sign In
         </button>
 
       </form>
 
-      <button id="googleSignInBtn" class="google-signin-btn">
-        Continue with Google
-      </button>
+      <div class="auth-footer">
 
-      <button id="forgotPasswordBtn" class="text-btn">
-        Forgot password?
-      </button>
+        <span id="authSwitchText">
+          Don't have an account?
+        </span>
 
-      <p class="auth-switch">
-        <span id="authSwitchText">Don't have an account?</span>
-        <button id="authSwitchBtn" class="text-btn">
-          Create Account
-        </button>
-      </p>
-
-      <div id="authError" class="error-message"></div>
-
-    </div>
-
-  </div>
-
-  <!-- CART MODAL -->
-  <div id="cartModal" class="modal" hidden>
-
-    <div class="modal-backdrop" data-close-modal="cartModal"></div>
-
-    <div class="modal-content">
-
-      <button
-        class="modal-close"
-        data-close-modal="cartModal"
-        aria-label="Close"
-      >✕</button>
-
-      <h2>Your Cart</h2>
-
-      <div id="cartModalItems"></div>
-
-      <div id="cartModalSummary"></div>
-
-      <button id="cartModalCheckoutBtn" class="primary-btn">
-        Checkout
-      </button>
-
-    </div>
-
-  </div>
-
-  <!-- PRODUCT DETAILS MODAL -->
-  <div id="productModal" class="modal" hidden>
-
-    <div class="modal-backdrop" data-close-modal="productModal"></div>
-
-    <div class="modal-content product-modal-content">
-
-      <button
-        class="modal-close"
-        data-close-modal="productModal"
-        aria-label="Close"
-      >✕</button>
-
-      <div id="productDetails"></div>
-
-    </div>
-
-  </div>
-
-  <!-- CHECKOUT MODAL -->
-  <div id="checkoutModal" class="modal" hidden>
-
-    <div class="modal-backdrop" data-close-modal="checkoutModal"></div>
-
-    <div class="modal-content">
-
-      <button
-        class="modal-close"
-        data-close-modal="checkoutModal"
-        aria-label="Close"
-      >✕</button>
-
-      <h2>Checkout</h2>
-
-      <form id="checkoutForm">
-
-        <input
-          type="text"
-          id="checkoutFullName"
-          placeholder="Full name"
-          autocomplete="name"
-          required
+        <button
+          id="authSwitchBtn"
+          class="text-button"
+          type="button"
         >
-
-        <input
-          type="tel"
-          id="checkoutPhone"
-          placeholder="Phone number"
-          autocomplete="tel"
-          required
-        >
-
-        <textarea
-          id="checkoutAddress"
-          placeholder="Delivery address"
-          autocomplete="street-address"
-          rows="3"
-          required
-        ></textarea>
-
-        <input
-          type="text"
-          id="checkoutCity"
-          placeholder="City"
-          required
-        >
-
-        <input
-          type="text"
-          id="checkoutPostalCode"
-          placeholder="PIN code"
-          inputmode="numeric"
-          required
-        >
-
-        <button type="submit" class="primary-btn">
-          Continue to Payment
+          Create account
         </button>
 
-      </form>
+      </div>
 
-      <div id="checkoutMessage"></div>
+      <p
+        id="authMessage"
+        class="auth-message"
+        role="status"
+      ></p>
 
     </div>
 
   </div>
 
-  <!-- NOTIFICATION -->
-  <div id="toastContainer" class="toast-container"></div>
+  <!-- Toast notification -->
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+    hidden
+  ></div>
 
-  <!-- APPLICATION SCRIPTS -->
+  <!-- Application scripts -->
   <script src="config.js"></script>
   <script src="utils.js"></script>
   <script src="auth.js"></script>
   <script src="workers.js"></script>
   <script src="script.js"></script>
-
-  <!-- PWA SERVICE WORKER -->
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker
-          .register("./service-worker.js")
-          .catch(function (error) {
-            console.warn("Service worker registration failed:", error);
-          });
-      });
-    }
-  </script>
 
 </body>
 </html>
