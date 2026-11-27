@@ -1,1 +1,316 @@
 
+<!DOCTYPE html>
+<html lang="te">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>K-ULTRA AI Chat</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #080d1c;
+      color: white;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 18px;
+      background: #0b1121;
+      border-bottom: 1px solid #202943;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #637cff, #28c9d8);
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    header h1 {
+      font-size: 19px;
+    }
+
+    header p {
+      color: #9aa8c7;
+      font-size: 12px;
+      margin-top: 4px;
+    }
+
+    #chat {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .welcome {
+      text-align: center;
+      margin: auto;
+      max-width: 500px;
+      color: #aab6d2;
+    }
+
+    .welcome h2 {
+      color: white;
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 13px 16px;
+      border-radius: 16px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .user {
+      align-self: flex-end;
+      background: #5269df;
+      border-bottom-right-radius: 4px;
+    }
+
+    .ai {
+      align-self: flex-start;
+      background: #151e33;
+      border: 1px solid #26324d;
+      border-bottom-left-radius: 4px;
+    }
+
+    .typing {
+      color: #9aa8c7;
+      font-style: italic;
+    }
+
+    .input-area {
+      padding: 15px;
+      background: #0b1121;
+      border-top: 1px solid #202943;
+    }
+
+    .input-box {
+      max-width: 850px;
+      margin: auto;
+      display: flex;
+      gap: 10px;
+      background: #151e33;
+      border: 1px solid #303d5c;
+      border-radius: 16px;
+      padding: 8px;
+    }
+
+    #messageInput {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 12px;
+      font-size: 16px;
+    }
+
+    #sendButton {
+      border: none;
+      border-radius: 12px;
+      background: #637cff;
+      color: white;
+      padding: 0 20px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    #sendButton:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .note {
+      text-align: center;
+      color: #74819f;
+      font-size: 11px;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      #chat {
+        padding: 14px;
+      }
+
+      .message {
+        max-width: 92%;
+      }
+
+      .welcome h2 {
+        font-size: 23px;
+      }
+
+      .input-area {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">K</div>
+    <div>
+      <h1>K-ULTRA AI</h1>
+      <p>AI Chat Assistant</p>
+    </div>
+  </header>
+
+  <main id="chat">
+    <div class="welcome" id="welcome">
+      <h2>Welcome to K-ULTRA AI</h2>
+      <p>Namaskaram! Nenu mee AI assistant.</p>
+      <p>Meeku em help kavalo type cheyyandi.</p>
+    </div>
+  </main>
+
+  <div class="input-area">
+    <div class="input-box">
+      <input
+        id="messageInput"
+        type="text"
+        placeholder="Message K-ULTRA AI..."
+        autocomplete="off"
+      >
+      <button id="sendButton">Send</button>
+    </div>
+
+    <p class="note">
+      K-ULTRA AI may make mistakes. Please verify important information.
+    </p>
+  </div>
+
+  <script>
+    // NEXT STEP LO NEE CLOUDFLARE WORKER URL SET CHESTHAM
+    const WORKER_URL = "YOUR_CLOUDFLARE_WORKER_URL";
+
+    const chat = document.getElementById("chat");
+    const input = document.getElementById("messageInput");
+    const sendButton = document.getElementById("sendButton");
+    const welcome = document.getElementById("welcome");
+
+    const history = [];
+
+    function addMessage(text, sender) {
+      const message = document.createElement("div");
+      message.className = "message " + sender;
+      message.textContent = text;
+      chat.appendChild(message);
+      chat.scrollTop = chat.scrollHeight;
+      return message;
+    }
+
+    async function sendMessage() {
+      const text = input.value.trim();
+
+      if (!text) return;
+
+      if (welcome) {
+        welcome.remove();
+      }
+
+      addMessage(text, "user");
+      input.value = "";
+      input.disabled = true;
+      sendButton.disabled = true;
+
+      const typing = addMessage("K-ULTRA AI is thinking...", "ai typing");
+
+      try {
+        if (
+          WORKER_URL === "YOUR_CLOUDFLARE_WORKER_URL" ||
+          !WORKER_URL.startsWith("https://")
+        ) {
+          typing.textContent =
+            "Chat UI ready! AI backend connect cheyyadaniki Cloudflare Worker URL set cheyyali.";
+          typing.classList.remove("typing");
+          return;
+        }
+
+        const response = await fetch(
+          WORKER_URL.replace(/\/$/, "") + "/api/chat",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              message: text,
+              history: history
+            })
+          }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || "Server error");
+        }
+
+        const answer =
+          data.response ||
+          data.answer ||
+          data.text ||
+          data.message;
+
+        if (!answer) {
+          throw new Error("Backend response format not recognized");
+        }
+
+        typing.textContent = answer;
+        typing.classList.remove("typing");
+
+        history.push(
+          { role: "user", content: text },
+          { role: "assistant", content: answer }
+        );
+
+      } catch (error) {
+        typing.textContent =
+          "Backend connection error: " + error.message;
+        typing.classList.remove("typing");
+      } finally {
+        input.disabled = false;
+        sendButton.disabled = false;
+        input.focus();
+      }
+    }
+
+    sendButton.addEventListener("click", sendMessage);
+
+    input.addEventListener("keydown", function(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    });
+  </script>
+
+</body>
+</html>
+
