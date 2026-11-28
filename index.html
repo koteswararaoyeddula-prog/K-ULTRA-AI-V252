@@ -1,0 +1,1171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d1c">
+  <title>K-ULTRA AI</title>
+
+  <style>
+    :root {
+      --bg: #080d1c;
+      --panel: #0b1121;
+      --panel2: #111a2e;
+      --border: #202b42;
+      --text: #f4f7ff;
+      --muted: #91a0ba;
+      --primary: #637cff;
+      --accent: #28c9d8;
+      --danger: #ff647c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, system-ui, -apple-system, sans-serif;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    button, input, textarea, select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .app {
+      display: flex;
+      height: 100dvh;
+      width: 100%;
+    }
+
+    .sidebar {
+      width: 260px;
+      min-width: 260px;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      gap: 14px;
+      transition: transform .25s ease;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 17px;
+      padding: 8px 4px;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 20px;
+    }
+
+    .new-chat {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .nav-title {
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 1.5px;
+      padding: 8px 6px 2px;
+    }
+
+    .nav-item {
+      border: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 11px 12px;
+      border-radius: 10px;
+      text-align: left;
+      width: 100%;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: var(--panel2);
+      color: var(--text);
+    }
+
+    .sidebar-bottom {
+      margin-top: auto;
+      border-top: 1px solid var(--border);
+      padding-top: 12px;
+    }
+
+    .user-card {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 4px;
+    }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #243252;
+      display: grid;
+      place-items: center;
+    }
+
+    .user-info {
+      min-width: 0;
+    }
+
+    .user-info strong {
+      display: block;
+      font-size: 13px;
+    }
+
+    .user-info small {
+      color: var(--muted);
+    }
+
+    .main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 22px;
+      gap: 12px;
+    }
+
+    .top-left, .top-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-btn {
+      display: none;
+      background: transparent;
+      border: 0;
+      color: var(--text);
+      font-size: 22px;
+    }
+
+    .model-select {
+      background: var(--panel2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 12px;
+      border-radius: 10px;
+      max-width: 190px;
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #e7b44d;
+    }
+
+    .dot.online { background: #35d69a; }
+    .dot.offline { background: var(--danger); }
+
+    .page {
+      display: none;
+      flex: 1;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .page.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 18px;
+      scroll-behavior: smooth;
+    }
+
+    .welcome {
+      max-width: 760px;
+      margin: 8vh auto 30px;
+      text-align: center;
+    }
+
+    .welcome h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      margin: 0 0 12px;
+      letter-spacing: -1.5px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #8c9cff, #38d8df);
+      color: transparent;
+      background-clip: text;
+    }
+
+    .welcome p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .suggestions {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      max-width: 700px;
+      margin: 28px auto 0;
+    }
+
+    .suggestion {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-align: left;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .suggestion:hover {
+      border-color: var(--primary);
+    }
+
+    .suggestion strong {
+      display: block;
+      margin-bottom: 7px;
+    }
+
+    .suggestion small {
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .messages {
+      max-width: 850px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .message {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+    }
+
+    .message.user {
+      flex-direction: row-reverse;
+    }
+
+    .message .bubble {
+      max-width: min(85%, 720px);
+      padding: 14px 16px;
+      border-radius: 16px;
+      line-height: 1.65;
+      overflow-wrap: anywhere;
+      white-space: pre-wrap;
+    }
+
+    .message.assistant .bubble {
+      background: var(--panel);
+      border: 1px solid var(--border);
+    }
+
+    .message.user .bubble {
+      background: #25345a;
+    }
+
+    .message-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--panel2);
+    }
+
+    .message-actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .mini-btn {
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      border-radius: 7px;
+      padding: 5px 9px;
+      font-size: 12px;
+    }
+
+    .composer-area {
+      padding: 14px 18px 18px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(transparent, var(--bg) 20%);
+    }
+
+    .composer {
+      max-width: 850px;
+      margin: 0 auto;
+      border: 1px solid #34415c;
+      background: var(--panel);
+      border-radius: 18px;
+      padding: 12px;
+      box-shadow: 0 10px 35px #0003;
+    }
+
+    .composer textarea {
+      width: 100%;
+      resize: none;
+      min-height: 52px;
+      max-height: 180px;
+      border: 0;
+      outline: 0;
+      color: var(--text);
+      background: transparent;
+      padding: 8px;
+      line-height: 1.5;
+    }
+
+    .composer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .composer-tools {
+      display: flex;
+      gap: 7px;
+    }
+
+    .tool-btn {
+      border: 1px solid var(--border);
+      background: var(--panel2);
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 9px;
+    }
+
+    .send-btn {
+      border: 0;
+      background: var(--primary);
+      color: white;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+
+    .send-btn:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+    }
+
+    .disclaimer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 11px;
+      margin: 10px 0 0;
+    }
+
+    .content-page {
+      padding: 28px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .content-page h1 {
+      margin-top: 0;
+    }
+
+    .content-page p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .feature-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 18px;
+      border-radius: 15px;
+    }
+
+    .feature-card h3 {
+      margin: 0 0 8px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .settings-row {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .settings-row input {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 9px;
+      border-radius: 8px;
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .primary-btn {
+      background: var(--primary);
+      border: 0;
+      color: white;
+      padding: 10px 15px;
+      border-radius: 10px;
+    }
+
+    .notice {
+      background: #17233b;
+      border: 1px solid var(--border);
+      padding: 12px;
+      border-radius: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .overlay {
+      display: none;
+    }
+
+    @media (max-width: 800px) {
+      .sidebar {
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        transform: translateX(-100%);
+        box-shadow: 15px 0 40px #0005;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .overlay.show {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: #0008;
+        z-index: 10;
+      }
+
+      .menu-btn {
+        display: block;
+      }
+
+      .topbar {
+        padding: 0 13px;
+        height: 58px;
+      }
+
+      .status {
+        display: none;
+      }
+
+      .model-select {
+        max-width: 145px;
+      }
+
+      .suggestions {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome {
+        margin-top: 4vh;
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .content-page {
+        padding: 20px;
+      }
+
+      .composer-area {
+        padding: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .composer-tools .tool-btn:nth-child(n+2) {
+        display: none;
+      }
+
+      .message .bubble {
+        max-width: 90%;
+      }
+
+      .settings-row {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-icon">✦</div>
+      <span>K-ULTRA AI</span>
+    </div>
+
+    <button class="new-chat" id="newChat">＋ New chat</button>
+
+    <div class="nav-title">WORKSPACE</div>
+
+    <button class="nav-item active" data-page="chat">✦ AI Chat</button>
+    <button class="nav-item" data-page="models">◈ AI Models</button>
+    <button class="nav-item" data-page="tools">▦ AI Tools</button>
+    <button class="nav-item" data-page="research">⌕ Research</button>
+    <button class="nav-item" data-page="coding">⌘ Coding</button>
+    <button class="nav-item" data-page="files">▤ Files</button>
+    <button class="nav-item" data-page="settings">⚙ Settings</button>
+
+    <div class="sidebar-bottom">
+      <div class="user-card">
+        <div class="avatar">👤</div>
+        <div class="user-info">
+          <strong>Guest User</strong>
+          <small>Local workspace</small>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="overlay" id="overlay"></div>
+
+  <main class="main">
+    <header class="topbar">
+      <div class="top-left">
+        <button class="menu-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <select class="model-select" id="modelSelect">
+          <option value="default">K-ULTRA AI</option>
+          <option value="fast">Fast AI</option>
+          <option value="reasoning">Reasoning AI</option>
+          <option value="coding">Coding AI</option>
+        </select>
+      </div>
+
+      <div class="top-right">
+        <div class="status">
+          <span class="dot" id="statusDot"></span>
+          <span id="statusText">Checking backend...</span>
+        </div>
+        <button class="tool-btn" id="clearChat">Clear</button>
+      </div>
+    </header>
+
+    <!-- CHAT PAGE -->
+    <section class="page active" id="page-chat">
+      <div class="chat-scroll" id="chatScroll">
+        <div class="welcome" id="welcome">
+          <h1>Welcome to <span class="gradient-text">K-ULTRA AI</span></h1>
+          <p>Your AI workspace for thinking, learning, coding and creating.</p>
+
+          <div class="suggestions">
+            <button class="suggestion" data-prompt="Explain artificial intelligence in simple words">
+              <strong>✦ Learn something</strong>
+              <small>Understand AI and technology</small>
+            </button>
+            <button class="suggestion" data-prompt="Help me build a responsive website">
+              <strong>⌘ Build a website</strong>
+              <small>Create a website step by step</small>
+            </button>
+            <button class="suggestion" data-prompt="Write and explain a JavaScript program">
+              <strong>⚡ Write code</strong>
+              <small>Generate and understand code</small>
+            </button>
+            <button class="suggestion" data-prompt="Give me a detailed research plan about modern AI">
+              <strong>⌕ Research a topic</strong>
+              <small>Explore a topic in detail</small>
+            </button>
+          </div>
+        </div>
+
+        <div class="messages" id="messages"></div>
+      </div>
+
+      <div class="composer-area">
+        <div class="composer">
+          <textarea id="messageInput" placeholder="Message K-ULTRA AI..." rows="2"></textarea>
+          <div class="composer-bottom">
+            <div class="composer-tools">
+              <button class="tool-btn" id="attachBtn" title="Attach file">＋</button>
+              <button class="tool-btn" id="voiceBtn" title="Voice input">🎙</button>
+            </div>
+            <button class="send-btn" id="sendBtn">Send ↑</button>
+          </div>
+          <input type="file" id="fileInput" hidden>
+        </div>
+        <p class="disclaimer">AI can make mistakes. Verify important information.</p>
+      </div>
+    </section>
+
+    <!-- MODELS PAGE -->
+    <section class="page" id="page-models">
+      <div class="content-page">
+        <h1>AI Models</h1>
+        <p>Select a model mode for your conversation.</p>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>✦ Default AI</h3>
+            <p>General purpose assistant.</p>
+            <button class="primary-btn choose-model" data-model="default">Use model</button>
+          </div>
+          <div class="feature-card">
+            <h3>⚡ Fast AI</h3>
+            <p>Quick answers and everyday tasks.</p>
+            <button class="primary-btn choose-model" data-model="fast">Use model</button>
+          </div>
+          <div class="feature-card">
+            <h3>🧠 Reasoning AI</h3>
+            <p>Complex problems and planning.</p>
+            <button class="primary-btn choose-model" data-model="reasoning">Use model</button>
+          </div>
+          <div class="feature-card">
+            <h3>⌘ Coding AI</h3>
+            <p>Programming and debugging.</p>
+            <button class="primary-btn choose-model" data-model="coding">Use model</button>
+          </div>
+        </div>
+        <p class="notice">These are frontend model modes. Actual model availability depends on the models configured in your Cloudflare Worker.</p>
+      </div>
+    </section>
+
+    <!-- TOOLS PAGE -->
+    <section class="page" id="page-tools">
+      <div class="content-page">
+        <h1>AI Tools</h1>
+        <p>Choose a tool to start a task in the AI chat.</p>
+        <div class="feature-grid">
+          <div class="feature-card"><h3>📝 Writing</h3><p>Draft, rewrite and improve text.</p><button class="primary-btn tool-prompt" data-prompt="Help me write and improve a document">Open tool</button></div>
+          <div class="feature-card"><h3>💻 Code Assistant</h3><p>Generate and explain code.</p><button class="primary-btn tool-prompt" data-prompt="Help me write, debug and explain code">Open tool</button></div>
+          <div class="feature-card"><h3>📚 Study</h3><p>Learn concepts step by step.</p><button class="primary-btn tool-prompt" data-prompt="Teach me a technology topic step by step">Open tool</button></div>
+          <div class="feature-card"><h3>🔎 Research</h3><p>Prepare a research outline.</p><button class="primary-btn tool-prompt" data-prompt="Help me research a topic and create a structured report">Open tool</button></div>
+          <div class="feature-card"><h3>📊 Data Analysis</h3><p>Analyze data you provide.</p><button class="primary-btn tool-prompt" data-prompt="Help me analyze a dataset. Ask me to provide the data.">Open tool</button></div>
+          <div class="feature-card"><h3>🌐 Web Development</h3><p>Build and improve websites.</p><button class="primary-btn tool-prompt" data-prompt="Help me build a responsive website">Open tool</button></div>
+        </div>
+        <p class="notice">These tools currently use the chat assistant as their interface. Dedicated image, video, file and external integrations need their own backend routes and provider access.</p>
+      </div>
+    </section>
+
+    <!-- RESEARCH PAGE -->
+    <section class="page" id="page-research">
+      <div class="content-page">
+        <h1>Research Workspace</h1>
+        <p>Start research by sending a topic to the assistant.</p>
+        <button class="primary-btn tool-prompt" data-prompt="Create a detailed research report about: ">Start research</button>
+      </div>
+    </section>
+
+    <!-- CODING PAGE -->
+    <section class="page" id="page-coding">
+      <div class="content-page">
+        <h1>Coding Workspace</h1>
+        <p>Ask the assistant to create, review or debug code.</p>
+        <button class="primary-btn tool-prompt" data-prompt="Help me create a software project. First ask what I want to build.">Start coding</button>
+      </div>
+    </section>
+
+    <!-- FILES PAGE -->
+    <section class="page" id="page-files">
+      <div class="content-page">
+        <h1>Files</h1>
+        <p>Select a file from your device. This starter version lets you select files locally; file upload and AI document processing will be connected in a later backend step.</p>
+        <button class="primary-btn" id="openFiles">Choose file</button>
+        <p id="fileName"></p>
+      </div>
+    </section>
+
+    <!-- SETTINGS PAGE -->
+    <section class="page" id="page-settings">
+      <div class="content-page">
+        <h1>Settings</h1>
+        <p>Configure the frontend connection.</p>
+
+        <div class="settings-row">
+          <div>
+            <strong>Backend URL</strong>
+            <p>Cloudflare Worker endpoint</p>
+          </div>
+          <input id="backendInput" type="url">
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <strong>API route</strong>
+            <p>Chat endpoint path</p>
+          </div>
+          <input id="routeInput" type="text" value="/api/chat">
+        </div>
+
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="primary-btn" id="saveSettings">Save settings</button>
+          <button class="tool-btn" id="testBackend">Test backend</button>
+        </div>
+
+        <p class="notice" style="margin-top:20px">
+          Never paste your Gemini API key into this page. Keep secret keys in Cloudflare Worker secrets.
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  // K-ULTRA AI - FRONTEND STARTER
+  // Backend URL is public; API keys must remain on the server.
+
+  const DEFAULT_BACKEND =
+    "https://k-ultra-ai-backend.yeddulakoteswararao.workers.dev";
+
+  const $ = (id) => document.getElementById(id);
+
+  let backendURL = DEFAULT_BACKEND;
+  let chatRoute = "/api/chat";
+  let chatHistory = [];
+  let isSending = false;
+
+  function loadSettings() {
+    // Settings persist locally in this browser.
+    try {
+      backendURL = localStorage.getItem("kultra_backend") || DEFAULT_BACKEND;
+      chatRoute = localStorage.getItem("kultra_route") || "/api/chat";
+    } catch (_) {}
+
+    $("backendInput").value = backendURL;
+    $("routeInput").value = chatRoute;
+  }
+
+  function setStatus(state, text) {
+    $("statusText").textContent = text;
+    $("statusDot").className = "dot " + state;
+  }
+
+  function getChatURL() {
+    return backendURL.replace(/\/+$/, "") +
+      "/" + chatRoute.replace(/^\/+/, "");
+  }
+
+  async function checkBackend() {
+    setStatus("", "Checking backend...");
+
+    try {
+      const response = await fetch(backendURL, {
+        method: "GET",
+        mode: "cors"
+      });
+
+      // A 401/404 can still mean the server is reachable.
+      setStatus("online", "Backend reachable");
+      return response.ok;
+    } catch (error) {
+      setStatus("offline", "Backend connection issue");
+      return false;
+    }
+  }
+
+  function showPage(pageName) {
+    document.querySelectorAll(".page").forEach(page => {
+      page.classList.remove("active");
+    });
+
+    const page = $("page-" + pageName);
+    if (page) page.classList.add("active");
+
+    document.querySelectorAll(".nav-item").forEach(item => {
+      item.classList.toggle(
+        "active",
+        item.dataset.page === pageName
+      );
+    });
+
+    closeSidebar();
+  }
+
+  function openSidebar() {
+    $("sidebar").classList.add("open");
+    $("overlay").classList.add("show");
+  }
+
+  function closeSidebar() {
+    $("sidebar").classList.remove("open");
+    $("overlay").classList.remove("show");
+  }
+
+  function createMessage(role, text) {
+    const wrapper = document.createElement("div");
+    wrapper.className = "message " + role;
+
+    const icon = document.createElement("div");
+    icon.className = "message-icon";
+    icon.textContent = role === "user" ? "👤" : "✦";
+
+    const content = document.createElement("div");
+    content.style.minWidth = "0";
+
+    const bubble = document.createElement("div");
+    bubble.className = "bubble";
+    bubble.textContent = text;
+
+    content.appendChild(bubble);
+
+    if (role === "assistant") {
+      const actions = document.createElement("div");
+      actions.className = "message-actions";
+
+      const copy = document.createElement("button");
+      copy.className = "mini-btn";
+      copy.textContent = "Copy";
+      copy.onclick = async () => {
+        try {
+          await navigator.clipboard.writeText(text);
+          copy.textContent = "Copied";
+          setTimeout(() => copy.textContent = "Copy", 1200);
+        } catch (_) {
+          copy.textContent = "Copy unavailable";
+        }
+      };
+
+      actions.appendChild(copy);
+      content.appendChild(actions);
+    }
+
+    wrapper.appendChild(icon);
+    wrapper.appendChild(content);
+
+    $("messages").appendChild(wrapper);
+    $("welcome").style.display = "none";
+    scrollToBottom();
+
+    return bubble;
+  }
+
+  function scrollToBottom() {
+    $("chatScroll").scrollTop = $("chatScroll").scrollHeight;
+  }
+
+  function newChat() {
+    chatHistory = [];
+    $("messages").innerHTML = "";
+    $("welcome").style.display = "block";
+    $("messageInput").value = "";
+    showPage("chat");
+  }
+
+  function extractReply(data) {
+    if (typeof data === "string") return data;
+
+    if (!data || typeof data !== "object") {
+      return "The backend returned an empty response.";
+    }
+
+    if (typeof data.reply === "string") return data.reply;
+    if (typeof data.response === "string") return data.response;
+    if (typeof data.message === "string") return data.message;
+    if (typeof data.output === "string") return data.output;
+    if (typeof data.text === "string") return data.text;
+
+    if (data.choices && data.choices[0]) {
+      const choice = data.choices[0];
+      if (choice.message && choice.message.content) {
+        return choice.message.content;
+      }
+      if (choice.text) return choice.text;
+    }
+
+    if (data.result && typeof data.result === "string") {
+      return data.result;
+    }
+
+    return JSON.stringify(data, null, 2);
+  }
+
+  async function sendMessage(textOverride) {
+    if (isSending) return;
+
+    const text = (textOverride || $("messageInput").value).trim();
+    if (!text) return;
+
+    isSending = true;
+    $("sendBtn").disabled = true;
+    $("messageInput").value = "";
+
+    showPage("chat");
+    createMessage("user", text);
+
+    chatHistory.push({
+      role: "user",
+      content: text
+    });
+
+    const replyBubble = createMessage("assistant", "Thinking...");
+    setStatus("", "AI is responding...");
+
+    try {
+      const payload = {
+        message: text,
+        messages: chatHistory,
+        history: chatHistory,
+        model: $("modelSelect").value
+      };
+
+      const response = await fetch(getChatURL(), {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+      const raw = await response.text();
+      let data;
+
+      try {
+        data = JSON.parse(raw);
+      } catch (_) {
+        data = raw;
+      }
+
+      if (!response.ok) {
+        const errorMessage =
+          data && typeof data === "object"
+            ? (data.error || data.message || raw)
+            : raw;
+
+        throw new Error(
+          "Backend error (" + response.status + "): " +
+          String(errorMessage).slice(0, 500)
+        );
+      }
+
+      const reply = extractReply(data);
+      replyBubble.textContent = reply;
+
+      chatHistory.push({
+        role: "assistant",
+        content: reply
+      });
+
+      setStatus("online", "Backend connected");
+    } catch (error) {
+      const message =
+        "Connection failed: " + error.message +
+        "\n\nCheck that your Worker has the /api/chat route, " +
+        "accepts this request format, and allows requests from this website.";
+
+      replyBubble.textContent = message;
+      setStatus("offline", "Chat request failed");
+    }
+
+    isSending = false;
+    $("sendBtn").disabled = false;
+    scrollToBottom();
+  }
+
+  // Navigation
+  document.querySelectorAll(".nav-item").forEach(item => {
+    item.addEventListener("click", () => {
+      showPage(item.dataset.page);
+    });
+  });
+
+  $("newChat").addEventListener("click", newChat);
+  $("clearChat").addEventListener("click", newChat);
+  $("menuBtn").addEventListener("click", openSidebar);
+  $("overlay").addEventListener("click", closeSidebar);
+
+  // Send message
+  $("sendBtn").addEventListener("click", () => sendMessage());
+
+  $("messageInput").addEventListener("keydown", event => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      sendMessage();
+    }
+  });
+
+  $("messageInput").addEventListener("input", () => {
+    const input = $("messageInput");
+    input.style.height = "auto";
+    input.style.height = Math.min(input.scrollHeight, 180) + "px";
+  });
+
+  // Suggested prompts
+  document.querySelectorAll("[data-prompt]").forEach(button => {
+    button.addEventListener("click", () => {
+      const prompt = button.dataset.prompt;
+      sendMessage(prompt);
+    });
+  });
+
+  // Model selector cards
+  document.querySelectorAll(".choose-model").forEach(button => {
+    button.addEventListener("click", () => {
+      $("modelSelect").value = button.dataset.model;
+      showPage("chat");
+    });
+  });
+
+  // File selection
+  $("attachBtn").addEventListener("click", () => {
+    $("fileInput").click();
+  });
+
+  $("openFiles").addEventListener("click", () => {
+    $("fileInput").click();
+  });
+
+  $("fileInput").addEventListener("change", () => {
+    const file = $("fileInput").files[0];
+    if (!file) return;
+
+    $("fileName").textContent =
+      "Selected: " + file.name + " (" +
+      Math.round(file.size / 1024) + " KB)";
+
+    $("messageInput").value =
+      "I selected the file " + file.name +
+      ". Help me process this file.";
+
+    showPage("chat");
+  });
+
+  // Voice input - browser speech recognition if supported
+  $("voiceBtn").addEventListener("click", () => {
+    const SpeechRecognition =
+      window.SpeechRecognition ||
+      window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice input is not supported in this browser.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.interimResults = false;
+
+    recognition.onresult = event => {
+      $("messageInput").value =
+        event.results[0][0].transcript;
+    };
+
+    recognition.onerror = () => {
+      alert("Voice input could not start. Check microphone permission.");
+    };
+
+    recognition.start();
+  });
+
+  // Settings
+  $("saveSettings").addEventListener("click", () => {
+    const url = $("backendInput").value.trim();
+    const route = $("routeInput").value.trim();
+
+    if (!url.startsWith("https://")) {
+      alert("Please enter a valid HTTPS backend URL.");
+      return;
+    }
+
+    if (!route.startsWith("/")) {
+      alert("API route must start with /");
+      return;
+    }
+
+    backendURL = url.replace(/\/+$/, "");
+    chatRoute = route;
+
+    try {
+      localStorage.setItem("kultra_backend", backendURL);
+      localStorage.setItem("kultra_route", chatRoute);
+    } catch (_) {}
+
+    alert("Settings saved.");
+    checkBackend();
+  });
+
+  $("testBackend").addEventListener("click", checkBackend);
+
+  // Start application
+  loadSettings();
+  checkBackend();
+</script>
+</body>
+</html>
